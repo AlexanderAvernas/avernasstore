@@ -1,5 +1,4 @@
 import { getKlarnaOrder } from '../../utils/klarnaApi'; // Importera din axios-baserade funktion för att hämta Klarna order
-import { sendEmailNotification } from '../../utils/mail'; // Importera mailfunktionen
 
 export async function POST(req) {
     try {
@@ -49,21 +48,13 @@ export async function POST(req) {
                 // Här kan du logga eller hantera orderdetaljer som hämtats från Klarna
                 console.log(`Order ID: ${orderId}`);
                 console.log(`Order Status: ${orderDetails.status}`); // Logga status från Klarna
-
                 // Exempel på att logga shipping information
                 if (orderDetails.shipping_address) {
                     console.log(`Shipping Address: ${orderDetails.shipping_address.street_address}`);
                 }
-
-                // Skicka notifieringsmail
-                await sendEmailNotification({
-                    id: orderId,
-                    customer: { name: orderDetails.customer?.name || 'Okänd kund' },
-                    amount: { total: orderDetails.order_amount / 100 || 'Okänt belopp' }, // Konvertera från ören till SEK
-                    items: orderDetails.order_lines || [],
-                });
-
-                console.log('Notifieringsmail skickat.');
+                // Skapa order i din egen databas eller system
+                // Skicka acknowledgment till Klarna om ordern ska bekräftas.
+                // await acknowledgeOrder(orderId); // Implementera denna funktion om du vill acknokera ordern till Klarna
             } catch (error) {
                 console.error('Fel vid bearbetning av order:', error);
             }
