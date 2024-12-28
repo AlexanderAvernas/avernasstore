@@ -1,7 +1,6 @@
-/** @type {import('next').NextConfig} */
 const nextConfig = {
-    output: "standalone", // Add this if you're deploying to serverless environments
-    /* other configuration options */
+    output: "standalone", // Optional: Use for serverless deployment
+    // Add other configuration options here if needed
   };
 
-  module.exports = nextConfig;
+  export default nextConfig;
