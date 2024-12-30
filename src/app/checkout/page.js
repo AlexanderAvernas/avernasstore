@@ -32,10 +32,10 @@ const CheckoutPage = () => {
             },
           ],
           merchant_urls: {
-            terms: 'https://klarnatest.netlify.app/terms', // Terms and conditions URL
-            checkout: 'https://klarnatest.netlify.app/checkout', // Checkout URL
-            confirmation: 'https://klarnatest.netlify.app/confirmation?order_id={checkout.order.id}', // Dynamic Confirmation URL
-            push: 'https://klarnatest.netlify.app/api/push?order_id={checkout.order.id}' // push with id
+            terms: 'https://masilver.netlify.app/terms', // Terms and conditions URL
+            checkout: 'https://masilver.netlify.app/checkout', // Checkout URL
+            confirmation: 'https://masilver.netlify.app/confirmation?order_id={checkout.order.id}', // Dynamic Confirmation URL
+            push: 'https://masilver.netlify.app/api/push?order_id={checkout.order.id}' // push with id
           },
         }),
       });
