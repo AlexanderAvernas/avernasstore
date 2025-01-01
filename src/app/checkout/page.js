@@ -68,42 +68,21 @@ const CheckoutPage = () => {
 
   const createOrder = async () => {
     try {
-      const orderLines = state.cart.map((item) => ({
-        type: 'physical',
-        reference: item.id,
-        name: item.name,
-        quantity: 1, // Uppdatera med riktig kvantitet om det behövs
-        quantity_unit: 'st',
-        unit_price: item.price,
-        tax_rate: item.tax_rate,
-        total_amount: item.price,
-        total_tax_amount: (item.price * item.tax_rate) / 10000,
-      }));
-
+      // Skicka endast kundvagnen till servern för att skapa Klarna-order
       const response = await fetch('/api/klarna-order', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          purchase_country: 'SE',
-          purchase_currency: 'SEK',
-          locale: 'sv-SE',
-          order_amount: state.cart.reduce((total, item) => total + item.price, 0),
-          order_tax_amount: state.cart.reduce(
-            (total, item) => total + (item.price * item.tax_rate) / 10000,
-            0
-          ),
-          order_lines: orderLines,
-          merchant_urls: {
-            terms: 'https://masilver.netlify.app/terms',
-            checkout: 'https://masilver.netlify.app/checkout',
-            confirmation: 'https://masilver.netlify.app/confirmation?order_id={checkout.order.id}',
-            push: 'https://masilver.netlify.app/api/push?order_id={checkout.order.id}',
-          },
+          cart: state.cart, // Skicka kundvagnsdatan som den är
         }),
       });
 
+      if (!response.ok) {
+        throw new Error('Failed to create Klarna order');
+      }
+
       const data = await response.json();
-      setHtmlSnippet(data.html_snippet);
+      setHtmlSnippet(data.html_snippet); // Render Klarna widget
     } catch (error) {
       console.error('Error creating Klarna order:', error);
     }
@@ -112,17 +91,28 @@ const CheckoutPage = () => {
   return (
     <div>
       <h1>Checkout</h1>
-      <h2>Your Cart</h2>
-      <ul>
-        {state.cart.map((item) => (
-          <li key={item.id}>
-            {item.name} - {(item.price / 100).toFixed(2)} SEK
-          </li>
-        ))}
-      </ul>
+
+      {/* Visa kundvagnen */}
+      <div>
+        <h2>Your Cart</h2>
+        {state.cart.length === 0 ? (
+          <p>Your cart is empty</p>
+        ) : (
+          <ul>
+            {state.cart.map((item) => (
+              <li key={item.id}>
+                <strong>{item.name}</strong> - {item.quantity} x {item.price / 100} SEK
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
+
       <button onClick={createOrder}>Create Klarna Order</button>
+
       {htmlSnippet && <div dangerouslySetInnerHTML={{ __html: htmlSnippet }} />}
     </div>
+
   );
 };
 
