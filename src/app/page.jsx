@@ -1,3 +1,4 @@
+import Cart from "./components/Cart";
 import Hello from "./components/Hello";
 import ProductList from "./components/ProductList";
 
@@ -7,6 +8,7 @@ export default function Home() {
     <h1>Home</h1>
     <Hello/>
     <ProductList/>
+    <Cart/>
   </div>
   );
 }
