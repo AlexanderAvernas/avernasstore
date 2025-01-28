@@ -32,6 +32,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import { ProductsProvider } from "./context/ProductsContext"; // Importera ProductsProvider
 import { CartProvider } from "./context/CartContext"; // Importera CartProvider
 import "./globals.css";
+import Navbar from "./components/Navbar";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -51,10 +52,12 @@ export default function RootLayout({ children }) {
       >
         {/* Wrap med ProductsProvider och CartProvider */}
         <ProductsProvider>
-          <CartProvider>{children}</CartProvider>
+          <CartProvider>
+            <Navbar/>
+            {children}
+            </CartProvider>
         </ProductsProvider>
       </body>
     </html>
   );
 }
-

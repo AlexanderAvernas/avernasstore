@@ -1,17 +1,11 @@
-/** @type {import('tailwindcss').Config} */
-export default {
-  content: [
-    "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
-    "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
-    "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
-  ],
-  theme: {
-    extend: {
-      colors: {
-        background: "var(--background)",
-        foreground: "var(--foreground)",
-      },
+// tailwind.config.js
+module.exports = {
+    content: [
+      './src/app/**/*.{js,ts,jsx,tsx}', // For Next.js 13+ app directory
+      './src/components/**/*.{js,ts,jsx,tsx}', // For components directory
+    ],
+    theme: {
+      extend: {},
     },
-  },
-  plugins: [],
-};
+    plugins: [],
+  };
