@@ -1,28 +1,7 @@
-// "use client"
+// "use client";
 
 // import { createContext, useContext, useReducer, useEffect } from 'react';
-
-// // Dummy produktlista
-// const dummyProducts = [
-//   {
-//     id: '1',
-//     name: 'Cool Product',
-//     slug: 'cool-product',
-//     description: 'A very cool product with awesome features.',
-//     price: 10000, // Priset i minor units (100.00 SEK)
-//     image: '../../../public/globe.svg',
-//     tax_rate: 2500, // Moms
-//   },
-//   {
-//     id: '2',
-//     name: 'Awesome Product',
-//     slug: 'awesome-product',
-//     description: 'An awesome product you will love.',
-//     price: 20000, // Priset i minor units (200.00 SEK)
-//     image: '../../../public/file.svg',
-//     tax_rate: 2500,
-//   },
-// ];
+// import { fetchProducts } from '../lib/contentful'; // Importera Contentful-funktionen
 
 // // Reducer för att hantera state
 // const productsReducer = (state, action) => {
@@ -43,13 +22,23 @@
 
 // export const ProductsProvider = ({ children }) => {
 //   const [state, dispatch] = useReducer(productsReducer, {
-//     products: [],
-//     cart: [],
+//     products: [], // Initialt tom produktlista
+//     cart: [], // Initialt tom varukorg
 //   });
 
-//   // Ladda dummy produkter vid mount
+//   // Ladda produkter från Contentful vid mount
 //   useEffect(() => {
-//     dispatch({ type: 'SET_PRODUCTS', payload: dummyProducts });
+//     const loadProducts = async () => {
+//       try {
+//         const products = await fetchProducts(); // Hämta produkter från Contentful
+//         dispatch({ type: 'SET_PRODUCTS', payload: products });
+//       } catch (error) {
+//         console.error('Error fetching products:', error);
+//         dispatch({ type: 'SET_PRODUCTS', payload: [] }); // Fallback till tom lista
+//       }
+//     };
+
+//     loadProducts();
 //   }, []);
 
 //   return (
@@ -64,41 +53,59 @@
 
 "use client";
 
-import { createContext, useContext, useReducer, useEffect } from 'react';
-import { fetchProducts } from '../lib/contentful'; // Importera Contentful-funktionen
+import { createContext, useContext, useReducer, useEffect } from "react";
+import { fetchProducts } from "../lib/contentful"; // Import Contentful function
 
-// Reducer för att hantera state
+// Reducer to manage state
 const productsReducer = (state, action) => {
   switch (action.type) {
-    case 'SET_PRODUCTS':
-      return { ...state, products: action.payload };
-    case 'ADD_TO_CART':
+    case "SET_PRODUCTS":
+      return {
+        ...state,
+        products: action.payload,
+        filteredProducts: action.payload, // Initially show all products
+      };
+    case "SET_CATEGORY_FILTER":
+      return {
+        ...state,
+        selectedCategory: action.payload,
+        filteredProducts:
+          action.payload === "all"
+            ? state.products
+            : state.products.filter(
+                (product) => product.category === action.payload
+              ),
+      };
+    case "ADD_TO_CART":
       return { ...state, cart: [...state.cart, action.payload] };
-    case 'CLEAR_CART':
+    case "CLEAR_CART":
       return { ...state, cart: [] };
     default:
       throw new Error(`Unhandled action type: ${action.type}`);
   }
 };
 
-// Context och Provider
+// Create Context
 const ProductsContext = createContext();
 
+// Provider Component
 export const ProductsProvider = ({ children }) => {
   const [state, dispatch] = useReducer(productsReducer, {
-    products: [], // Initialt tom produktlista
-    cart: [], // Initialt tom varukorg
+    products: [],
+    filteredProducts: [],
+    selectedCategory: "all",
+    cart: [],
   });
 
-  // Ladda produkter från Contentful vid mount
+  // Load products from Contentful on mount
   useEffect(() => {
     const loadProducts = async () => {
       try {
-        const products = await fetchProducts(); // Hämta produkter från Contentful
-        dispatch({ type: 'SET_PRODUCTS', payload: products });
+        const products = await fetchProducts();
+        dispatch({ type: "SET_PRODUCTS", payload: products });
       } catch (error) {
-        console.error('Error fetching products:', error);
-        dispatch({ type: 'SET_PRODUCTS', payload: [] }); // Fallback till tom lista
+        console.error("Error fetching products:", error);
+        dispatch({ type: "SET_PRODUCTS", payload: [] });
       }
     };
 
@@ -112,5 +119,5 @@ export const ProductsProvider = ({ children }) => {
   );
 };
 
-// Hook för att använda Context
+// Hook for using context
 export const useProducts = () => useContext(ProductsContext);

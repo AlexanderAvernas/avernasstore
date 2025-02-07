@@ -24,7 +24,8 @@ export const fetchProducts = async () => {
     slug: item.fields.slug,
     description: item.fields.description,
     price: item.fields.price,
-    image: item.fields.image.fields.file.url,
-    tax_rate: item.fields.tax_rate,
+    image: item.fields.image?.fields?.file?.url || null, // Ensure image URL exists
+    tax_rate: Number(item.fields.tax_rate) || 2500,
+    category: item.fields.category || "others"
   }));
 };
