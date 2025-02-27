@@ -1,10 +1,20 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useCart } from "../context/CartContext"; // Import your Cart context
 import Link from "next/link";
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const { cart } = useCart(); // Access cart from context
+
+  const [totalItems, setTotalItems] = useState(0);
+
+  // Calculate the total number of items only on the client side
+  useEffect(() => {
+    const total = cart.reduce((acc, item) => acc + item.quantity, 0);
+    setTotalItems(total);
+  }, [cart]); // Run when the cart changes
 
   return (
     <nav className="bg-white shadow-md">
@@ -68,9 +78,9 @@ export default function Navbar() {
             </Link>
           </div>
 
-          {/* Desktop Cart Icon */}
-          <div className="hidden md:flex items-center space-x-4">
-            <Link href="/cart" className="text-red">
+          {/* Desktop Cart Icon with Item Count */}
+          <div className="hidden md:flex items-center space-x-4 relative">
+            <Link href="/cart" className="relative text-red flex items-center">
               <svg
                 className="w-6 h-6"
                 xmlns="http://www.w3.org/2000/svg"
@@ -85,6 +95,12 @@ export default function Navbar() {
                   d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2 5m12-5l2 5m-6 0a2 2 0 100-4 2 2 0 000 4z"
                 />
               </svg>
+              {/* Show item count only if totalItems is greater than 0 */}
+              {totalItems > 0 && (
+                <span className="absolute top-0 right-0 transform translate-x-1 -translate-y-1 bg-red-600 text-white rounded-full text-xs w-4 h-4 flex items-center justify-center">
+                  {totalItems}
+                </span>
+              )}
             </Link>
           </div>
 
@@ -112,7 +128,7 @@ export default function Navbar() {
             </button>
 
             {/* Cart Icon */}
-            <Link href="/cart" className="text-red">
+            <Link href="/cart" className="relative text-red">
               <svg
                 className="w-6 h-6"
                 xmlns="http://www.w3.org/2000/svg"
@@ -127,6 +143,13 @@ export default function Navbar() {
                   d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2 5m12-5l2 5m-6 0a2 2 0 100-4 2 2 0 000 4z"
                 />
               </svg>
+
+              {/* Show item count only if totalItems is greater than 0 */}
+              {totalItems > 0 && (
+                <span className="absolute top-0 right-0 transform translate-x-1 -translate-y-1 bg-red-600 text-white rounded-full text-xs w-4 h-4 flex items-center justify-center">
+                  {totalItems}
+                </span>
+              )}
             </Link>
           </div>
         </div>
