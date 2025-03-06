@@ -1,11 +1,14 @@
-import Cart from "./components/Cart";
 import ProductList from "./components/ProductList";
+import Hero from "./components/Hero"; // Använd bara en Hero-komponent
+import { fetchHero } from "./lib/contentful";
 
-export default function Home() {
+export default async function Home() {
+  const hero = await fetchHero(); // Hämta hero-data från Contentful
+
   return (
-  <div>
-    <h1>Home</h1>
-    <ProductList/>
-  </div>
+    <div>
+      {hero ? <Hero title={hero.title} imageUrl={hero.image} /> : <p>Ingen hero-data hittades.</p>}
+      <ProductList />
+    </div>
   );
 }
