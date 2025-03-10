@@ -3,16 +3,15 @@
 import Image from "next/image";
 
 const Hero = ({ title, imageUrl }) => {
-  if (!imageUrl) return <h1>Ingen bild hittades</h1>; // Lägg till en fallback
+  if (!imageUrl) return <h1>Ingen bild hittades</h1>;
 
   return (
-    <div className="relative w-full h-96">
-      <h1 className="text-2xl text-center">Test HeroImage</h1> {/* Testtext för debugging */}
+    <div className="relative w-screen min-h-[50vh] md:min-h-[70vh] flex justify-center items-center overflow-hidden">
       <Image
         src={`https:${imageUrl}`}
         alt={title || "Hero Image"}
-        fill={true} // Använd 'fill' istället för 'layout="fill"'
-        style={{ objectFit: "cover" }} // Korrekt sätt att använda objectFit
+        fill
+        className="object-cover"
         priority
       />
       {title && (
