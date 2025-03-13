@@ -2,6 +2,7 @@
 import { useState, useEffect } from "react";
 import { useCart } from "../context/CartContext"; // Import your Cart context
 import Link from "next/link";
+import Image from "next/image";
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -21,9 +22,16 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
+          <Image
+                src="/avernas.jpg" // Ange din bilds sökväg
+                alt="Avernäs Logo"
+                width={90} // Bredd på loggan
+                height={40} // Höjd på loggan
+                className="object-contain" // Se till att bilden inte ändrar proportionerna
+              />
           <div className="flex-shrink-0">
-            <Link href="/" className="text-red font-bold text-xl">
-              LOGO
+            <Link href="/" className="text-red font-semibold text-xl">
+
             </Link>
           </div>
 
