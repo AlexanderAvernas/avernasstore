@@ -6,20 +6,34 @@
 html, body {
   @apply overflow-x-hidden w-full min-h-screen;
 }
-/* :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+::-webkit-scrollbar {
+    display: none;
   }
+
+/* ----------------------------SWIPER--------------------------- */
+.swiper-button-next,
+.swiper-button-prev {
+  color: transparent !important; /* Ändrar färg på pilarna */
+  background-color: transparent; /* Halvtransparent svart bakgrund */
+  padding: 10px;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
 }
 
-body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
-} */
+.swiper-button-next:hover,
+.swiper-button-prev:hover {
+  background-color: rgba(0, 0, 0, 0.8); /* Mörkare vid hover */
+}
+
+/* Ändra färg på pagination-dots */
+.swiper-pagination-bullet {
+  background: white !important; /* Standardfärg på prickarna */
+  opacity: 0.6; /* Lite genomskinliga */
+}
+
+.swiper-pagination-bullet-active {
+  background: #ffffff !important; /* Aktiv punkt i en gul färg */
+  opacity: 1;
+}
