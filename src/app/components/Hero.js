@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 
-const Hero = ({ title, imageUrl }) => {
+const Hero = ({ title, imageUrl, description }) => {
   if (!imageUrl) return <h1>Ingen bild hittades</h1>;
 
   return (
@@ -14,11 +14,10 @@ const Hero = ({ title, imageUrl }) => {
         className="object-cover"
         priority
       />
-      {title && (
-        <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50">
-          {/* <h1 className="text-white text-1xl font-semibold">{title}</h1> */}
-        </div>
-      )}
+      <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-4">
+        {title && <h1 className="text-white text-lg font-semibold">{title}</h1>}
+        {description && <p className="text-white text-m mt-2">{description}</p>}
+      </div>
     </div>
   );
 };

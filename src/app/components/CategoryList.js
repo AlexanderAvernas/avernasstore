@@ -60,7 +60,7 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 
 const categories = [
-  { name: "rings", image: "/categoryRings.jpg" },
+  { name: "rings", image: "/rings.jpg" },
   { name: "necklaces", image: "/categoryNecklace.jpg" },
   { name: "earrings", image: "/categoryEarings.jpg" },
   { name: "bracelets", image: "/categoryBracelet.jpg" },

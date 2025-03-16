@@ -22,7 +22,9 @@ export const fetchProducts = async () => {
     slug: item.fields.slug,
     description: item.fields.description,
     price: item.fields.price,
-    image: item.fields.image?.fields?.file?.url || null, // Ensure image URL exists
+    image: item.fields.image?.fields?.file?.url
+    ? `https:${item.fields.image.fields.file.url}`
+    : null, // Se till att det alltid är en absolut URL
     tax_rate: Number(item.fields.tax_rate) || 2500,
     category: item.fields.category || "others"
   }));
@@ -41,6 +43,7 @@ export const fetchHero = async () => {
 
     return {
       title: hero.title || "Ingen titel hittades",
-      image: hero.image?.fields?.file?.url || null, // 🔴 Loggar ut URL
+      image: hero.image?.fields?.file?.url || null, // 🔴 Loggar ut URL,
+      description: hero.description || "Ingen beskrivning hittades"
     };
   };

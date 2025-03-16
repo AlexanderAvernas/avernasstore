@@ -8,7 +8,7 @@ export default async function Home() {
 
   return (
     <div className="w-full">
-      {hero ? <Hero title={hero.title} imageUrl={hero.image} /> : <p>Ingen hero-data hittades.</p>}
+      {hero ? <Hero title={hero.title} imageUrl={hero.image} description={hero.description} /> : <p>Ingen hero-data hittades.</p>}
       {/* <ProductList /> */}
       <CategoryList/>
     </div>
