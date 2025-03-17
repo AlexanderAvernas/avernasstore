@@ -73,7 +73,7 @@ const CategoryList = () => {
     <div className="p-0">
 
       {/* Mobil: Swiper */}
-      <div className="p-0 block md:hidden">
+      <div className="p-0 m-0 block md:hidden">
         <Swiper
           modules={[Navigation, Pagination, Autoplay]}
           spaceBetween={0}
