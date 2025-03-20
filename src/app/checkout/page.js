@@ -174,48 +174,104 @@
 
 // export default CheckoutPage;
 
-
 "use client";
 
 import { useCart } from "../context/CartContext";
 import KlarnaWidget from "../components/KlarnaWidget";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const CheckoutPage = () => {
   const { cart } = useCart();
   const [htmlSnippet, setHtmlSnippet] = useState("");
+  const [isSummaryOpen, setIsSummaryOpen] = useState(false);
 
-  const createOrder = async () => {
-    // 🔹 NEW: Send only product IDs and quantities to the server
-    const cartItems = cart.map((item) => ({
-      id: item.id,
-      quantity: item.quantity,
-    }));
+  // Funktion för att beräkna totalpris och skatt
+  const calculateTotals = () => {
+    let totalAmount = 0;
+    let totalTax = 0;
 
-    try {
-      // 🔹 FIX: Now the price calculation happens on the server
-      const response = await fetch("/api/klarna-order", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ cartItems }), // Send only IDs & quantities
-      });
+    cart.forEach((item) => {
+      totalAmount += item.price * item.quantity;
+      totalTax += ((item.price * item.tax_rate) / 10000) * item.quantity;
+    });
 
-      // Handle Klarna API response
-      const data = await response.json();
-      if (response.ok) {
-        setHtmlSnippet(data.html_snippet);
-      } else {
-        console.error("Error creating Klarna order:", data);
-      }
-    } catch (error) {
-      console.error("Error creating Klarna order:", error);
-    }
+    return { totalAmount, totalTax };
   };
 
+  const { totalAmount, totalTax } = calculateTotals();
+
+  // Skapa Klarna-order automatiskt när sidan laddas
+  useEffect(() => {
+    const createOrder = async () => {
+      if (cart.length === 0) return;
+
+      const cartItems = cart.map((item) => ({
+        id: item.id,
+        quantity: item.quantity,
+      }));
+
+      try {
+        const response = await fetch("/api/klarna-order", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ cartItems }),
+        });
+
+        const data = await response.json();
+        if (response.ok) {
+          setHtmlSnippet(data.html_snippet);
+        } else {
+          console.error("Error creating Klarna order:", data);
+        }
+      } catch (error) {
+        console.error("Error creating Klarna order:", error);
+      }
+    };
+
+    createOrder();
+  }, [cart]); // Körs när `cart` uppdateras
+
   return (
-    <div>
-      <h1>Checkout</h1>
-      <button onClick={createOrder}>Create Klarna Order</button>
+    <div className="max-w-4xl mx-auto p-6">
+      <h1 className="text-2xl font-semibold mb-4">Checkout</h1>
+
+      {/* Ordersammanfattning knapp */}
+      <button
+        onClick={() => setIsSummaryOpen(!isSummaryOpen)}
+        className="w-full bg-gray-200 text-gray-800 py-2 rounded-lg font-medium hover:bg-gray-300 transition"
+      >
+        {isSummaryOpen ? "Dölj ordersammanfattning ▲" : "Visa ordersammanfattning ▼"}
+      </button>
+
+      {/* Dropdown med orderdetaljer */}
+      {isSummaryOpen && (
+        <div className="bg-white border mt-2 p-4 rounded-lg shadow-md">
+          {cart.length === 0 ? (
+            <p className="text-gray-600">Din varukorg är tom.</p>
+          ) : (
+            <>
+              {cart.map((item) => (
+                <div key={item.id} className="flex items-center justify-between py-2 border-b last:border-b-0">
+                  <div className="flex items-center space-x-4">
+                    <img src={item.image} alt={item.name} className="w-16 h-16 rounded-md object-cover" />
+                    <div>
+                      <p className="font-medium">{item.name}</p>
+                      <p className="text-sm text-gray-600">Antal: {item.quantity}</p>
+                    </div>
+                  </div>
+                  <p className="font-medium">{(item.price / 100).toFixed(2)} SEK</p>
+                </div>
+              ))}
+              <div className="mt-4 border-t pt-2">
+                <p className="text-lg font-semibold">Total: {(totalAmount / 100).toFixed(2)} SEK</p>
+                <p className="text-gray-600">Skatt: {(totalTax / 100).toFixed(2)} SEK</p>
+              </div>
+            </>
+          )}
+        </div>
+      )}
+
+      {/* Klarna Widget (visas automatiskt) */}
       {htmlSnippet && <KlarnaWidget htmlSnippet={htmlSnippet} />}
     </div>
   );

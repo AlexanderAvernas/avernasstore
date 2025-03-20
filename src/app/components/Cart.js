@@ -220,7 +220,7 @@ const Cart = () => {
 
             <Link href="/checkout">
               <button className="w-full mt-4 bg-white border-2 border-solid border-black text-black font-semibold py-2 hover:bg-gray-300 transition">
-                Fortsätt till checkout
+                Fortsätt till kassa
               </button>
             </Link>
           </div>
