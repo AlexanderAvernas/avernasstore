@@ -25,6 +25,12 @@ export const fetchProducts = async () => {
     image: item.fields.image?.fields?.file?.url
     ? `https:${item.fields.image.fields.file.url}`
     : null, // Se till att det alltid är en absolut URL
+    extraImages: [
+        item.fields.image1?.fields?.file?.url ? `https:${item.fields.image1.fields.file.url}` : null,
+        item.fields.image2?.fields?.file?.url ? `https:${item.fields.image2.fields.file.url}` : null,
+        item.fields.image3?.fields?.file?.url ? `https:${item.fields.image3.fields.file.url}` : null,
+        item.fields.image4?.fields?.file?.url ? `https:${item.fields.image4.fields.file.url}` : null,
+      ].filter(Boolean),
     tax_rate: Number(item.fields.tax_rate) || 2500,
     category: item.fields.category || "others"
   }));
