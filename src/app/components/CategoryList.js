@@ -92,6 +92,7 @@ const CategoryList = () => {
                     src={category.image}
                     alt={category.name}
                     fill
+                    sizes="(max-width: 768px) 100vw, 0vw"
                     className="object-cover"
                     priority
                   />
@@ -108,7 +109,7 @@ const CategoryList = () => {
       </div>
 
       {/* Desktop: Grid */}
-      <div className=" p-6 hidden md:grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+      <div className="p-6 hidden sm:grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {categories.map((category) => (
           <Link key={category.name} href={`/category/${category.name}`}>
             <div className="relative cursor-pointer border rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition">
@@ -117,6 +118,7 @@ const CategoryList = () => {
                   src={category.image}
                   alt={category.name}
                   fill
+                  sizes="(max-width: 639px) 100vw, (max-width: 1023px) 50vw, 33vw"
                   className="object-cover"
                 />
               </div>

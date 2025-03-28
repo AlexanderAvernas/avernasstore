@@ -117,9 +117,10 @@ const CategoryPage = () => {
                   <Image
                     src={product.image}
                     alt={product.name}
-                    layout="fill"
-                    objectFit="contain"
-                    className="rounded-md"
+                    fill
+                    sizes="(max-width: 639px) 100vw, (max-width: 1023px) 50vw, 25vw"
+                    className="object-contain rounded-md"
+                    priority={product.id === filteredProducts[0]?.id} // Endast första produkten
                   />
                 </div>
                 <h3 className="text-lg font-medium text-gray-900">{product.name}</h3>

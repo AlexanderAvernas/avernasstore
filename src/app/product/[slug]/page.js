@@ -71,7 +71,6 @@
 
 // export default ProductPage;
 
-
 'use client'
 
 import { useState, useEffect } from 'react'
@@ -115,9 +114,8 @@ const ProductPage = () => {
                         <Image
                             src={mainImage}
                             alt={product.name}
-                            layout="fill"
-                            objectFit="contain"
-                            className="rounded-lg"
+                            fill
+                            className="object-contain rounded-lg"
                         />
                     ) : (
                         // Fallback-bild om mainImage är ogiltig
@@ -129,21 +127,23 @@ const ProductPage = () => {
 
                 {/* Miniatyrbilder */}
                 <div className="flex gap-2">
-                    {[product.image, ...product.extraImages].map((img, index) => (
-                        <button
-                            key={index}
-                            onClick={() => setMainImage(img)}
-                            className="border-none p-0"
-                        >
-                            <Image
-                                src={img || '/default-image.jpg'}  // Fallback för tomma bild-URL:er
-                                alt={product.name}
-                                width={64}
-                                height={64}
-                                className="cursor-pointer border rounded-md hover:opacity-75"
-                            />
-                        </button>
-                    ))}
+                    {[product.image, ...product.extraImages].map(
+                        (img, index) => (
+                            <button
+                                key={index}
+                                onClick={() => setMainImage(img)}
+                                className="border-none p-0"
+                            >
+                                <Image
+                                    src={img || '/default-image.jpg'} // Fallback för tomma bild-URL:er
+                                    alt={product.name}
+                                    width={64}
+                                    height={64}
+                                    className="cursor-pointer border rounded-md hover:opacity-75"
+                                />
+                            </button>
+                        )
+                    )}
                 </div>
 
                 {/* Produktinfo */}
