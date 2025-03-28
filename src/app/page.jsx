@@ -13,7 +13,7 @@ export default async function Home() {
       {/* <ProductList /> */}
       <CategoryList/>
       <div className="h-60 bg-white flex items-center justify-center">
-    <h2 className="text-center font-semibold">HANDGJORDA SMYCKEN <br/> I <br/> ÅTERVUNNET SILVER</h2>
+    <h2 className="text-center">HANDGJORDA SMYCKEN <br/> I <br/> ÅTERVUNNET SILVER</h2>
 </div>
 <CollectionImages/>
     </div>
