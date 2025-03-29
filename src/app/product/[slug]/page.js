@@ -152,6 +152,20 @@ const ProductPage = () => {
                         {product.name}
                     </h1>
                     <p className="text-gray-600 mb-4">{product.description}</p>
+                    {/* Länk till Collection */}
+                    {product.collection && (
+                        <div className="mt-6 mb-6 text-center">
+                            <Link href={`/collection/${product.collection}`}>
+                                <span>
+                                    Se fler produkter i{' '}
+                                    <span className="text-blue-600 uppercase hover:underline">
+                                        {product.collection}
+                                    </span>{' '}
+                                    kollektionen
+                                </span>
+                            </Link>
+                        </div>
+                    )}
                     <p className="text-lg font-semibold text-gray-700 mb-6">
                         {product.price / 100} SEK
                     </p>

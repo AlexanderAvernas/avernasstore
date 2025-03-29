@@ -32,7 +32,8 @@ export const fetchProducts = async () => {
         item.fields.image4?.fields?.file?.url ? `https:${item.fields.image4.fields.file.url}` : null,
       ].filter(Boolean),
     tax_rate: Number(item.fields.tax_rate) || 2500,
-    category: item.fields.category || "others"
+    category: item.fields.category || "others",
+    collection: item.fields.collection
   }));
 };
 
@@ -52,4 +53,15 @@ export const fetchHero = async () => {
       image: hero.image?.fields?.file?.url || null, // 🔴 Loggar ut URL,
       description: hero.description || "Ingen beskrivning hittades"
     };
+  };
+
+  export const fetchCategoryImages = async () => {
+    const response = await client.getEntries({
+      content_type: "categoryImages",
+    });
+
+    return response.items.map((item) => ({
+      name: item.fields.name.toLowerCase(),
+      image: item.fields.image?.fields?.file?.url ? `https:${item.fields.image.fields.file.url}` : null,
+    }));
   };
