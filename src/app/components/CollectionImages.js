@@ -9,30 +9,39 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 
 const images = [
-    { name: "happyplanet", image: "/CollectionHappy.jpg" },
+  { name: "happyplanet", image: "/CollectionHappy.jpg" },
   { name: "coins", image: "/CollectionCoins.jpg" },
   { name: "letter", image: "/CollectionLetter.jpg" },
 ];
 
 const CollectionImages = () => {
   return (
-    <div className="p-0">
+    <div className="relative w-full h-[50vh] sm:h-[70vh] lg:h-[80vh]">
 
-      {/* Swiper: Mobil och Desktop */}
+      {/* Klickbar text som ligger kvar över Swiper */}
+      <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-10">
+        <Link href="/collections">
+          <span className="text-white text-m px-2 py-2 bg-black bg-opacity-80 pointer-events-auto cursor-pointer">
+            Collection
+          </span>
+        </Link>
+      </div>
+
+      {/* Swiper som byter bilder i bakgrunden */}
       <Swiper
         modules={[Navigation, Pagination, Autoplay]}
         spaceBetween={0}
         slidesPerView={1}
         navigation
         pagination={{ clickable: true }}
-        // autoplay={{ delay: 3000 }}
+        autoplay={{ delay: 3000 }}
         loop
-        className="w-full"
+        className="w-full h-full"
       >
         {images.map((image) => (
           <SwiperSlide key={image.name}>
             <Link href="/collections">
-              <div className="relative w-full h-[50vh] sm:h-[70vh] lg:h-[80vh] flex justify-center items-center overflow-hidden">
+              <div className="relative w-full h-full flex justify-center items-center overflow-hidden">
                 <Image
                   src={image.image}
                   alt={image.name}
@@ -41,11 +50,6 @@ const CollectionImages = () => {
                   className="object-cover"
                   priority
                 />
-                <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50">
-                  <span className="text-white text-1xl px-4 py-1 bg-black bg-opacity-75">
-                    Collection
-                  </span>
-                </div>
               </div>
             </Link>
           </SwiperSlide>
