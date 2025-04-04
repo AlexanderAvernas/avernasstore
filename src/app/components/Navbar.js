@@ -192,10 +192,10 @@ export default function Navbar() {
                     <div className="md:hidden">
                         <div className="space-y-2 py-2">
                             <Link
-                                href="/about"
+                                href="/"
                                 className="block px-4 py-2 text-red hover:bg-gray-100"
                             >
-                                Om
+                                Home
                             </Link>
 
                             <div>
@@ -232,10 +232,10 @@ export default function Navbar() {
                             </div>
 
                             <Link
-                                href="/"
+                                href="/about"
                                 className="block px-4 py-2 text-black hover:bg-gray-100"
                             >
-                                About
+                                Om
                             </Link>
                         </div>
                     </div>

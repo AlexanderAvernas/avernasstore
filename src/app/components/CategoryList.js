@@ -36,7 +36,7 @@ const CategoryList = () => {
           {categories.map((category) => (
             <SwiperSlide key={category.name}>
               <Link href={`/category/${category.name}`}>
-                <div className="relative w-screen min-h-[50vh] md:min-h-[70vh] flex justify-center items-center overflow-hidden m-0">
+                <div className="relative w-screen min-h-[50svh] md:min-h-[70vh] flex justify-center items-center overflow-hidden m-0">
                   <Image
                     src={category.image}
                     alt={category.name}
