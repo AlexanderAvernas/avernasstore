@@ -21,11 +21,11 @@ export default function Navbar() {
     // Om vi är på startsidan, gör navbaren genomskinlig med vit text
     const isHomePage = pathname === '/'
 
-     // Ändra navbarens färg om hamburgermenyn är öppen
-  const navbarClasses =
-  isHomePage && !isMenuOpen
-    ? "absolute top-0 left-0 w-full text-white bg-transparent"
-    : "bg-white text-black shadow-md";
+    // Ändra navbarens färg om hamburgermenyn är öppen
+    const navbarClasses =
+        isHomePage && !isMenuOpen
+            ? 'absolute top-0 left-0 w-full text-white bg-transparent'
+            : 'bg-white text-black shadow-md'
 
     return (
         <nav className={`${navbarClasses} z-50`}>
@@ -53,17 +53,13 @@ export default function Navbar() {
                         </Link>
 
                         {/* Katalog Dropdown */}
+                        {/* Katalog Dropdown (Desktop) */}
                         <div
                             className="relative"
                             onMouseEnter={() => setIsDropdownOpen(true)}
                             onMouseLeave={() => setIsDropdownOpen(false)}
                         >
-                            <button
-                                className="text-red hover:text-gray-600 flex items-center"
-                                onClick={() =>
-                                    setIsDropdownOpen(!isDropdownOpen)
-                                }
-                            >
+                            <button className="text-red hover:text-gray-600 flex items-center">
                                 Katalog
                                 <svg
                                     className="w-4 h-4 ml-1"
@@ -80,30 +76,39 @@ export default function Navbar() {
                             </button>
 
                             {isDropdownOpen && (
-                                <div className="absolute left-0 mt-2 w-48 bg-white border rounded-md shadow-lg">
+                                <div className="absolute left-0 mt-2 w-48 bg-white text-black border rounded-md shadow-lg z-50">
                                     <Link
-                                        href="/"
-                                        className="block px-4 py-2 text-red hover:bg-gray-100"
+                                        href="/category/rings"
+                                        className="block px-4 py-2 hover:bg-gray-100"
                                     >
-                                        Item 1
+                                        Rings
                                     </Link>
                                     <Link
-                                        href="/"
-                                        className="block px-4 py-2 text-red hover:bg-gray-100"
+                                        href="/category/neclaces"
+                                        className="block px-4 py-2 hover:bg-gray-100"
                                     >
-                                        Item 2
+                                        Necklaces
                                     </Link>
                                     <Link
-                                        href="/"
-                                        className="block px-4 py-2 text-red hover:bg-gray-100"
+                                        href="/category/earrings"
+                                        className="block px-4 py-2 hover:bg-gray-100"
                                     >
-                                        Item 3
+                                        Earrings
+                                    </Link>
+                                    <Link
+                                        href="/category/bracelets"
+                                        className="block px-4 py-2 hover:bg-gray-100"
+                                    >
+                                        Bracelets
                                     </Link>
                                 </div>
                             )}
                         </div>
 
-                        <Link href="/about" className="text-red hover:text-gray-600">
+                        <Link
+                            href="/about"
+                            className="text-red hover:text-gray-600"
+                        >
                             Om
                         </Link>
                     </div>
@@ -210,22 +215,28 @@ export default function Navbar() {
                                 {isDropdownOpen && (
                                     <div className="pl-4 space-y-1">
                                         <Link
-                                            href="/"
+                                            href="/category/rings"
                                             className="block px-4 py-2 text-black hover:bg-gray-100"
                                         >
-                                            Item 1
+                                            Rings
                                         </Link>
                                         <Link
-                                            href="/"
+                                            href="/category/necklaces"
                                             className="block px-4 py-2 text-black hover:bg-gray-100"
                                         >
-                                            Item 2
+                                            Necklaces
                                         </Link>
                                         <Link
-                                            href="/"
+                                            href="/category/earring"
                                             className="block px-4 py-2 text-black hover:bg-gray-100"
                                         >
-                                            Item 3
+                                            Earrings
+                                        </Link>
+                                        <Link
+                                            href="/category/bracelets"
+                                            className="block px-4 py-2 text-black hover:bg-gray-100"
+                                        >
+                                            Bracelets
                                         </Link>
                                     </div>
                                 )}

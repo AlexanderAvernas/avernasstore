@@ -75,12 +75,14 @@
 
 import { useState, useEffect } from 'react'
 import { useParams } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 import { useProducts } from '../../context/ProductsContext'
 import { useCart } from '../../context/CartContext'
 import Link from 'next/link'
 import Image from 'next/image'
 
 const ProductPage = () => {
+    const router = useRouter()
     const { slug } = useParams()
     const { state } = useProducts()
     const { dispatch } = useCart()
@@ -172,12 +174,13 @@ const ProductPage = () => {
 
                     <div className="flex flex-col sm:flex-row gap-4">
                         <button
-                            onClick={() =>
+                            onClick={() => {
                                 dispatch({
                                     type: 'ADD_TO_CART',
                                     payload: product
                                 })
-                            }
+                                router.push('../../cart') // 👈 navigera till kundvagnen
+                            }}
                             className="flex-1 bg-white border-black border-2 border-solid text-black px-6 py-3 hover:bg-gray-300 transition"
                         >
                             LÄGG I KUNDVAGN
