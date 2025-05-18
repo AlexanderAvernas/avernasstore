@@ -184,6 +184,11 @@ const Cart = () => {
                                     <p className="text-gray-600">
                                         {(item.price / 100).toFixed(2)} SEK
                                     </p>
+                                    {item.ringSize && (
+                                        <p className="text-sm text-gray-500">
+                                            Storlek: {item.ringSize}
+                                        </p>
+                                    )}
                                 </div>
 
                                 {/* Kvantitet & Ta bort-knapp i en vertikal layout */}

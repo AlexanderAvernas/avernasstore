@@ -129,33 +129,26 @@ export async function POST(req) {
 
     // 🔹 Step 3: Validate each item in the cart and use real price data
     const orderLines = cartItems.map((cartItem) => {
-      const { id, quantity } = cartItem;
+        const { id, quantity, ringSize } = cartItem;
+        const product = productMap.get(id);
+        if (!product) throw new Error(`Invalid product ID: ${id}`);
 
-      const product = productMap.get(id);
-      if (!product) {
-        throw new Error(`Invalid product ID: ${id}`);
-      }
+        const totalAmount = product.price * quantity;
+        const totalTaxAmount = totalAmount - Math.round(totalAmount / (1 + product.tax_rate / 10000));
 
-      if (typeof quantity !== "number" || quantity < 1 || quantity > 20) {
-        throw new Error(`Invalid quantity for product ${id}: ${quantity}`);
-      }
+        return {
+          type: 'physical',
+          reference: product.id,
+          name: ringSize ? `${product.name} (Storlek: ${ringSize})` : product.name,
+          quantity,
+          quantity_unit: 'pcs',
+          unit_price: product.price,
+          tax_rate: product.tax_rate,
+          total_amount: totalAmount,
+          total_tax_amount: totalTaxAmount,
+        };
+      });
 
-      // 🔹 Always use the price from the database, not the client
-      const totalAmount = product.price * quantity;
-      const totalTaxAmount = totalAmount - Math.round(totalAmount / (1 + product.tax_rate / 10000));
-
-      return {
-        type: "physical",
-        reference: product.id,
-        name: product.name,
-        quantity,
-        quantity_unit: "pcs",
-        unit_price: product.price,
-        tax_rate: product.tax_rate,
-        total_amount: totalAmount,
-        total_tax_amount: totalTaxAmount,
-      };
-    });
 
     // 🔹 Step 4: Ensure valid total amounts
     const totalAmount = orderLines.reduce((sum, item) => sum + item.total_amount, 0);

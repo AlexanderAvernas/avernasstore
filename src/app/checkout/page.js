@@ -208,6 +208,7 @@ const CheckoutPage = () => {
       const cartItems = cart.map((item) => ({
         id: item.id,
         quantity: item.quantity,
+        ringSize: item.ringSize,
       }));
 
       try {
@@ -257,6 +258,9 @@ const CheckoutPage = () => {
                     <div>
                       <p className="font-medium">{item.name}</p>
                       <p className="text-sm text-gray-600">Antal: {item.quantity}</p>
+                      {item.ringSize && (
+                        <p className="text-sm text-gray-600">Ringstorlek: {item.ringSize}</p>
+                      )}
                     </div>
                   </div>
                   <p className="font-medium">{(item.price / 100).toFixed(2)} SEK</p>

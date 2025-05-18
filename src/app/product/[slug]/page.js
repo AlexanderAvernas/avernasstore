@@ -91,6 +91,9 @@ const ProductPage = () => {
     // Initiera mainImage som en tom sträng
     const [mainImage, setMainImage] = useState('')
 
+    // RingSize
+    const [ringSize, setRingSize] = useState(null)
+
     // Uppdatera mainImage när produkt laddas in
     useEffect(() => {
         if (product?.image) {
@@ -172,14 +175,54 @@ const ProductPage = () => {
                         {product.price / 100} SEK
                     </p>
 
+                    {/* Visa dropdown om produkten är en ring */}
+                    {product.category === 'rings' && (
+                        <div className="mb-4">
+                            <label
+                                htmlFor="ring-size"
+                                className="block mb-2 text-sm font-medium text-gray-700"
+                            >
+                                Välj storlek:
+                            </label>
+                            <select
+                                id="ring-size"
+                                value={ringSize || ''}
+                                onChange={(e) =>
+                                    setRingSize(Number(e.target.value))
+                                }
+                                className="w-full border border-gray-300 rounded px-3 py-2"
+                                required
+                            >
+                                <option value="">Välj storlek</option>
+                                {[15, 16, 17, 18, 19, 20].map((size) => (
+                                    <option key={size} value={size}>
+                                        {size}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
+                    )}
                     <div className="flex flex-col sm:flex-row gap-4">
                         <button
                             onClick={() => {
+                                // Om det är en ring och ingen storlek valts, stoppa
+                                if (product.category === 'rings' && !ringSize) {
+                                    alert('Vänligen välj en ringstorlek.')
+                                    return
+                                }
+
                                 dispatch({
                                     type: 'ADD_TO_CART',
-                                    payload: product
+                                    payload: {
+                                        ...product,
+                                        ringSize:
+                                            product.category === 'rings'
+                                                ? ringSize
+                                                : null
+                                    }
                                 })
-                                router.push('../../cart') // 👈 navigera till kundvagnen
+
+                                router.push('../../cart')
                             }}
                             className="flex-1 bg-white border-black border-2 border-solid text-black px-6 py-3 hover:bg-gray-300 transition"
                         >
