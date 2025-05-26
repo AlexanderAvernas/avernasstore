@@ -2,10 +2,12 @@
 
 import { useEffect, useState } from 'react'
 import KlarnaWidget from '../components/KlarnaWidget' // Reusing KlarnaWidget component
+import { useCart } from '../context/CartContext'
 
 const ConfirmationPage = () => {
   const [htmlSnippet, setHtmlSnippet] = useState('')
   const [error, setError] = useState(null)
+  const { dispatch } = useCart()
 
   useEffect(() => {
     const fetchOrderDetails = async () => {
@@ -22,6 +24,14 @@ const ConfirmationPage = () => {
           console.log('Order Details:', orderDetails)
 
           setHtmlSnippet(orderDetails.html_snippet) // Set Klarna widget snippet
+
+
+          // Empty react state
+          dispatch({ type: 'CLEAR_CART' })
+
+          // empty Localstorage
+          localStorage.removeItem('cart')
+
         } catch (err) {
           console.error('Error fetching order:', err)
           setError('Unable to load order confirmation.')
