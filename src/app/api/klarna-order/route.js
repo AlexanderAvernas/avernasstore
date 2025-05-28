@@ -111,6 +111,10 @@
 import { fetchProducts } from "../../lib/contentful";
 import { createKlarnaOrder } from "../../utils/klarnaApi";
 
+// 🔸 Lägg till frakt som konstanter
+const SHIPPING_FEE = 3900; // 39 kr i öre
+const SHIPPING_TAX_RATE = 2500; // 25% moms
+
 export async function POST(req) {
   try {
     const { cartItems } = await req.json();
@@ -148,6 +152,22 @@ export async function POST(req) {
           total_tax_amount: totalTaxAmount,
         };
       });
+
+       // 🔹  Lägg till frakt som en egen order_line
+    const shippingTaxAmount =
+    SHIPPING_FEE - Math.round(SHIPPING_FEE / (1 + SHIPPING_TAX_RATE / 10000));
+
+  orderLines.push({
+    type: "shipping_fee",
+    reference: "shipping",
+    name: "Frakt",
+    quantity: 1,
+    unit_price: SHIPPING_FEE,
+    tax_rate: SHIPPING_TAX_RATE,
+    total_amount: SHIPPING_FEE,
+    total_tax_amount: shippingTaxAmount,
+  });
+
 
 
     // 🔹 Step 4: Ensure valid total amounts
