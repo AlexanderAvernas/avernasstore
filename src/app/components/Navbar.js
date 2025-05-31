@@ -4,6 +4,7 @@ import { useCart } from '../context/CartContext' // Import your Cart context
 import Link from 'next/link'
 import Image from 'next/image'
 import { usePathname } from 'next/navigation' // Importera usePathname
+import { useRef } from 'react'
 
 export default function Navbar() {
     const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -11,12 +12,31 @@ export default function Navbar() {
     const { cart } = useCart() // Access cart from context
     const pathname = usePathname() // Kolla vilken sida vi är på
     const [totalItems, setTotalItems] = useState(0)
+    const dropdownRef = useRef(null)
 
     // Calculate the total number of items only on the client side
     useEffect(() => {
         const total = cart.reduce((acc, item) => acc + item.quantity, 0)
         setTotalItems(total)
     }, [cart]) // Run when the cart changes
+
+    //Ref so that the kategori dropdown closes when click outside div
+    useEffect(() => {
+        function handleClickOutside(event) {
+            if (
+                dropdownRef.current &&
+                !dropdownRef.current.contains(event.target)
+            ) {
+                setIsDropdownOpen(false)
+            }
+        }
+
+        document.addEventListener('mousedown', handleClickOutside)
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside)
+        }
+    }, [])
+
 
     // Om vi är på startsidan, gör navbaren genomskinlig med vit text
     const isHomePage = pathname === '/'
@@ -55,11 +75,9 @@ export default function Navbar() {
                         {/* Katalog Dropdown */}
                         {/* Katalog Dropdown (Desktop) */}
                         <div
-                            className="relative"
-                            onMouseEnter={() => setIsDropdownOpen(true)}
-                            onMouseLeave={() => setIsDropdownOpen(false)}
+                            className="relative" ref={dropdownRef}
                         >
-                            <button className="text-red hover:text-gray-600 flex items-center">
+                            <button onClick={() => setIsDropdownOpen(prev => !prev)} className="text-red hover:text-gray-600 flex items-center">
                                 Katalog
                                 <svg
                                     className="w-4 h-4 ml-1"
