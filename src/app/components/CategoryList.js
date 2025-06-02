@@ -28,6 +28,7 @@ const CategoryList = () => {
           navigation
           pagination={{ clickable: true }}
           autoplay={{ delay: 4000 }}
+          loop
           className="w-screen"
         >
           {categories.map((category) => (
