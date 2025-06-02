@@ -4,12 +4,12 @@ import Link from "next/link";
 import Image from "next/image";
 
 const collections = [
-  { name: "Connect", image: "/rings.jpg" },
-  { name: "necklaces", image: "/categoryNecklace.jpg" },
-  { name: "earrings", image: "/categoryEarings.jpg" },
-  { name: "bracelets", image: "/categoryBracelet.jpg" },
+  { name: "womenpower", image: "/rings.jpg" },
+  { name: "coins", image: "/categoryNecklace.jpg" },
+  { name: "happyplanets", image: "/categoryEarings.jpg" },
+  { name: "letter", image: "/categoryBracelet.jpg" },
   { name: "symbols", image: "/categorySymbols.jpg" },
-  { name: "stones", image: "/categoryStones.jpg" },
+  { name: "rod", image: "/categoryStones.jpg" },
 ];
 
 const CollectionList = () => {
