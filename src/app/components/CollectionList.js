@@ -4,12 +4,12 @@ import Link from "next/link";
 import Image from "next/image";
 
 const collections = [
-  { name: "womenpower", image: "/rings.jpg" },
-  { name: "coins", image: "/categoryNecklace.jpg" },
-  { name: "happyplanets", image: "/categoryEarings.jpg" },
-  { name: "letter", image: "/categoryBracelet.jpg" },
-  { name: "symbols", image: "/categorySymbols.jpg" },
-  { name: "rod", image: "/categoryStones.jpg" },
+  { name: "womenpower", image: "/womanpower.jpg" },
+  { name: "coins", image: "/CollectionCoins.jpg" },
+  { name: "happyplanets", image: "/CollectionHappy.jpg" },
+  { name: "letter", image: "/CollectionLetter.jpg" },
+  { name: "symbols", image: "/CollectionSymbols.jpg" },
+  { name: "rod", image: "/CollectionRod.jpg" },
 ];
 
 const CollectionList = () => {
@@ -18,7 +18,7 @@ const CollectionList = () => {
       {collections.map((collection) => (
         <Link key={collection.name} href={`/collection/${collection.name}`}>
           <div className="relative cursor-pointer border rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition">
-            <div className="relative w-full h-80">
+            <div className="relative w-full h-40 sm:h-80">
               <Image
                 src={collection.image}
                 alt={collection.name}

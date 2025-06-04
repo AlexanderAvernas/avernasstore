@@ -10,9 +10,9 @@ import "swiper/css/pagination";
 
 const categories = [
   { name: "rings", image: "/rings.jpg" },
-  { name: "necklaces", image: "/categoryNecklace.jpg" },
-  { name: "earrings", image: "/categoryEarings.jpg" },
-  { name: "bracelets", image: "/categoryBracelet.jpg" }
+  { name: "necklaces", image: "/necklaceses.jpg" },
+  { name: "earrings", image: "/earrings.jpg" },
+  { name: "bracelets", image: "/bracelets.jpg" }
 ];
 
 const CategoryList = () => {

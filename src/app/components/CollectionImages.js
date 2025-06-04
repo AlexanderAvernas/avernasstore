@@ -9,9 +9,9 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 
 const images = [
-  { name: "happyplanet", image: "/CollectionHappy.jpg" },
-  { name: "coins", image: "/CollectionCoins.jpg" },
-  { name: "letter", image: "/CollectionLetter.jpg" },
+  { name: "happyplanet", image: "/Bella.jpg" },
+  { name: "coins", image: "/Making.jpg" },
+  { name: "letter", image: "/Smycken.jpg" },
 ];
 
 const CollectionImages = () => {
@@ -20,11 +20,11 @@ const CollectionImages = () => {
 
       {/* Klickbar text som ligger kvar över Swiper */}
       <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-10">
-        <Link href="/collections">
-          <span className="text-white text-m px-2 py-2 bg-black bg-opacity-80 pointer-events-auto cursor-pointer">
+        {/* <Link href="/collections"> */}
+          {/* <span className="text-white text-m px-2 py-2 bg-black bg-opacity-80 pointer-events-auto cursor-pointer">
             Collection
-          </span>
-        </Link>
+          </span> */}
+        {/* </Link> */}
       </div>
 
       {/* Swiper som byter bilder i bakgrunden */}
@@ -40,7 +40,7 @@ const CollectionImages = () => {
       >
         {images.map((image) => (
           <SwiperSlide key={image.name}>
-            <Link href="/collections">
+            {/* <Link href="/collections"> */}
               <div className="relative w-full h-full flex justify-center items-center overflow-hidden">
                 <Image
                   src={image.image}
@@ -51,7 +51,7 @@ const CollectionImages = () => {
                   priority
                 />
               </div>
-            </Link>
+            {/* </Link> */}
           </SwiperSlide>
         ))}
       </Swiper>
