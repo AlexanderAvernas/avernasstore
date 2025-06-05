@@ -6,7 +6,7 @@ const Hero = ({ title, imageUrl, description }) => {
   if (!imageUrl) return <h1>Ingen bild hittades</h1>;
 
   return (
-    <div className="relative w-screen min-h-[50svh] md:min-h-[70vh] flex justify-center items-center overflow-hidden m-0">
+    <div className="relative w-screen min-h-[50svh] md:min-h-[100vh] flex justify-center items-center overflow-hidden m-0">
       <Image
         src={`https:${imageUrl}`}
         alt={title || "Hero Image"}
