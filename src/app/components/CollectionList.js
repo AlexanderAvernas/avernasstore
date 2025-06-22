@@ -4,7 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 
 const collections = [
-  { name: "womenpower", image: "/womanpower.jpg" },
+  { name: "womanpower", image: "/womanpower.jpg" },
   { name: "coins", image: "/CollectionCoins.jpg" },
   { name: "happyplanets", image: "/CollectionHappy.jpg" },
   { name: "letter", image: "/CollectionLetter.jpg" },
