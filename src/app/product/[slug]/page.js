@@ -112,44 +112,82 @@ const ProductPage = () => {
     return (
         <div className="flex justify-center items-center min-h-screen bg-white-100 p-6">
             <div className="bg-white shadow-lg p-8 max-w-5xl w-full grid grid-cols-1 md:grid-cols-2 gap-8">
-                {/* Bildvisning (nu gäller detta både för mobil och desktop) */}
-                <div className="relative w-full h-80 mb-4">
-                    {/* Kontrollera att mainImage är giltig innan bild renderas */}
-                    {mainImage ? (
-                        <Image
-                            src={mainImage}
-                            alt={product.name}
-                            fill
-                            className="object-contain rounded-lg"
-                        />
-                    ) : (
-                        // Fallback-bild om mainImage är ogiltig
-                        <div className="w-full h-full bg-gray-200 flex items-center justify-center text-gray-500">
-                            Ingen bild tillgänglig
-                        </div>
-                    )}
-                </div>
+               {/* 📱 Mobil: swipebar med thumbnails */}
+<div className="block sm:hidden">
+    {/* Swipebar */}
+    <div className="flex overflow-x-auto gap-4 snap-x snap-mandatory scroll-smooth mb-2">
+        {[product.image, ...product.extraImages].map((img, index) => (
+            <div
+                key={index}
+                className="relative min-w-full h-80 snap-center flex-shrink-0 rounded-lg bg-gray-100"
+            >
+                <Image
+                    src={img}
+                    alt={`Produktbild ${index + 1}`}
+                    fill
+                    className="object-contain rounded-lg"
+                />
+            </div>
+        ))}
+    </div>
 
-                {/* Miniatyrbilder */}
-                <div className="flex gap-2">
-                    {[product.image, ...product.extraImages].map(
-                        (img, index) => (
-                            <button
-                                key={index}
-                                onClick={() => setMainImage(img)}
-                                className="border-none p-0"
-                            >
-                                <Image
-                                    src={img || '/default-image.jpg'} // Fallback för tomma bild-URL:er
-                                    alt={product.name}
-                                    width={64}
-                                    height={64}
-                                    className="cursor-pointer border rounded-md hover:opacity-75"
-                                />
-                            </button>
-                        )
-                    )}
-                </div>
+    {/* Thumbnails */}
+    <div className="flex gap-2 justify-center">
+        {[product.image, ...product.extraImages].map((img, index) => (
+            <button
+                key={index}
+                onClick={() => setMainImage(img)}
+                className="border-none p-0"
+            >
+                <Image
+                    src={img || '/default-image.jpg'}
+                    alt={`Thumbnail ${index + 1}`}
+                    width={48}
+                    height={48}
+                    className="rounded-md border border-gray-300 hover:opacity-75"
+                />
+            </button>
+        ))}
+    </div>
+</div>
+
+
+{/* 🖥️ Desktop: stor bild + thumbnails */}
+<div className="hidden sm:block">
+    <div className="relative w-full h-80 mb-4">
+        {mainImage ? (
+            <Image
+                src={mainImage}
+                alt={product.name}
+                fill
+                className="object-contain rounded-lg"
+            />
+        ) : (
+            <div className="w-full h-full bg-gray-200 flex items-center justify-center text-gray-500">
+                Ingen bild tillgänglig
+            </div>
+        )}
+    </div>
+
+    <div className="flex gap-2">
+        {[product.image, ...product.extraImages].map((img, index) => (
+            <button
+                key={index}
+                onClick={() => setMainImage(img)}
+                className="border-none p-0"
+            >
+                <Image
+                    src={img || '/default-image.jpg'}
+                    alt={product.name}
+                    width={64}
+                    height={64}
+                    className="cursor-pointer border rounded-md hover:opacity-75"
+                />
+            </button>
+        ))}
+    </div>
+</div>
+
 
                 {/* Produktinfo */}
                 <div className="text-center md:text-left">
@@ -194,7 +232,7 @@ const ProductPage = () => {
                                 required
                             >
                                 <option value="">Välj storlek</option>
-                                {[15, 16, 17, 18, 19, 20].map((size) => (
+                                {[15, 15.5, 16, 16.5, 17, 17.5, 18, 18.5, 19, 19.5, 20].map((size) => (
                                     <option key={size} value={size}>
                                         {size}
                                     </option>
