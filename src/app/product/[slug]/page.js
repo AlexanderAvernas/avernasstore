@@ -94,6 +94,9 @@ const ProductPage = () => {
     // RingSize
     const [ringSize, setRingSize] = useState(null)
 
+    //Info meture ringsize
+    const [showRingSizeInfo, setShowRingSizeInfo] = useState(false)
+
     // Uppdatera mainImage när produkt laddas in
     useEffect(() => {
         if (product?.image) {
@@ -112,82 +115,86 @@ const ProductPage = () => {
     return (
         <div className="flex justify-center items-center min-h-screen bg-white-100 p-6">
             <div className="bg-white shadow-lg p-8 max-w-5xl w-full grid grid-cols-1 md:grid-cols-2 gap-8">
-               {/* 📱 Mobil: swipebar med thumbnails */}
-<div className="block sm:hidden">
-    {/* Swipebar */}
-    <div className="flex overflow-x-auto gap-4 snap-x snap-mandatory scroll-smooth mb-2">
-        {[product.image, ...product.extraImages].map((img, index) => (
-            <div
-                key={index}
-                className="relative min-w-full h-80 snap-center flex-shrink-0 rounded-lg bg-gray-100"
-            >
-                <Image
-                    src={img}
-                    alt={`Produktbild ${index + 1}`}
-                    fill
-                    className="object-contain rounded-lg"
-                />
-            </div>
-        ))}
-    </div>
+                {/* 📱 Mobil: swipebar med thumbnails */}
+                <div className="block sm:hidden">
+                    {/* Swipebar */}
+                    <div className="flex overflow-x-auto gap-4 snap-x snap-mandatory scroll-smooth mb-2">
+                        {[product.image, ...product.extraImages].map(
+                            (img, index) => (
+                                <div
+                                    key={index}
+                                    className="relative min-w-full h-80 snap-center flex-shrink-0 rounded-lg bg-gray-100"
+                                >
+                                    <Image
+                                        src={img}
+                                        alt={`Produktbild ${index + 1}`}
+                                        fill
+                                        className="object-contain rounded-lg"
+                                    />
+                                </div>
+                            )
+                        )}
+                    </div>
 
-    {/* Thumbnails */}
-    <div className="flex gap-2 justify-center">
-        {[product.image, ...product.extraImages].map((img, index) => (
-            <button
-                key={index}
-                onClick={() => setMainImage(img)}
-                className="border-none p-0"
-            >
-                <Image
-                    src={img || '/default-image.jpg'}
-                    alt={`Thumbnail ${index + 1}`}
-                    width={48}
-                    height={48}
-                    className="rounded-md border border-gray-300 hover:opacity-75"
-                />
-            </button>
-        ))}
-    </div>
-</div>
+                    {/* Thumbnails */}
+                    <div className="flex gap-2 justify-center">
+                        {[product.image, ...product.extraImages].map(
+                            (img, index) => (
+                                <button
+                                    key={index}
+                                    onClick={() => setMainImage(img)}
+                                    className="border-none p-0"
+                                >
+                                    <Image
+                                        src={img || '/default-image.jpg'}
+                                        alt={`Thumbnail ${index + 1}`}
+                                        width={48}
+                                        height={48}
+                                        className="rounded-md border border-gray-300 hover:opacity-75"
+                                    />
+                                </button>
+                            )
+                        )}
+                    </div>
+                </div>
 
+                {/* 🖥️ Desktop: stor bild + thumbnails */}
+                <div className="hidden sm:block">
+                    <div className="relative w-full h-80 mb-4">
+                        {mainImage ? (
+                            <Image
+                                src={mainImage}
+                                alt={product.name}
+                                fill
+                                className="object-contain rounded-lg"
+                            />
+                        ) : (
+                            <div className="w-full h-full bg-gray-200 flex items-center justify-center text-gray-500">
+                                Ingen bild tillgänglig
+                            </div>
+                        )}
+                    </div>
 
-{/* 🖥️ Desktop: stor bild + thumbnails */}
-<div className="hidden sm:block">
-    <div className="relative w-full h-80 mb-4">
-        {mainImage ? (
-            <Image
-                src={mainImage}
-                alt={product.name}
-                fill
-                className="object-contain rounded-lg"
-            />
-        ) : (
-            <div className="w-full h-full bg-gray-200 flex items-center justify-center text-gray-500">
-                Ingen bild tillgänglig
-            </div>
-        )}
-    </div>
-
-    <div className="flex gap-2">
-        {[product.image, ...product.extraImages].map((img, index) => (
-            <button
-                key={index}
-                onClick={() => setMainImage(img)}
-                className="border-none p-0"
-            >
-                <Image
-                    src={img || '/default-image.jpg'}
-                    alt={product.name}
-                    width={64}
-                    height={64}
-                    className="cursor-pointer border rounded-md hover:opacity-75"
-                />
-            </button>
-        ))}
-    </div>
-</div>
-
+                    <div className="flex gap-2">
+                        {[product.image, ...product.extraImages].map(
+                            (img, index) => (
+                                <button
+                                    key={index}
+                                    onClick={() => setMainImage(img)}
+                                    className="border-none p-0"
+                                >
+                                    <Image
+                                        src={img || '/default-image.jpg'}
+                                        alt={product.name}
+                                        width={64}
+                                        height={64}
+                                        className="cursor-pointer border rounded-md hover:opacity-75"
+                                    />
+                                </button>
+                            )
+                        )}
+                    </div>
+                </div>
 
                 {/* Produktinfo */}
                 <div className="text-center md:text-left">
@@ -232,12 +239,23 @@ const ProductPage = () => {
                                 required
                             >
                                 <option value="">Välj storlek</option>
-                                {[15, 15.5, 16, 16.5, 17, 17.5, 18, 18.5, 19, 19.5, 20].map((size) => (
+                                {[
+                                    15, 15.5, 16, 16.5, 17, 17.5, 18, 18.5, 19,
+                                    19.5, 20
+                                ].map((size) => (
                                     <option key={size} value={size}>
                                         {size}
                                     </option>
                                 ))}
                             </select>
+                            {/* ➕ Länk till ringstorleksinfo */}
+                            <button
+                                type="button"
+                                onClick={() => setShowRingSizeInfo(true)}
+                                className="mt-2 text-sm text-blue-600 hover:underline"
+                            >
+                                Hur du mäter ringstorlek
+                            </button>
                         </div>
                     )}
                     <div className="flex flex-col sm:flex-row gap-4">
@@ -274,6 +292,44 @@ const ProductPage = () => {
                     </div>
                 </div>
             </div>
+            {showRingSizeInfo && (
+                <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+                    <div className="relative bg-white p-6 rounded-lg shadow-lg max-h-[90vh] overflow-y-auto w-[90%] max-w-md">
+                        <button
+                            onClick={() => setShowRingSizeInfo(false)}
+                            className="absolute top-4 right-4 text-gray-900 font-bold hover:text-black"
+                        >
+                            <h1>✕</h1>
+                        </button>
+                        <h2 className="text-lg font-bold mb-2">
+                            Hur du mäter din ringstorlek
+                        </h2>
+                        <p className="text-sm mb-4">
+                            Välj en ring som storleksmässigt passar det finger
+                            du skall ha din nya ring på. Tänk på att en bred
+                            ring sitter tightare än en smal ring.
+                            <br />
+                            <br />
+                            Ta ett måttband eller en linjal och lägg ringen
+                            ovanpå måttbandet/linjalen.
+                            <br />
+                            <br />
+                            Räkna mm, rakt över diametern på ringens insida. Din
+                            storlek är de antal mm du får fram när du mäter. I
+                            detta fall 17,5.
+                        </p>
+                        <div className="relative w-full h-64">
+                            <Image
+                                src="/matureRing.jpg"
+                                alt="Illustration på hur man mäter ringstorlek"
+                                fill
+                                sizes="(max-width: 768px) 100vw, 400px"
+                                className="object-contain"
+                            />
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     )
 }
