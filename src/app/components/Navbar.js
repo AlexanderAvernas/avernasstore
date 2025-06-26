@@ -37,7 +37,6 @@ export default function Navbar() {
         }
     }, [])
 
-
     // Om vi är på startsidan, gör navbaren genomskinlig med vit text
     const isHomePage = pathname === '/'
 
@@ -74,10 +73,13 @@ export default function Navbar() {
 
                         {/* Katalog Dropdown */}
                         {/* Katalog Dropdown (Desktop) */}
-                        <div
-                            className="relative" ref={dropdownRef}
-                        >
-                            <button onClick={() => setIsDropdownOpen(prev => !prev)} className="text-red hover:text-gray-600 flex items-center">
+                        <div className="relative" ref={dropdownRef}>
+                            <button
+                                onClick={() =>
+                                    setIsDropdownOpen((prev) => !prev)
+                                }
+                                className="text-red hover:text-gray-600 flex items-center"
+                            >
                                 Katalog
                                 <svg
                                     className="w-4 h-4 ml-1"
@@ -102,7 +104,7 @@ export default function Navbar() {
                                         Rings
                                     </Link>
                                     <Link
-                                        href="/category/neclaces"
+                                        href="/category/necklaces"
                                         className="block px-4 py-2 hover:bg-gray-100"
                                     >
                                         Necklaces
@@ -220,8 +222,34 @@ export default function Navbar() {
                             >
                                 Home
                             </Link>
+                            <Link
+                                href="/category/rings"
+                                className="block px-4 py-2 text-black hover:bg-gray-100"
+                            >
+                                 Rings
+                            </Link>
+                            <Link
+                                href="/category/necklaces"
+                                className="block px-4 py-2 text-black hover:bg-gray-100"
+                            >
+                                Necklaces
+                            </Link>
+                            <Link
+                                href="/category/earrings"
+                                className="block px-4 py-2 text-black hover:bg-gray-100"
+                            >
+                                Earrings
+                            </Link>
+                            <Link
+                                href="/category/bracelets"
+                                className="block px-4 py-2 text-black hover:bg-gray-100"
+                            >
+                                Bracelets
+                            </Link>
 
-                            <div>
+                            {/* wait with dropdown, dosent work*/}
+
+                            {/* <div>
                                 <button
                                     className="block w-full text-left px-4 py-2 text-red hover:bg-gray-100"
                                     onClick={() =>
@@ -234,6 +262,7 @@ export default function Navbar() {
                                     <div className="pl-4 space-y-1">
                                         <Link
                                             href="/category/rings"
+                                            onClick={() => setIsMenuOpen(false)}
                                             className="block px-4 py-2 text-black hover:bg-gray-100"
                                         >
                                             Rings
@@ -258,7 +287,7 @@ export default function Navbar() {
                                         </Link>
                                     </div>
                                 )}
-                            </div>
+                            </div> */}
 
                             <Link
                                 href="/about"

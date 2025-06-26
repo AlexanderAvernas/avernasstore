@@ -10,6 +10,8 @@ const collections = [
   { name: "letter", image: "/CollectionLetter.jpg" },
   { name: "symbols", image: "/CollectionSymbols.jpg" },
   { name: "rod", image: "/CollectionRod.jpg" },
+  { name: "Connect", image: "/CollectionConnect.jpg" },
+  { name: "Earcuffs", image: "/CollectionEarcuffs.jpg" },
 ];
 
 const CollectionList = () => {
@@ -28,8 +30,8 @@ const CollectionList = () => {
               />
             </div>
             <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50">
-              <span className="text-white font-semibold text-1xl px-4 py-1  bg-opacity-75">
-                {collection.name.charAt(0).toUpperCase() + collection.name.slice(1)}
+              <span className="text-white font-semibold text-1xl px-4 py-1  bg-opacity-75 uppercase">
+                {collection.name}
               </span>
             </div>
           </div>

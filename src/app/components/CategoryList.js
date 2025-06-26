@@ -44,8 +44,8 @@ const CategoryList = () => {
                     priority
                   />
                   <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50">
-                    <span className="text-white text-1xl px-4 py-2 bg-black bg-opacity-75">
-                      {category.name.charAt(0).toUpperCase() + category.name.slice(1)}
+                    <span className="text-white text-1xl px-4 py-2 bg-black bg-opacity-75 uppercase">
+                      {category.name}
                     </span>
                   </div>
                 </div>
@@ -70,8 +70,8 @@ const CategoryList = () => {
                 />
               </div>
               <div className="absolute inset-0 flex items-center justify-center">
-                <span className="text-white text-1xl px-4 py-1 bg-black bg-opacity-75">
-                  {category.name.charAt(0).toUpperCase() + category.name.slice(1)}
+                <span className="text-white text-1xl px-4 py-1 bg-black bg-opacity-75 uppercase">
+                  {category.name}
                 </span>
               </div>
             </div>
