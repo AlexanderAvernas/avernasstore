@@ -11,7 +11,7 @@ const collections = [
   { name: "symbols", image: "/CollectionSymbols.jpg" },
   { name: "rod", image: "/CollectionRod.jpg" },
   { name: "Connect", image: "/CollectionConnect.jpg" },
-  { name: "Earcuffs", image: "/CollectionEarcuffs.jpg" },
+  { name: "earcuffs", image: "/CollectionEarcuffs.jpg" },
 ];
 
 const CollectionList = () => {

@@ -221,7 +221,7 @@ const ProductPage = () => {
                     </p>
 
                     {/* Visa dropdown om produkten är en ring */}
-                    {product.category === 'rings' && (
+                    {product.category === 'rings' && product.collection !== 'earcuffs' && (
                         <div className="mb-4">
                             <label
                                 htmlFor="ring-size"
