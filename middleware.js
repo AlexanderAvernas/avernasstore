@@ -9,7 +9,7 @@ export function middleware(request) {
     hostname === 'www.margaretaavernas.se'
   ) {
     const url = request.nextUrl.clone();
-    url.pathname = '/maintenance';
+    url.pathname = '/src/app/maintenance/page.js';
     return NextResponse.rewrite(url);
   }
 
