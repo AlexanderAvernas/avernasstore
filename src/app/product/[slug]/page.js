@@ -262,7 +262,7 @@ const ProductPage = () => {
                         <button
                             onClick={() => {
                                 // Om det är en ring och ingen storlek valts, stoppa
-                                if (product.category === 'rings' && !ringSize) {
+                                if (product.category === 'rings' && !ringSize && product.collection !== 'earcuffs') {
                                     alert('Vänligen välj en ringstorlek.')
                                     return
                                 }
