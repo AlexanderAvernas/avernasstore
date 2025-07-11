@@ -3,8 +3,8 @@ import { getKlarnaOrder } from '../../utils/klarnaApi'; // Importera din axios-b
 export async function POST(req) {
     try {
         // Logga inkommande headers för debugging
-        console.log('--- Inkommande Headers ---');
-        console.log(JSON.stringify(Object.fromEntries(req.headers), null, 2));
+        // console.log('--- Inkommande Headers ---');
+        // console.log(JSON.stringify(Object.fromEntries(req.headers), null, 2));
 
         // Hämta query-parametrar
         const { searchParams } = new URL(req.url);
@@ -20,19 +20,19 @@ export async function POST(req) {
         }
 
         // Logga mottaget order_id
-        console.log('Order ID från query-param:', orderId);
+        // console.log('Order ID från query-param:', orderId);
 
         // Hämta rå body för debugging (den bör vara tom eller innehålla minimal data)
         const rawBody = await req.text();
-        console.log('--- Inkommande Body ---');
-        console.log(rawBody || 'Tom body');
+        // console.log('--- Inkommande Body ---');
+        // console.log(rawBody || 'Tom body');
 
         // Hämta orderdetaljer från Klarna API baserat på order_id
         const orderDetails = await getKlarnaOrder(orderId);
 
         // Logga orderdetaljer (kan användas för vidare bearbetning)
-        console.log('--- Orderdetaljer ---');
-        console.log(orderDetails); // Här kan du justera för att logga specifika delar av ordern
+        // console.log('--- Orderdetaljer ---');
+        // console.log(orderDetails); // Här kan du justera för att logga specifika delar av ordern
 
         // Svara till Klarna omedelbart för att stoppa retry-pushar
         const response = new Response(
@@ -43,26 +43,26 @@ export async function POST(req) {
         // Bearbeta order asynkront (exempelvis skapa en order i ditt system, acknokera osv.)
         (async () => {
             try {
-                console.log('Bearbetar order asynkront...');
+                // console.log('Bearbetar order asynkront...');
 
                 // Här kan du logga eller hantera orderdetaljer som hämtats från Klarna
-                console.log(`Order ID: ${orderId}`);
-                console.log(`Order Status: ${orderDetails.status}`); // Logga status från Klarna
+                // console.log(`Order ID: ${orderId}`);
+                // console.log(`Order Status: ${orderDetails.status}`); // Logga status från Klarna
                 // Exempel på att logga shipping information
                 if (orderDetails.shipping_address) {
-                    console.log(`Shipping Address: ${orderDetails.shipping_address.street_address}`);
+                    // console.log(`Shipping Address: ${orderDetails.shipping_address.street_address}`);
                 }
                 // Skapa order i din egen databas eller system
                 // Skicka acknowledgment till Klarna om ordern ska bekräftas.
                 // await acknowledgeOrder(orderId); // Implementera denna funktion om du vill acknokera ordern till Klarna
             } catch (error) {
-                console.error('Fel vid bearbetning av order:', error);
+                // console.error('Fel vid bearbetning av order:', error);
             }
         })();
 
         return response; // Skicka svar till Klarna
     } catch (error) {
-        console.error('Fel vid hantering av Klarna Push Notification:', error);
+        // console.error('Fel vid hantering av Klarna Push Notification:', error);
 
         return new Response(
             JSON.stringify({

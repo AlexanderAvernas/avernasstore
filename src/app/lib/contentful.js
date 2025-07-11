@@ -1,5 +1,5 @@
 import { createClient } from 'contentful';
-console.log("contentful.js is loaded!");
+// console.log("contentful.js is loaded!");
 
 
 const client = createClient({
@@ -12,7 +12,7 @@ export const fetchProducts = async () => {
     content_type: 'product', // Content Type ID från Contentful
   });
 
-  console.log("Fetched products from Contentful:", response.items);
+//   console.log("Fetched products from Contentful:", response.items);
 
 
   // Returnera produkterna i ett enklare format
@@ -42,7 +42,7 @@ export const fetchHero = async () => {
       content_type: "hero", // Kontrollera att detta matchar Contentful
     });
 
-    console.log("Fetched hero from Contentful:", response.items); // 🔴 Loggar hela svaret från Contentful
+    // console.log("Fetched hero from Contentful:", response.items); // 🔴 Loggar hela svaret från Contentful
 
     if (!response.items.length) return null;
 
