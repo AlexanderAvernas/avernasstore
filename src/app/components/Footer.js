@@ -31,8 +31,8 @@ const Footer = () => {
         </div>
 
         <div className="flex justify-center space-x-6 mb-2">
-          <a href="/terms" className="text-black hover:text-gray-400 transition text-m">
-            Användarvillkor
+          <a href="/terms" className="text-black font-bold hover:text-gray-400 transition text-m">
+          Allmänna köpvillkor
           </a>
           {/* <a href="/contact" className="text-black hover:text-gray-400 transition text-m">
             Contact
