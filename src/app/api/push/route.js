@@ -1,4 +1,5 @@
 import { getKlarnaOrder } from '../../utils/klarnaApi'; // Importera din axios-baserade funktion för att hämta Klarna order
+import { getKustomOrder } from '../../utils/kustomApi';
 
 export async function POST(req) {
     try {
@@ -28,7 +29,7 @@ export async function POST(req) {
         // console.log(rawBody || 'Tom body');
 
         // Hämta orderdetaljer från Klarna API baserat på order_id
-        const orderDetails = await getKlarnaOrder(orderId);
+        const orderDetails = await getKustomOrder(orderId);
 
         // Logga orderdetaljer (kan användas för vidare bearbetning)
         // console.log('--- Orderdetaljer ---');
