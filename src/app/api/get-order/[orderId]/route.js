@@ -1,4 +1,5 @@
-import { getKlarnaOrder } from '../../../utils/klarnaApi';
+// import { getKlarnaOrder } from '../../../utils/klarnaApi';
+import { getKustomOrder } from '../../../utils/kustomApi'
 
 export async function GET(req, { params }) {
   const { orderId } = params;
@@ -7,7 +8,7 @@ export async function GET(req, { params }) {
 
   try {
     // Fetch the order details from Klarna's Checkout API
-    const orderDetails = await getKlarnaOrder(orderId);
+    const orderDetails = await getKustomOrder(orderId);
 
     // console.log('Order details from Klarna:', orderDetails);
 
