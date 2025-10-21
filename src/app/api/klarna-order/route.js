@@ -77,10 +77,10 @@ export async function POST(req) {
       order_tax_amount: totalTax,
       order_lines: orderLines,
       merchant_urls: {
-        terms: "https://masilver.netlify.app/terms",
-        checkout: "https://masilver.netlify.app/checkout",
-        confirmation: "https://masilver.netlify.app/confirmation?order_id={checkout.order.id}",
-        push: "https://masilver.netlify.app/api/push?order_id={checkout.order.id}",
+        terms: "https://margaretaavernas.se/terms",
+        checkout: "https://margaretaavernas.se/checkout",
+        confirmation: "https://margaretaavernas.se/confirmation?order_id={checkout.order.id}",
+        push: "https://margaretaavernas.se/api/push?order_id={checkout.order.id}",
       },
     });
 
