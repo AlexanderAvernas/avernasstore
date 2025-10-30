@@ -189,6 +189,11 @@ const Cart = () => {
                                             Storlek: {item.ringSize}
                                         </p>
                                     )}
+                                    {item.letter && (
+                                        <p className="text-sm text-gray-500">
+                                            Bokstav: {item.letter}
+                                        </p>
+                                    )}
                                 </div>
 
                                 {/* Kvantitet & Ta bort-knapp i en vertikal layout */}

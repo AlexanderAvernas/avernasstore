@@ -23,17 +23,26 @@ export async function POST(req) {
 
     // 🔹 Step 3: Validate each item in the cart and use real price data
     const orderLines = cartItems.map((cartItem) => {
-        const { id, quantity, ringSize } = cartItem;
+        const { id, quantity, ringSize, letter } = cartItem;
         const product = productMap.get(id);
-        if (!product) throw new Error(`Invalid product ID: ${id}`);
+        if (!product) throw new Error(`Invalid product ID: ${id}`)
 
         const totalAmount = product.price * quantity;
         const totalTaxAmount = totalAmount - Math.round(totalAmount / (1 + product.tax_rate / 10000));
 
+        // Bygg produktnamnet med extra info
+        let productName = product.name;
+        if (ringSize) {
+          productName += ` (Storlek: ${ringSize})`;
+        }
+        if (letter) {
+          productName += ` (Bokstav: ${letter})`;
+        }
+
         return {
           type: 'physical',
           reference: product.id,
-          name: ringSize ? `${product.name} (Storlek: ${ringSize})` : product.name,
+          name: productName,
           quantity,
           quantity_unit: 'pcs',
           unit_price: product.price,

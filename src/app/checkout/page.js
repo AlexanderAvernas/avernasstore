@@ -210,7 +210,8 @@ const CheckoutPage = () => {
             const cartItems = cart.map((item) => ({
                 id: item.id,
                 quantity: item.quantity,
-                ringSize: item.ringSize
+                ringSize: item.ringSize,
+                letter: item.letter
             }))
 
             try {
@@ -276,6 +277,11 @@ const CheckoutPage = () => {
                                             {item.ringSize && (
                                                 <p className="text-sm text-gray-600">
                                                     Ringstorlek: {item.ringSize}
+                                                </p>
+                                            )}
+                                            {item.letter && (
+                                                <p className="text-sm text-gray-600">
+                                                    Bokstav: {item.letter}
                                                 </p>
                                             )}
                                         </div>

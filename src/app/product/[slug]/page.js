@@ -97,6 +97,12 @@ const ProductPage = () => {
     //Info meture ringsize
     const [showRingSizeInfo, setShowRingSizeInfo] = useState(false)
 
+      // Ny state för bokstavsval
+    const [selectedLetter, setSelectedLetter] = useState('')
+
+    // Array med alla bokstäver - definiera FÖRE early returns
+    const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZÅÄÖ'.split('')
+
     // Uppdatera mainImage när produkt laddas in
     useEffect(() => {
         if (product?.image) {
@@ -220,50 +226,97 @@ const ProductPage = () => {
                         {product.price / 100} SEK
                     </p>
 
-                    {/* Visa dropdown om produkten är en ring */}
-                    {product.category === 'rings' && product.collection !== 'earcuffs' && (
+                    {/* Visa dropdown för bokstavsval om produkten är från coins */}
+                    {product.collection === 'coins' && (
                         <div className="mb-4">
                             <label
-                                htmlFor="ring-size"
+                                htmlFor="letter-select"
                                 className="block mb-2 text-sm font-medium text-gray-700"
                             >
-                                Välj storlek:
+                                Välj bokstav för gravering:
                             </label>
                             <select
-                                id="ring-size"
-                                value={ringSize || ''}
+                                id="letter-select"
+                                value={selectedLetter}
                                 onChange={(e) =>
-                                    setRingSize(Number(e.target.value))
+                                    setSelectedLetter(e.target.value)
                                 }
                                 className="w-full border border-gray-300 rounded px-3 py-2"
                                 required
                             >
-                                <option value="">Välj storlek</option>
-                                {[
-                                    15, 15.5, 16, 16.5, 17, 17.5, 18, 18.5, 19,
-                                    19.5, 20
-                                ].map((size) => (
-                                    <option key={size} value={size}>
-                                        {size}
+                                <option value="">Välj bokstav</option>
+                                {letters.map((letter) => (
+                                    <option key={letter} value={letter}>
+                                        {letter}
                                     </option>
                                 ))}
                             </select>
-                            {/* ➕ Länk till ringstorleksinfo */}
-                            <button
-                                type="button"
-                                onClick={() => setShowRingSizeInfo(true)}
-                                className="mt-2 text-sm text-blue-600 hover:underline"
-                            >
-                                Hur du mäter ringstorlek
-                            </button>
+                            <p className="mt-2 text-sm text-gray-500">
+                                Din valda bokstav kommer att graveras på smycket
+                            </p>
                         </div>
                     )}
+
+                    {/* Visa dropdown om produkten är en ring */}
+                    {product.category === 'rings' &&
+                        product.collection !== 'earcuffs' && (
+                            <div className="mb-4">
+                                <label
+                                    htmlFor="ring-size"
+                                    className="block mb-2 text-sm font-medium text-gray-700"
+                                >
+                                    Välj storlek:
+                                </label>
+                                <select
+                                    id="ring-size"
+                                    value={ringSize || ''}
+                                    onChange={(e) =>
+                                        setRingSize(Number(e.target.value))
+                                    }
+                                    className="w-full border border-gray-300 rounded px-3 py-2"
+                                    required
+                                >
+                                    <option value="">Välj storlek</option>
+                                    {[
+                                        15, 15.5, 16, 16.5, 17, 17.5, 18, 18.5,
+                                        19, 19.5, 20
+                                    ].map((size) => (
+                                        <option key={size} value={size}>
+                                            {size}
+                                        </option>
+                                    ))}
+                                </select>
+                                {/* ➕ Länk till ringstorleksinfo */}
+                                <button
+                                    type="button"
+                                    onClick={() => setShowRingSizeInfo(true)}
+                                    className="mt-2 text-sm text-blue-600 hover:underline"
+                                >
+                                    Hur du mäter ringstorlek
+                                </button>
+                            </div>
+                        )}
                     <div className="flex flex-col sm:flex-row gap-4">
                         <button
                             onClick={() => {
                                 // Om det är en ring och ingen storlek valts, stoppa
-                                if (product.category === 'rings' && !ringSize && product.collection !== 'earcuffs') {
+                                if (
+                                    product.category === 'rings' &&
+                                    !ringSize &&
+                                    product.collection !== 'earcuffs'
+                                ) {
                                     alert('Vänligen välj en ringstorlek.')
+                                    return
+                                }
+
+                                // Kontrollera om det är coins-kollektion och ingen bokstav valts
+                                if (
+                                    product.collection === 'coins' &&
+                                    !selectedLetter
+                                ) {
+                                    alert(
+                                        'Vänligen välj en bokstav för gravering.'
+                                    )
                                     return
                                 }
 
@@ -274,6 +327,10 @@ const ProductPage = () => {
                                         ringSize:
                                             product.category === 'rings'
                                                 ? ringSize
+                                                : null,
+                                        letter:
+                                            product.collection === 'coins'
+                                                ? selectedLetter
                                                 : null
                                     }
                                 })
