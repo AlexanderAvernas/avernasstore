@@ -194,6 +194,16 @@ const Cart = () => {
                                             Bokstav: {item.letter}
                                         </p>
                                     )}
+                                    {item.diameter && (
+                                        <p className="text-sm text-gray-500">
+                                            Diameter: {item.diameter} cm
+                                        </p>
+                                    )}
+                                    {item.chainLength && (
+                                        <p className="text-sm text-gray-500">
+                                            Kedjelängd: {item.chainLength} cm
+                                        </p>
+                                    )}
                                 </div>
 
                                 {/* Kvantitet & Ta bort-knapp i en vertikal layout */}
@@ -203,7 +213,7 @@ const Cart = () => {
                                             onClick={() =>
                                                 dispatch({
                                                     type: 'DECREASE_QUANTITY',
-                                                    payload: item.id
+                                                    payload: cart.indexOf(item) // ← Använd index istället för item.id
                                                 })
                                             }
                                             className="bg-gray-300 text-gray-800 px-2 py-1 hover:bg-gray-400 transition"
@@ -217,7 +227,7 @@ const Cart = () => {
                                             onClick={() =>
                                                 dispatch({
                                                     type: 'INCREASE_QUANTITY',
-                                                    payload: item.id
+                                                    payload: cart.indexOf(item) // ← Använd index istället för item.id
                                                 })
                                             }
                                             className="bg-gray-300 text-gray-800 px-2 py-1 hover:bg-gray-400 transition"
@@ -231,7 +241,7 @@ const Cart = () => {
                                         onClick={() =>
                                             dispatch({
                                                 type: 'REMOVE_FROM_CART',
-                                                payload: item.id
+                                                payload: cart.indexOf(item) // ← Använd index istället för item.id
                                             })
                                         }
                                         className="bg-white border-2 border-solid border-gray-400 text-black px-3 py-1 hover:bg-gray-500 transition text-sm"

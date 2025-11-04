@@ -211,7 +211,9 @@ const CheckoutPage = () => {
                 id: item.id,
                 quantity: item.quantity,
                 ringSize: item.ringSize,
-                letter: item.letter
+                letter: item.letter,
+                diameter: item.diameter,
+                chainLength: item.chainLength
             }))
 
             try {
@@ -282,6 +284,17 @@ const CheckoutPage = () => {
                                             {item.letter && (
                                                 <p className="text-sm text-gray-600">
                                                     Bokstav: {item.letter}
+                                                </p>
+                                            )}
+                                            {item.diameter && (
+                                                <p className="text-sm text-gray-600">
+                                                    Diameter: {item.diameter} cm
+                                                </p>
+                                            )}
+                                            {item.chainLength && (
+                                                <p className="text-sm text-gray-600">
+                                                    Kedjelängd:{' '}
+                                                    {item.chainLength} cm
                                                 </p>
                                             )}
                                         </div>
