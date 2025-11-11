@@ -1,4 +1,5 @@
-import { fetchProducts } from '../../lib/contentful'
+// import { fetchProducts } from '../../lib/contentful'
+import { fetchProducts } from '../../lib/sanity'
 import { createKustomOrder } from '../../utils/kustomApi'
 
 // 🔸 Lägg till frakt som konstanter

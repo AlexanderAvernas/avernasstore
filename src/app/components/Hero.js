@@ -8,7 +8,7 @@ const Hero = ({ title, imageUrl, description }) => {
   return (
     <div className="relative w-screen min-h-[50svh] md:min-h-[100vh] flex justify-center items-center overflow-hidden m-0">
       <Image
-        src={`https:${imageUrl}`}
+        src={imageUrl}
         alt={title || "Hero Image"}
         fill
         className="object-cover"

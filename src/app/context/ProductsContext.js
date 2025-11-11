@@ -54,7 +54,8 @@
 "use client";
 
 import { createContext, useContext, useReducer, useEffect } from "react";
-import { fetchProducts } from "../lib/contentful"; // Import Contentful function
+// import { fetchProducts } from "../lib/contentful"; // Import Contentful function
+import { fetchProducts } from "../lib/sanity";
 
 // Reducer to manage state
 const productsReducer = (state, action) => {

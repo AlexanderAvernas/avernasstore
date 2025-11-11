@@ -10,10 +10,14 @@ const nextConfig = {
     output: "standalone", // Behåll din nuvarande inställning
     images: {
       remotePatterns: [
+        // {
+        //   protocol: "https",
+        //   hostname: "images.ctfassets.net",
+        // },
         {
-          protocol: "https",
-          hostname: "images.ctfassets.net",
-        },
+        protocol: "https",
+        hostname: "cdn.sanity.io",
+      },
       ],
     },
   };
