@@ -68,7 +68,7 @@ const CollectionPage = () => {
                             className="p-4 transition hover:scale-105 text-center"
                         >
                             <Link href={`/product/${product.slug}`}>
-                                <div className="relative w-full h-56 mb-1">
+                                <div className="relative w-full h-64 sm:h-56 mb-1">
                                     <Image
                                         src={product.image}
                                         alt={product.name}
