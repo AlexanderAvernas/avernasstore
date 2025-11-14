@@ -30,7 +30,7 @@ const CollectionList = () => {
               />
             </div>
             <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50">
-              <span className="text-white font-semibold text-1xl px-4 py-1  bg-opacity-75 uppercase">
+              <span className="text-white text-1xl px-4 py-1  bg-opacity-75 uppercase">
                 {collection.name}
               </span>
             </div>

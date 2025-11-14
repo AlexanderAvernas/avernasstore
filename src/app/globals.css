@@ -9,7 +9,7 @@
   }
 
 html, body {
-  @apply overflow-x-hidden w-full min-h-screen;
+  @apply font-mono overflow-x-hidden w-full min-h-screen;
 }
 
 ::-webkit-scrollbar {

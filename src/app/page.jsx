@@ -67,9 +67,9 @@ export default async function Home() {
 
         <CategoryList />
         <div className="h-40 bg-white flex items-center justify-center">
-          <h2 className="text-center">
-            HANDGJORDA SMYCKEN <br /> I <br /> ÅTERVUNNET SILVER
-          </h2>
+          <h6 className="text-center">
+            HANDGJORDA SMYCKEN I ÅTERVUNNET SILVER
+          </h6>
         </div>
         <CollectionImages />
         <div className="h-40 bg-white flex items-center justify-center">

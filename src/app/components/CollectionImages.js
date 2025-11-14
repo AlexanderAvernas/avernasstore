@@ -9,8 +9,8 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 
 const images = [
-  { name: "happyplanet", image: "/Bella.jpg" },
-  { name: "coins", image: "/Making.jpg" },
+  { name: "happyplanet", image: "/Making.jpg" },
+  { name: "coins", image: "/Bella.jpg" },
   { name: "letter", image: "/Smycken.jpg" },
 ];
 

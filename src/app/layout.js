@@ -1,27 +1,23 @@
 'use client'; // Behåller client-kompatibilitet
 
-import { Geist, Geist_Mono } from "next/font/google";
+import { Roboto_Mono } from "next/font/google";
 import { ProductsProvider } from "./context/ProductsContext"; // Importera ProductsProvider
 import { CartProvider } from "./context/CartContext"; // Importera CartProvider
 import "./globals.css";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const robotoMono = Roboto_Mono({
   subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
+  weight: ["400", "500", "700"],
+  variable: "--font-roboto-mono",
 });
 
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={robotoMono.variable}
       >
         {/* Wrap med ProductsProvider och CartProvider */}
         <ProductsProvider>
