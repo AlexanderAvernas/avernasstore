@@ -26,9 +26,10 @@
 // }
 
 import ProductList from "./components/ProductList";
+import SpecialOfferBanner from "./components/SpecialOfferBanner";
 import Hero from "./components/Hero"; // Använd bara en Hero-komponent
 // import { fetchHero } from "./lib/contentful";
-import { fetchHero } from "./lib/sanity";
+import { fetchHero, fetchSpecialOffer } from "./lib/sanity";
 import CategoryList from "./components/CategoryList";
 import CollectionImages from "./components/CollectionImages";
 import CollectionList from "./components/CollectionList";
@@ -36,6 +37,7 @@ import CollectionList from "./components/CollectionList";
 
 export default async function Home() {
     const hero = await fetchHero();
+    const specialOffer = await fetchSpecialOffer();
 
     return (
       <div className="w-full">
@@ -71,6 +73,14 @@ export default async function Home() {
             HANDGJORDA SMYCKEN I ÅTERVUNNET SILVER
           </h6>
         </div>
+        {specialOffer && (
+          <SpecialOfferBanner
+            title={specialOffer.title}
+            description={specialOffer.description}
+            imageUrl={specialOffer.image}
+            buttonText={specialOffer.buttonText}
+          />
+        )}
         <CollectionImages />
         <div className="h-40 bg-white flex items-center justify-center">
           <h2 className="text-center">COLLECTIONS</h2>

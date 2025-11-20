@@ -36,7 +36,9 @@ export async function POST(req) {
             const product = productMap.get(id)
             if (!product) throw new Error(`Invalid product ID: ${id}`)
 
-            const totalAmount = product.price * quantity
+            const price = product.specialPrice || product.price
+
+            const totalAmount = price * quantity
             const totalTaxAmount =
                 totalAmount -
                 Math.round(totalAmount / (1 + product.tax_rate / 10000))
@@ -62,7 +64,7 @@ export async function POST(req) {
                 name: productName,
                 quantity,
                 quantity_unit: 'pcs',
-                unit_price: product.price,
+                unit_price: price,
                 tax_rate: product.tax_rate,
                 total_amount: totalAmount,
                 total_tax_amount: totalTaxAmount

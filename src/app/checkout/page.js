@@ -193,8 +193,9 @@ const CheckoutPage = () => {
         let totalTax = 0
 
         cart.forEach((item) => {
-            totalAmount += item.price * item.quantity
-            totalTax += ((item.price * item.tax_rate) / 10000) * item.quantity
+            const price = item.specialPrice || item.price // ← LÄGG TILL denna rad
+            totalAmount += price * item.quantity // ← ÄNDRA från item.price till price
+            totalTax += ((price * item.tax_rate) / 10000) * item.quantity // ← ÄNDRA från item.price till price
         })
 
         return { totalAmount, totalTax, grandTotal: totalAmount + SHIPPING_FEE }
@@ -299,9 +300,26 @@ const CheckoutPage = () => {
                                             )}
                                         </div>
                                     </div>
-                                    <p className="font-medium">
-                                        {(item.price / 100).toFixed(2)} SEK
-                                    </p>
+                                    {/* Visa pris med rabatt */}
+                                    {item.specialPrice &&
+                                    item.specialPrice < item.price ? (
+                                        <div className="text-right">
+                                            <p className="text-gray-500 line-through text-xs">
+                                                {(item.price / 100).toFixed(2)}{' '}
+                                                SEK
+                                            </p>
+                                            <p className="text-red-600 font-bold">
+                                                {(
+                                                    item.specialPrice / 100
+                                                ).toFixed(2)}{' '}
+                                                SEK
+                                            </p>
+                                        </div>
+                                    ) : (
+                                        <p className="font-medium">
+                                            {(item.price / 100).toFixed(2)} SEK
+                                        </p>
+                                    )}
                                 </div>
                             ))}
 

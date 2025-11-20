@@ -21,6 +21,7 @@ export const fetchProducts = async () => {
     slug,
     description,
     price,
+    specialPrice,
     image,
     extraImages,
     tax_rate,
@@ -36,6 +37,7 @@ export const fetchProducts = async () => {
     slug: product.slug.current,
     description: product.description,
     price: product.price,
+    specialPrice: product.specialPrice || null,
     image: product.image ? urlFor(product.image).url() : null,
     extraImages: product.extraImages
       ? product.extraImages.map(img => urlFor(img).url())
@@ -61,5 +63,26 @@ export const fetchHero = async () => {
     title: hero.title || 'Ingen titel hittades',
     image: hero.image ? urlFor(hero.image).url() : null,
     description: hero.description || 'Ingen beskrivning hittades'
+  }
+}
+
+// ✅ NY funktion special price
+export const fetchSpecialOffer = async () => {
+  const query = `*[_type == "specialOffer" && isActive == true][0]{
+    title,
+    description,
+    image,
+    buttonText
+  }`
+
+  const offer = await client.fetch(query)
+
+  if (!offer) return null
+
+  return {
+    title: offer.title,
+    description: offer.description,
+    image: offer.image ? urlFor(offer.image).url() : null,
+    buttonText: offer.buttonText || 'Se erbjudanden'
   }
 }

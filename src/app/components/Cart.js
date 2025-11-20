@@ -137,17 +137,22 @@ const Cart = () => {
     }, [cart])
 
     const calculateTotals = (cartItems) => {
-        const totalAmount = cartItems.reduce(
-            (sum, item) => sum + item.price * item.quantity,
-            0
-        )
-        const totalTax = cartItems.reduce(
-            (sum, item) =>
-                sum + ((item.price * item.tax_rate) / 10000) * item.quantity,
-            0
-        )
-        return { totalAmount, totalTax }
-    }
+    const totalAmount = cartItems.reduce(
+        (sum, item) => {
+            const price = item.specialPrice || item.price // ← Använd specialprice om det finns
+            return sum + price * item.quantity
+        },
+        0
+    )
+    const totalTax = cartItems.reduce(
+        (sum, item) => {
+            const price = item.specialPrice || item.price // ← Använd specialprice om det finns
+            return sum + ((price * item.tax_rate) / 10000) * item.quantity
+        },
+        0
+    )
+    return { totalAmount, totalTax }
+}
 
     const { totalAmount, totalTax } = calculateTotals(hydratedCart)
 
@@ -181,9 +186,25 @@ const Cart = () => {
                                     <h3 className="text-lg font-medium text-gray-800">
                                         {item.name}
                                     </h3>
-                                    <p className="text-gray-600">
-                                        {(item.price / 100).toFixed(2)} SEK
-                                    </p>
+                                    {item.specialPrice &&
+                                    item.specialPrice < item.price ? (
+                                        <div>
+                                            <p className="text-gray-500 line-through text-sm">
+                                                {(item.price / 100).toFixed(2)}{' '}
+                                                SEK
+                                            </p>
+                                            <p className="text-red-600 font-bold">
+                                                {(
+                                                    item.specialPrice / 100
+                                                ).toFixed(2)}{' '}
+                                                SEK
+                                            </p>
+                                        </div>
+                                    ) : (
+                                        <p className="text-gray-600">
+                                            {(item.price / 100).toFixed(2)} SEK
+                                        </p>
+                                    )}
                                     {item.ringSize && (
                                         <p className="text-sm text-gray-500">
                                             Storlek: {item.ringSize}

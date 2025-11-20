@@ -15,22 +15,18 @@
 //     const { dispatch } = useCart()
 //     const product = state.products.find((p) => p.slug === slug)
 
-//     // Initiera mainImage som en tom sträng
 //     const [mainImage, setMainImage] = useState('')
-
-//     // RingSize
 //     const [ringSize, setRingSize] = useState(null)
-
-//     //Info meture ringsize
 //     const [showRingSizeInfo, setShowRingSizeInfo] = useState(false)
-
-//       // Ny state för bokstavsval
 //     const [selectedLetter, setSelectedLetter] = useState('')
+//     const [selectedDiameter, setSelectedDiameter] = useState('')
+//     const [selectedChainLength, setSelectedChainLength] = useState('')
 
-//     // Array med alla bokstäver - definiera FÖRE early returns
+//     // Arrays för olika val
 //     const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZÅÄÖ'.split('')
+//     const diameters = ['1', '2', '3']
+//     const chainLengths = ['42', '45', '50']
 
-//     // Uppdatera mainImage när produkt laddas in
 //     useEffect(() => {
 //         if (product?.image) {
 //             setMainImage(product.image)
@@ -45,12 +41,18 @@
 //         )
 //     }
 
+//     // Kontrollera vilka val som ska visas
+//     const showLetterSelect = product.collection === 'coins' || product.collection === 'letter'
+//     const showDiameterSelect = product.collection === 'symbols'
+//     const showChainLengthSelect =
+//         (product.collection === 'letter' || product.collection === 'coins' || product.collection === 'Connect')
+//         && product.category === 'necklaces'
+
 //     return (
 //         <div className="flex justify-center items-center min-h-screen bg-white-100 p-6">
 //             <div className="bg-white shadow-lg p-8 max-w-5xl w-full grid grid-cols-1 md:grid-cols-2 gap-8">
 //                 {/* 📱 Mobil: swipebar med thumbnails */}
 //                 <div className="block sm:hidden">
-//                     {/* Swipebar */}
 //                     <div className="flex overflow-x-auto gap-4 snap-x snap-mandatory scroll-smooth mb-2">
 //                         {[product.image, ...product.extraImages].map(
 //                             (img, index) => (
@@ -69,7 +71,6 @@
 //                         )}
 //                     </div>
 
-//                     {/* Thumbnails */}
 //                     <div className="flex gap-2 justify-center">
 //                         {[product.image, ...product.extraImages].map(
 //                             (img, index) => (
@@ -135,7 +136,7 @@
 //                         {product.name}
 //                     </h1>
 //                     <p className="text-gray-600 mb-4">{product.description}</p>
-//                     {/* Länk till Collection */}
+
 //                     {product.collection && (
 //                         <div className="mt-6 mb-6 text-center">
 //                             <Link href={`/collection/${product.collection}`}>
@@ -149,12 +150,13 @@
 //                             </Link>
 //                         </div>
 //                     )}
+
 //                     <p className="text-lg font-semibold text-gray-700 mb-6">
 //                         {product.price / 100} SEK
 //                     </p>
 
-//                     {/* Visa dropdown för bokstavsval om produkten är från coins */}
-//                     {product.collection === 'coins' && (
+//                     {/* Visa dropdown för bokstavsval (coins eller letter) */}
+//                     {showLetterSelect && (
 //                         <div className="mb-4">
 //                             <label
 //                                 htmlFor="letter-select"
@@ -165,9 +167,7 @@
 //                             <select
 //                                 id="letter-select"
 //                                 value={selectedLetter}
-//                                 onChange={(e) =>
-//                                     setSelectedLetter(e.target.value)
-//                                 }
+//                                 onChange={(e) => setSelectedLetter(e.target.value)}
 //                                 className="w-full border border-gray-300 rounded px-3 py-2"
 //                                 required
 //                             >
@@ -184,66 +184,120 @@
 //                         </div>
 //                     )}
 
+//                     {/* Visa dropdown för diameter (symbols) */}
+//                     {showDiameterSelect && (
+//                         <div className="mb-4">
+//                             <label
+//                                 htmlFor="diameter-select"
+//                                 className="block mb-2 text-sm font-medium text-gray-700"
+//                             >
+//                                 Välj diameter:
+//                             </label>
+//                             <select
+//                                 id="diameter-select"
+//                                 value={selectedDiameter}
+//                                 onChange={(e) => setSelectedDiameter(e.target.value)}
+//                                 className="w-full border border-gray-300 rounded px-3 py-2"
+//                                 required
+//                             >
+//                                 <option value="">Välj diameter</option>
+//                                 {diameters.map((diameter) => (
+//                                     <option key={diameter} value={diameter}>
+//                                         {diameter} cm
+//                                     </option>
+//                                 ))}
+//                             </select>
+//                         </div>
+//                     )}
+
+//                     {/* Visa dropdown för kedjelängd (letter/coins/Connect + necklaces) */}
+//                     {showChainLengthSelect && (
+//                         <div className="mb-4">
+//                             <label
+//                                 htmlFor="chain-length-select"
+//                                 className="block mb-2 text-sm font-medium text-gray-700"
+//                             >
+//                                 Välj kedjelängd:
+//                             </label>
+//                             <select
+//                                 id="chain-length-select"
+//                                 value={selectedChainLength}
+//                                 onChange={(e) => setSelectedChainLength(e.target.value)}
+//                                 className="w-full border border-gray-300 rounded px-3 py-2"
+//                                 required
+//                             >
+//                                 <option value="">Välj längd</option>
+//                                 {chainLengths.map((length) => (
+//                                     <option key={length} value={length}>
+//                                         {length} cm
+//                                     </option>
+//                                 ))}
+//                             </select>
+//                         </div>
+//                     )}
+
 //                     {/* Visa dropdown om produkten är en ring */}
-//                     {product.category === 'rings' &&
-//                         product.collection !== 'earcuffs' && (
-//                             <div className="mb-4">
-//                                 <label
-//                                     htmlFor="ring-size"
-//                                     className="block mb-2 text-sm font-medium text-gray-700"
-//                                 >
-//                                     Välj storlek:
-//                                 </label>
-//                                 <select
-//                                     id="ring-size"
-//                                     value={ringSize || ''}
-//                                     onChange={(e) =>
-//                                         setRingSize(Number(e.target.value))
-//                                     }
-//                                     className="w-full border border-gray-300 rounded px-3 py-2"
-//                                     required
-//                                 >
-//                                     <option value="">Välj storlek</option>
-//                                     {[
-//                                         15, 15.5, 16, 16.5, 17, 17.5, 18, 18.5,
-//                                         19, 19.5, 20
-//                                     ].map((size) => (
-//                                         <option key={size} value={size}>
-//                                             {size}
-//                                         </option>
-//                                     ))}
-//                                 </select>
-//                                 {/* ➕ Länk till ringstorleksinfo */}
-//                                 <button
-//                                     type="button"
-//                                     onClick={() => setShowRingSizeInfo(true)}
-//                                     className="mt-2 text-sm text-blue-600 hover:underline"
-//                                 >
-//                                     Hur du mäter ringstorlek
-//                                 </button>
-//                             </div>
-//                         )}
+//                     {product.category === 'rings' && product.collection !== 'earcuffs' && (
+//                         <div className="mb-4">
+//                             <label
+//                                 htmlFor="ring-size"
+//                                 className="block mb-2 text-sm font-medium text-gray-700"
+//                             >
+//                                 Välj storlek:
+//                             </label>
+//                             <select
+//                                 id="ring-size"
+//                                 value={ringSize || ''}
+//                                 onChange={(e) =>
+//                                     setRingSize(Number(e.target.value))
+//                                 }
+//                                 className="w-full border border-gray-300 rounded px-3 py-2"
+//                                 required
+//                             >
+//                                 <option value="">Välj storlek</option>
+//                                 {[
+//                                     15, 15.5, 16, 16.5, 17, 17.5, 18, 18.5, 19,
+//                                     19.5, 20
+//                                 ].map((size) => (
+//                                     <option key={size} value={size}>
+//                                         {size}
+//                                     </option>
+//                                 ))}
+//                             </select>
+//                             <button
+//                                 type="button"
+//                                 onClick={() => setShowRingSizeInfo(true)}
+//                                 className="mt-2 text-sm text-blue-600 hover:underline"
+//                             >
+//                                 Hur du mäter ringstorlek
+//                             </button>
+//                         </div>
+//                     )}
+
 //                     <div className="flex flex-col sm:flex-row gap-4">
 //                         <button
 //                             onClick={() => {
-//                                 // Om det är en ring och ingen storlek valts, stoppa
-//                                 if (
-//                                     product.category === 'rings' &&
-//                                     !ringSize &&
-//                                     product.collection !== 'earcuffs'
-//                                 ) {
+//                                 // Validering för ring
+//                                 if (product.category === 'rings' && !ringSize && product.collection !== 'earcuffs') {
 //                                     alert('Vänligen välj en ringstorlek.')
 //                                     return
 //                                 }
 
-//                                 // Kontrollera om det är coins-kollektion och ingen bokstav valts
-//                                 if (
-//                                     product.collection === 'coins' &&
-//                                     !selectedLetter
-//                                 ) {
-//                                     alert(
-//                                         'Vänligen välj en bokstav för gravering.'
-//                                     )
+//                                 // Validering för bokstav (coins eller letter)
+//                                 if (showLetterSelect && !selectedLetter) {
+//                                     alert('Vänligen välj en bokstav för gravering.')
+//                                     return
+//                                 }
+
+//                                 // Validering för diameter (symbols)
+//                                 if (showDiameterSelect && !selectedDiameter) {
+//                                     alert('Vänligen välj en diameter.')
+//                                     return
+//                                 }
+
+//                                 // Validering för kedjelängd
+//                                 if (showChainLengthSelect && !selectedChainLength) {
+//                                     alert('Vänligen välj en kedjelängd.')
 //                                     return
 //                                 }
 
@@ -251,14 +305,10 @@
 //                                     type: 'ADD_TO_CART',
 //                                     payload: {
 //                                         ...product,
-//                                         ringSize:
-//                                             product.category === 'rings'
-//                                                 ? ringSize
-//                                                 : null,
-//                                         letter:
-//                                             product.collection === 'coins'
-//                                                 ? selectedLetter
-//                                                 : null
+//                                         ringSize: product.category === 'rings' ? ringSize : null,
+//                                         letter: showLetterSelect ? selectedLetter : null,
+//                                         diameter: showDiameterSelect ? selectedDiameter : null,
+//                                         chainLength: showChainLengthSelect ? selectedChainLength : null
 //                                     }
 //                                 })
 
@@ -276,6 +326,7 @@
 //                     </div>
 //                 </div>
 //             </div>
+
 //             {showRingSizeInfo && (
 //                 <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
 //                     <div className="relative bg-white p-6 rounded-lg shadow-lg max-h-[90vh] overflow-y-auto w-[90%] max-w-md">
@@ -363,6 +414,13 @@ const ProductPage = () => {
         )
     }
 
+    // ✅ NYTT: Beräkna vilket pris som ska visas och om det finns rabatt
+    const displayPrice = product.specialPrice || product.price
+    const hasDiscount = product.specialPrice && product.specialPrice < product.price
+    const discountPercent = hasDiscount
+        ? Math.round(((product.price - product.specialPrice) / product.price) * 100)
+        : 0
+
     // Kontrollera vilka val som ska visas
     const showLetterSelect = product.collection === 'coins' || product.collection === 'letter'
     const showDiameterSelect = product.collection === 'symbols'
@@ -375,6 +433,13 @@ const ProductPage = () => {
             <div className="bg-white shadow-lg p-8 max-w-5xl w-full grid grid-cols-1 md:grid-cols-2 gap-8">
                 {/* 📱 Mobil: swipebar med thumbnails */}
                 <div className="block sm:hidden">
+                    {/* ✅ NYTT: Rabatt-badge på mobil */}
+                    {hasDiscount && (
+                        <div className="bg-red-600 text-white px-3 py-1 rounded-md font-bold text-lg inline-block mb-2">
+                            -{discountPercent}% REA
+                        </div>
+                    )}
+
                     <div className="flex overflow-x-auto gap-4 snap-x snap-mandatory scroll-smooth mb-2">
                         {[product.image, ...product.extraImages].map(
                             (img, index) => (
@@ -416,6 +481,13 @@ const ProductPage = () => {
 
                 {/* 🖥️ Desktop: stor bild + thumbnails */}
                 <div className="hidden sm:block">
+                    {/* ✅ NYTT: Rabatt-badge på desktop */}
+                    {hasDiscount && (
+                        <div className="bg-red-600 text-white px-3 py-1 rounded-md font-bold text-lg inline-block mb-4">
+                            -{discountPercent}% REA
+                        </div>
+                    )}
+
                     <div className="relative w-full h-80 mb-4">
                         {mainImage ? (
                             <Image
@@ -473,9 +545,26 @@ const ProductPage = () => {
                         </div>
                     )}
 
-                    <p className="text-lg font-semibold text-gray-700 mb-6">
-                        {product.price / 100} SEK
-                    </p>
+                    {/* ✅ NYTT: Prisvisning med rabatt */}
+                    <div className="mb-6">
+                        {hasDiscount ? (
+                            <div>
+                                <p className="text-gray-500 line-through text-lg">
+                                    {product.price / 100} SEK
+                                </p>
+                                <p className="text-red-600 font-bold text-2xl">
+                                    {product.specialPrice / 100} SEK
+                                </p>
+                                <p className="text-green-600 text-sm mt-1">
+                                    Du sparar {(product.price - product.specialPrice) / 100} SEK!
+                                </p>
+                            </div>
+                        ) : (
+                            <p className="text-lg font-semibold text-gray-700">
+                                {product.price / 100} SEK
+                            </p>
+                        )}
+                    </div>
 
                     {/* Visa dropdown för bokstavsval (coins eller letter) */}
                     {showLetterSelect && (
