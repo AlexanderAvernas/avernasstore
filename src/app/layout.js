@@ -1,35 +1,36 @@
-'use client'; // Behåller client-kompatibilitet
+'use client' // Behåller client-kompatibilitet
 
-import { Roboto_Mono } from "next/font/google";
-import { ProductsProvider } from "./context/ProductsContext"; // Importera ProductsProvider
-import { CartProvider } from "./context/CartContext"; // Importera CartProvider
-import "./globals.css";
-import Navbar from "./components/Navbar";
-import Footer from "./components/Footer";
+import { Roboto_Mono } from 'next/font/google'
+import { ProductsProvider } from './context/ProductsContext' // Importera ProductsProvider
+import { CartProvider } from './context/CartContext' // Importera CartProvider
+import './globals.css'
+import Navbar from './components/Navbar'
+import Footer from './components/Footer'
+import { usePathname } from 'next/navigation'
 
 const robotoMono = Roboto_Mono({
-  subsets: ["latin"],
-  weight: ["400", "500", "700"],
-  variable: "--font-roboto-mono",
-});
+    subsets: ['latin'],
+    weight: ['400', '500', '700'],
+    variable: '--font-roboto-mono'
+})
 
 export default function RootLayout({ children }) {
-  return (
-    <html lang="en">
-      <body
-        className={robotoMono.variable}
-      >
-        {/* Wrap med ProductsProvider och CartProvider */}
-        <ProductsProvider>
-          <CartProvider>
-            <Navbar/>
-            {children}
-            <Footer/>
-            </CartProvider>
-        </ProductsProvider>
-      </body>
-    </html>
-  );
+    const pathname = usePathname()
+    const isHome = pathname === '/'
+    return (
+        <html lang="en">
+            <body className={`${robotoMono.variable} ${isHome ? '' : 'pt-12'}`}>
+                {/* Wrap med ProductsProvider och CartProvider */}
+                <ProductsProvider>
+                    <CartProvider>
+                        <Navbar />
+                        {children}
+                        <Footer />
+                    </CartProvider>
+                </ProductsProvider>
+            </body>
+        </html>
+    )
 }
 
 //UNDER TID BYGGER OM
