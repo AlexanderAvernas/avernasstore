@@ -1,30 +1,3 @@
-// import ProductList from "./components/ProductList";
-// import Hero from "./components/Hero"; // Använd bara en Hero-komponent
-// import { fetchHero } from "./lib/contentful";
-// import CategoryList from "./components/CategoryList";
-// import CollectionImages from "./components/CollectionImages";
-// import CollectionList from "./components/CollectionList";
-
-// export default async function Home() {
-//   const hero = await fetchHero(); // Hämta hero-data från Contentful
-
-//   return (
-//     <div className="w-full">
-//       {hero ? <Hero title={hero.title} imageUrl={hero.image} description={hero.description} /> : <p>Ingen hero-data hittades.</p>}
-//       {/* <ProductList /> */}
-//       <CategoryList/>
-//       <div className="h-40 bg-white flex items-center justify-center">
-//     <h2 className="text-center">HANDGJORDA SMYCKEN <br/> I <br/> ÅTERVUNNET SILVER</h2>
-// </div>
-// <CollectionImages/>
-// <div className="h-40 bg-white flex items-center justify-center">
-//     <h2 className="text-center">COLLECTIONS</h2>
-// </div>
-// <CollectionList/>
-//     </div>
-//   );
-// }
-
 import ProductList from "./components/ProductList";
 import SpecialOfferBanner from "./components/SpecialOfferBanner";
 import Hero from "./components/Hero"; // Använd bara en Hero-komponent
@@ -33,6 +6,7 @@ import { fetchHero, fetchSpecialOffer } from "./lib/sanity";
 import CategoryList from "./components/CategoryList";
 import CollectionImages from "./components/CollectionImages";
 import CollectionList from "./components/CollectionList";
+import NewsCarousel from "./components/NewsCarousel";
 
 
 export default async function Home() {
@@ -66,13 +40,12 @@ export default async function Home() {
         ) : (
           <p>Ingen hero-data hittades.</p>
         )}
-
-        <CategoryList />
-        <div className="h-40 bg-white flex items-center justify-center">
-          <h6 className="text-center">
+         <div className="h-40 bg-white flex items-center justify-center">
+          <p className="text-center">
             HANDGJORDA SMYCKEN I ÅTERVUNNET SILVER
-          </h6>
+          </p>
         </div>
+        <div className="mb-6">
         {specialOffer && (
           <SpecialOfferBanner
             title={specialOffer.title}
@@ -81,7 +54,9 @@ export default async function Home() {
             buttonText={specialOffer.buttonText}
           />
         )}
-        <CollectionImages />
+        </div>
+        <CategoryList />
+        <NewsCarousel/>
         <div className="h-40 bg-white flex items-center justify-center">
           <h2 className="text-center">COLLECTIONS</h2>
         </div>

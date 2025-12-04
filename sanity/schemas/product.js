@@ -98,5 +98,12 @@ export default {
         ],
       },
     },
+    {
+      name: 'isNew',
+      title: 'Nyhet',
+      type: 'boolean',
+      description: 'Markera som nyhet för att visa i karusellen på startsidan',
+      initialValue: false,
+    },
   ],
 }

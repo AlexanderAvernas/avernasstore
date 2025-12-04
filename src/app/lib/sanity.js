@@ -26,7 +26,8 @@ export const fetchProducts = async () => {
     extraImages,
     tax_rate,
     category,
-    collection
+    collection,
+    isNew
   }`
 
   const products = await client.fetch(query)
@@ -44,7 +45,8 @@ export const fetchProducts = async () => {
       : [],
     tax_rate: product.tax_rate || 2500,
     category: product.category || 'others',
-    collection: product.collection
+    collection: product.collection,
+    isNew: product.isNew || false
   }))
 }
 

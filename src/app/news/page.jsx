@@ -5,13 +5,13 @@
 // import Link from 'next/link'
 // import Image from 'next/image'
 
-// const SpecialOffersPage = () => {
+// const NewsPage = () => {
 //     const { state } = useProducts()
 //     const [sortOption, setSortOption] = useState('default')
 
-//     // Filtrera produkter som har specialPrice
-//     let specialProducts = state.products.filter(
-//         (product) => product.specialPrice && product.specialPrice > 0
+//     // Filtrera produkter som är nyheter
+//     let newsProducts = state.products.filter(
+//         (product) => product.isNew === true
 //     )
 
 //     // Sorteringslogik
@@ -20,35 +20,32 @@
 //     }
 
 //     if (sortOption === 'priceLowHigh') {
-//         specialProducts = [...specialProducts].sort(
-//             (a, b) => (a.specialPrice || a.price) - (b.specialPrice || b.price)
-//         )
+//         newsProducts = [...newsProducts].sort((a, b) => {
+//             const priceA = a.specialPrice || a.price
+//             const priceB = b.specialPrice || b.price
+//             return priceA - priceB
+//         })
 //     } else if (sortOption === 'priceHighLow') {
-//         specialProducts = [...specialProducts].sort(
-//             (a, b) => (b.specialPrice || b.price) - (a.specialPrice || a.price)
-//         )
+//         newsProducts = [...newsProducts].sort((a, b) => {
+//             const priceA = a.specialPrice || a.price
+//             const priceB = b.specialPrice || b.price
+//             return priceB - priceA
+//         })
 //     } else if (sortOption === 'nameAZ') {
-//         specialProducts = [...specialProducts].sort((a, b) =>
+//         newsProducts = [...newsProducts].sort((a, b) =>
 //             a.name.localeCompare(b.name)
 //         )
 //     } else if (sortOption === 'nameZA') {
-//         specialProducts = [...specialProducts].sort((a, b) =>
+//         newsProducts = [...newsProducts].sort((a, b) =>
 //             b.name.localeCompare(a.name)
 //         )
 //     }
 
-//     // Beräkna rabatt i procent
-//     const calculateDiscount = (price, specialPrice) => {
-//         return Math.round(((price - specialPrice) / price) * 100)
-//     }
-
 //     return (
 //         <div className="p-6">
-//             <h1 className="text-3xl font-bold text-center mb-6">
-//                 Specialerbjudanden
-//             </h1>
+//             <h1 className="text-3xl font-bold text-center mb-6">Nyheter</h1>
 
-//             {specialProducts.length > 0 ? (
+//             {newsProducts.length > 0 ? (
 //                 <>
 //                     {/* Sorteringsmeny */}
 //                     <div className="flex justify-left mb-4 pl-3">
@@ -70,11 +67,20 @@
 //                     </div>
 
 //                     <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6">
-//                         {specialProducts.map((product) => {
-//                             const discount = calculateDiscount(
-//                                 product.price,
-//                                 product.specialPrice
-//                             )
+//                         {newsProducts.map((product) => {
+//                             const hasDiscount =
+//                                 product.specialPrice &&
+//                                 product.specialPrice < product.price
+//                             const discountPercent = hasDiscount
+//                                 ? Math.round(
+//                                       ((product.price -
+//                                           product.specialPrice) /
+//                                           product.price) *
+//                                           100
+//                                   )
+//                                 : 0
+//                             const displayPrice =
+//                                 product.specialPrice || product.price
 
 //                             return (
 //                                 <div
@@ -82,12 +88,19 @@
 //                                     className="p-4 transition hover:scale-105 text-center relative"
 //                                 >
 //                                     {/* Rabatt-badge */}
-//                                     <div className="absolute top-2 right-2 bg-red-600 text-white px-2 py-1 rounded-md font-bold text-sm z-10">
-//                                         -{discount}%
+//                                     {hasDiscount && (
+//                                         <div className="absolute top-2 right-2 bg-red-600 text-white px-2 py-1 rounded-md font-bold text-sm z-10">
+//                                             -{discountPercent}%
+//                                         </div>
+//                                     )}
+
+//                                     {/* NY-badge */}
+//                                     <div className="absolute top-2 left-2 bg-green-600 text-white px-2 py-1 rounded-md font-bold text-xs z-10">
+//                                         NY
 //                                     </div>
 
 //                                     <Link href={`/product/${product.slug}`}>
-//                                         <div className="relative w-full h-56 mb-1">
+//                                         <div className="relative w-full aspect-square mb-1">
 //                                             <Image
 //                                                 src={product.image}
 //                                                 alt={product.name}
@@ -100,28 +113,21 @@
 //                                             {product.name}
 //                                         </h3>
 
-//                                         {/* Priser */}
-//                                         <div className="mt-2">
-//                                             {/* Gammalt pris - överstruket */}
-//                                             <p className="text-gray-500 line-through text-sm">
-//                                                 {product.price % 100 === 0
-//                                                     ? `${product.price / 100} SEK`
-//                                                     : `${(
-//                                                           product.price / 100
-//                                                       ).toFixed(2)} SEK`}
+//                                         {/* Prisvisning */}
+//                                         {hasDiscount ? (
+//                                             <div className="mt-2">
+//                                                 <p className="text-gray-500 line-through text-sm">
+//                                                     {product.price / 100} SEK
+//                                                 </p>
+//                                                 <p className="text-red-600 font-bold">
+//                                                     {displayPrice / 100} SEK
+//                                                 </p>
+//                                             </div>
+//                                         ) : (
+//                                             <p className="text-gray-600">
+//                                                 {product.price / 100} SEK
 //                                             </p>
-
-//                                             {/* Nytt pris - rött */}
-//                                             <p className="text-red-600 font-bold text-lg">
-//                                                 {product.specialPrice % 100 ===
-//                                                 0
-//                                                     ? `${product.specialPrice / 100} SEK`
-//                                                     : `${(
-//                                                           product.specialPrice /
-//                                                           100
-//                                                       ).toFixed(2)} SEK`}
-//                                             </p>
-//                                         </div>
+//                                         )}
 //                                     </Link>
 //                                 </div>
 //                             )
@@ -131,7 +137,7 @@
 //             ) : (
 //                 <div className="text-center py-12">
 //                     <p className="text-gray-600 text-lg mb-4">
-//                         Inga specialerbjudanden just nu.
+//                         Inga nyheter just nu.
 //                     </p>
 //                     <Link href="/">
 //                         <button className="bg-black text-white px-6 py-2 hover:bg-gray-800 transition">
@@ -144,27 +150,27 @@
 //     )
 // }
 
-// export default SpecialOffersPage
+// export default NewsPage
 
 'use client'
 
 import { useProducts } from '../context/ProductsContext'
 import ProductGrid from '../components/ProductGrid'
 
-const SpecialOffersPage = () => {
+const NewsPage = () => {
     const { state } = useProducts()
 
-    const specialProducts = state.products.filter(
-        (product) => product.specialPrice && product.specialPrice > 0
+    const newsProducts = state.products.filter(
+        (product) => product.isNew === true
     )
 
     return (
         <ProductGrid
-            products={specialProducts}
-            title="Specialerbjudanden"
-            emptyMessage="Inga specialerbjudanden just nu."
+            products={newsProducts}
+            title="Nyheter"
+            emptyMessage="Inga nyheter just nu."
         />
     )
 }
 
-export default SpecialOffersPage
+export default NewsPage
