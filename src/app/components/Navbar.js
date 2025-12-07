@@ -695,7 +695,7 @@ export default function Navbar() {
                             </Link>
                         </div>
 
-                        {/* About */}
+                        {/* About  */}
                         <div className="border-t pt-6">
                             <Link
                                 href="/about"
