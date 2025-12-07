@@ -17,12 +17,12 @@ const SpecialOfferBanner = ({ title, description, imageUrl, buttonText }) => {
       />
       <div className="absolute inset-0 bg-black bg-opacity-40 flex flex-col items-center justify-center text-center px-4">
         {title && (
-          <h2 className="text-white text-3xl md:text-5xl font-bold mb-4">
+          <h2 className="text-heading-l text-white">
             {title}
           </h2>
         )}
         {description && (
-          <p className="text-white text-lg md:text-xl mb-6 max-w-2xl">
+          <p className="text-body-xs text-white">
             {description}
           </p>
         )}

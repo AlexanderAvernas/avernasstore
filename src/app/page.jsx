@@ -40,12 +40,13 @@ export default async function Home() {
         ) : (
           <p>Ingen hero-data hittades.</p>
         )}
-         <div className="h-40 bg-white flex items-center justify-center">
+         <NewsCarousel/>
+         {/* <div className="h-40 bg-white flex items-center justify-center">
           <p className="text-center">
             HANDGJORDA SMYCKEN I ÅTERVUNNET SILVER
           </p>
-        </div>
-        <div className="mb-6">
+        </div> */}
+        <div className="mb-0">
         {specialOffer && (
           <SpecialOfferBanner
             title={specialOffer.title}
@@ -56,7 +57,6 @@ export default async function Home() {
         )}
         </div>
         <CategoryList />
-        <NewsCarousel/>
         <div className="h-40 bg-white flex items-center justify-center">
           <h2 className="text-center">COLLECTIONS</h2>
         </div>

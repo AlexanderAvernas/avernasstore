@@ -6,7 +6,7 @@ const Hero = ({ title, imageUrl, description }) => {
   if (!imageUrl) return <h1>Ingen bild hittades</h1>;
 
   return (
-    <div className="relative w-screen min-h-[80svh] md:min-h-[100vh] flex justify-center items-center overflow-hidden m-0">
+    <div className="relative w-screen min-h-[85svh] md:min-h-[100vh] flex justify-center items-center overflow-hidden m-0">
       <Image
         src={imageUrl}
         alt={title || "Hero Image"}
@@ -15,7 +15,7 @@ const Hero = ({ title, imageUrl, description }) => {
         priority
       />
       <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-4">
-        {title && <h1 className="text-white text-xl">{title}</h1>}
+        {title && <h1 className="text-heading-xl text-white">{title}</h1>}
         {description && <p className="text-white text-s mt-2">{description}</p>}
       </div>
     </div>

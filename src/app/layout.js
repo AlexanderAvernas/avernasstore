@@ -1,6 +1,7 @@
 'use client' // Behåller client-kompatibilitet
 
-import { Roboto_Mono } from 'next/font/google'
+// import { Roboto_Mono } from 'next/font/google'
+import { IBM_Plex_Sans, Playfair_Display } from "next/font/google";
 import { ProductsProvider } from './context/ProductsContext' // Importera ProductsProvider
 import { CartProvider } from './context/CartContext' // Importera CartProvider
 import './globals.css'
@@ -8,18 +9,26 @@ import Navbar from './components/Navbar'
 import Footer from './components/Footer'
 import { usePathname } from 'next/navigation'
 
-const robotoMono = Roboto_Mono({
-    subsets: ['latin'],
-    weight: ['400', '500', '700'],
-    variable: '--font-roboto-mono'
-})
+const ibmPlexSans = IBM_Plex_Sans({
+  weight: ['300', '400', '500', '600', '700'], // Välj vikter du vill ha
+  subsets: ["latin"],
+  variable: "--font-ibm-plex-sans",
+});
+
+const playfair = Playfair_Display({
+  subsets: ['latin'],
+  weight: ['400', '500', '700'],
+  variable: '--font-playfair-display',
+});
 
 export default function RootLayout({ children }) {
     const pathname = usePathname()
     const isHome = pathname === '/'
     return (
         <html lang="en">
-            <body className={`${robotoMono.variable} ${isHome ? '' : 'pt-12'}`}>
+            <body
+  className={`${ibmPlexSans.variable} ${playfair.variable} antialiased ${isHome ? '' : 'pt-12'}` }
+>
                 {/* Wrap med ProductsProvider och CartProvider */}
                 <ProductsProvider>
                     <CartProvider>

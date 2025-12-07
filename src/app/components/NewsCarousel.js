@@ -27,13 +27,12 @@ const NewsCarousel = () => {
     return (
         <div className="py-12 px-6">
             <div className="max-w-7xl mx-auto">
-                <h2 className="text-3xl text-center mb-8">Nyheter</h2>
-
+                <h2 className="text-heading-l text-center mb-8">Nyheter</h2>
                 <Swiper
                     modules={[Navigation, Pagination, Autoplay]}
                     spaceBetween={20}
                     slidesPerView={1.3}
-                    centeredSlides={false} // <-- centrerar sliden
+                    centeredSlides={true} // <-- centrerar sliden
                     // navigation
                     pagination={{ clickable: true }}
                     // autoplay={{ delay: 3000, disableOnInteraction: false }}

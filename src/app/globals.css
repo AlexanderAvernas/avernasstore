@@ -9,7 +9,89 @@
   }
 
 html, body {
-  @apply font-mono overflow-x-hidden w-full min-h-screen;
+  @apply overflow-x-hidden w-full min-h-screen;
+  font-family: var(--font-ibm-plex-sans), system-ui, sans-serif;
+}
+
+@layer components {
+  /* Body text */
+  .text-body-m {
+    font-size: 16px;
+    font-family: var(--font-ibm-plex-sans);
+    font-weight: 300;
+    letter-spacing: 0em;
+    line-height: 23px;
+  }
+
+  .text-body-s {
+    font-size: 14px;
+    font-family: var(--font-ibm-plex-sans);
+    font-weight: 400;
+    letter-spacing: 0em;
+    line-height: 22px;
+  }
+
+  .text-body-xs {
+    font-size: 12px;
+    font-family: var(--font-ibm-plex-sans);
+    font-weight: 400;
+    letter-spacing: 0.03em;
+  }
+
+  /* Headings */
+  .text-heading-l {
+    font-size: 20px;
+    font-family: var(--font-playfair-display);
+    font-weight: 400;
+    letter-spacing: -0.01em;
+    text-transform: uppercase;
+  }
+
+  .text-heading-xl {
+    font-size: 24px;
+    font-family: var(--font-playfair-display);
+    font-weight: 200;
+    letter-spacing: -0.01em;
+    text-transform: uppercase;
+  }
+
+  /* Buttons */
+  .text-button-s {
+    font-size: 14px;
+    font-family: var(--font-ibm-plex-sans);
+    font-weight: 500;
+    letter-spacing: 0em;
+    text-transform: uppercase;
+  }
+
+  /* Labels */
+  .text-label-xs {
+    font-size: 12px;
+    font-family: var(--font-ibm-plex-sans);
+    font-weight: 400;
+    letter-spacing: 0em;
+  }
+
+  .text-label-s {
+    font-size: 14px;
+    font-family: var(--font-ibm-plex-sans);
+    font-weight: 400;
+    letter-spacing: 0.03em;
+  }
+
+  .text-label-m {
+    font-size: 16px;
+    font-family: var(--font-ibm-plex-sans);
+    font-weight: 400;
+    letter-spacing: 0.03em;
+  }
+
+  .text-label-l {
+    font-size: 20px;
+    font-family: var(--font-ibm-plex-sans);
+    font-weight: 400;
+    letter-spacing: 0.03em;
+  }
 }
 
 ::-webkit-scrollbar {
