@@ -77,6 +77,7 @@ html, body {
     font-family: var(--font-ibm-plex-sans);
     font-weight: 400;
     letter-spacing: 0.03em;
+    text-transform: uppercase;
   }
 
   .text-label-m {

@@ -14,7 +14,7 @@ const Hero = ({ title, imageUrl, description }) => {
         className="object-cover"
         priority
       />
-      <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-4">
+      <div className="absolute bottom-[8%] w-full left-1/2 -translate-x-1/2 flex flex-col items-center text-center px-4">
         {title && <h1 className="text-heading-xl text-white">{title}</h1>}
         {description && <p className="text-white text-s mt-2">{description}</p>}
       </div>

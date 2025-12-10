@@ -16,21 +16,20 @@ const SpecialOfferBanner = ({ title, description, imageUrl, buttonText }) => {
         priority
       />
       <div className="absolute inset-0 bg-black bg-opacity-40 flex flex-col items-center justify-center text-center px-4">
-        {title && (
-          <h2 className="text-heading-l text-white">
-            {title}
-          </h2>
-        )}
+        {title && <h2 className="text-heading-l text-white mb-4">{title}</h2>}
+
+        <Link href="/special-offers">
+          <span className="text-button-small text-white cursor-pointer">
+            {buttonText || "TILL REAN"}
+          </span>
+        </Link>
+
+        {/* Description 5% från botten */}
         {description && (
-          <p className="text-body-xs text-white">
+          <p className="absolute bottom-[5%] left-1/2 -translate-x-1/2 text-body-xs text-white text-center w-full px-4">
             {description}
           </p>
         )}
-        <Link href="/special-offers">
-          <button className="bg-white text-black px-8 py-3 text-lg font-semibold hover:bg-gray-200 transition">
-            {buttonText || "Se erbjudanden"}
-          </button>
-        </Link>
       </div>
     </div>
   );

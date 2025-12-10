@@ -25,7 +25,7 @@ const NewsCarousel = () => {
     }
 
     return (
-        <div className="py-12 px-6">
+        <div className="py-12 px-0 md:px-6">
             <div className="max-w-7xl mx-auto">
                 <h2 className="text-heading-l text-center mb-8">Nyheter</h2>
                 <Swiper
@@ -86,22 +86,22 @@ const NewsCarousel = () => {
                                         </div>
 
                                         {/* Produktinfo */}
-                                        <h3 className="text-m text-gray-900 mb-1 text-center">
+                                        <h3 className="text-label-s mb-1 text-center">
                                             {product.name}
                                         </h3>
 
                                         {/* Pris */}
                                         {hasDiscount ? (
                                             <div className="text-center">
-                                                <p className="text-gray-500 line-through text-sm">
+                                                <p className="text-label-s line-through">
                                                     {product.price / 100} SEK
                                                 </p>
-                                                <p className="text-red-400 text-sm">
+                                                <p className="text-label-s text-red-400">
                                                     {displayPrice / 100} SEK
                                                 </p>
                                             </div>
                                         ) : (
-                                            <p className="text-gray-600 text-center">
+                                            <p className="text-label-s text-center">
                                                 {product.price / 100} SEK
                                             </p>
                                         )}
@@ -115,7 +115,7 @@ const NewsCarousel = () => {
                 {/* Visa alla-knapp */}
                 <div className="flex justify-center mt-8">
                     <Link href="/news">
-                        <button className="bg-black text-white px-8 py-3 hover:bg-gray-800 transition">
+                        <button className="bg-black text-button-s text-white px-8 py-3 hover:bg-gray-800 transition">
                             VISA ALLA NYHETER
                         </button>
                     </Link>

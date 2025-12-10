@@ -19,7 +19,7 @@ const CollectionList = () => {
     <div className="p-6 grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-4">
       {collections.map((collection) => (
         <Link key={collection.name} href={`/collection/${collection.name}`}>
-          <div className="relative cursor-pointer border rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition">
+          <div className="relative cursor-pointer border rounded-s overflow-hidden transition">
             <div className="relative w-full h-40 sm:h-80">
               <Image
                 src={collection.image}
@@ -29,8 +29,8 @@ const CollectionList = () => {
                 className="object-cover"
               />
             </div>
-            <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50">
-              <span className="text-white text-1xl px-4 py-1  bg-opacity-75 uppercase">
+            <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-20">
+              <span className="text-label-m text-white uppercase">
                 {collection.name}
               </span>
             </div>

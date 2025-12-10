@@ -64,7 +64,7 @@ export const fetchHero = async () => {
   return {
     title: hero.title || 'Ingen titel hittades',
     image: hero.image ? urlFor(hero.image).url() : null,
-    description: hero.description || 'Ingen beskrivning hittades'
+    description: hero.description
   }
 }
 
