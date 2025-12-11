@@ -2,6 +2,20 @@
 import { getKustomOrder } from '../../../utils/kustomApi'
 
 export async function GET(req, { params }) {
+  const orderId = params.orderId;
+
+  try {
+    const data = await getKustomOrder(orderId);
+    return new Response(JSON.stringify(data), { status: 200 });
+  } catch (e) {
+    return new Response(JSON.stringify({
+      message: "Failed to fetch order",
+      details: e.message
+    }), { status: 500 });
+  }
+}
+
+/* export async function GET(req, { params }) {
   const { orderId } = params;
 
 //   console.log(`Fetching order details for Order ID: ${orderId}`);
@@ -25,4 +39,4 @@ export async function GET(req, { params }) {
       { status: 500 }
     );
   }
-}
+} */
