@@ -2,33 +2,36 @@ import { getKustomOrder } from "../../../utils/kustomApi";
 
 export async function GET(request, context) {
   try {
-    // Netlify/Next context.params är korrekt här
-    const orderId = context?.params?.orderId;
+    // 🔥 FIX: Netlify passes params as a Promise — we MUST await it
+    const resolvedParams = await context.params;
+
+    const orderId = resolvedParams?.orderId;
 
     if (!orderId) {
-      console.error("No orderId found in context.params", context);
+      console.error("No orderId resolved from params:", resolvedParams);
       return Response.json(
         { message: "Missing orderId" },
         { status: 400 }
       );
     }
 
+    // 🔹 Fetch order from Kustom
     const data = await getKustomOrder(orderId);
 
     return Response.json(data, { status: 200 });
+
   } catch (e) {
     console.error("GET ORDER ERROR:", e);
 
     return Response.json(
       {
         message: "Failed to fetch order",
-        details: e?.message || e
+        details: e?.message || String(e)
       },
       { status: 500 }
     );
   }
 }
-
 
 /* 
 import { getKustomOrder } from '../../../utils/kustomApi'
