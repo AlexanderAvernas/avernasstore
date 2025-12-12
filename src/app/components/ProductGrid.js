@@ -29,9 +29,9 @@ const ProductGrid = ({ products, title, emptyMessage }) => {
     }
 
     return (
-        <div className="p-6">
+        <div className="p-4">
             {title && (
-                <h1 className="text-3xl font-bold text-center mb-6 capitalize">
+                <h1 className="text-heading-xl text-center my-6">
                     {title}
                 </h1>
             )}
@@ -39,13 +39,13 @@ const ProductGrid = ({ products, title, emptyMessage }) => {
             {sortedProducts.length > 0 ? (
                 <>
                     {/* Sorteringsmeny */}
-                    <div className="flex justify-left mb-4 pl-3">
+                    <div className="flex justify-left mb-1 pl-">
                         <select
                             value={sortOption}
                             onChange={(e) => setSortOption(e.target.value)}
-                            className="border border-gray-300 rounded-md px-4 py-2"
+                            className="text-label-s border-none py-2 appearance"
                         >
-                            <option value="default">Sortera efter</option>
+                            <option value="default">Sortera</option>
                             <option value="priceLowHigh">
                                 Pris: Lågt till Högt
                             </option>
@@ -58,7 +58,7 @@ const ProductGrid = ({ products, title, emptyMessage }) => {
                     </div>
 
                     {/* Produktgrid */}
-                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6">
+                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
                         {sortedProducts.map((product) => {
                             const hasDiscount =
                                 product.specialPrice &&
@@ -77,41 +77,41 @@ const ProductGrid = ({ products, title, emptyMessage }) => {
                             return (
                                 <div
                                     key={product.id}
-                                    className="p-4 transition hover:scale-105 text-center relative"
+                                    className="transition hover:scale-105 text-center relative mb-4"
                                 >
                                     {/* Rabatt-badge */}
                                     {hasDiscount && (
-                                        <div className="absolute top-2 right-2 bg-red-600 text-white px-2 py-1 rounded-md font-bold text-sm z-10">
+                                        <div className="absolute top-2 left-2 bg-white text-label-xs px-2 py- rounded-sm z-10">
                                             -{discountPercent}%
                                         </div>
                                     )}
 
                                     {/* NY-badge */}
-                                    {product.isNew && (
+                                    {/* {product.isNew && (
                                         <div className="absolute top-2 left-2 bg-green-600 text-white px-2 py-1 rounded-md font-bold text-xs z-10">
                                             NY
                                         </div>
-                                    )}
+                                    )} */}
 
                                     <Link href={`/product/${product.slug}`}>
-                                        <div className="relative w-full aspect-square mb-1">
+                                        <div className="relative w-full aspect-[4/4] mb-3">
                                             <Image
                                                 src={product.image}
                                                 alt={product.name}
                                                 fill
                                                 sizes="(max-width: 639px) 100vw, (max-width: 1023px) 50vw, 25vw"
-                                                className="object-contain rounded-md"
+                                                className="object-cover rounded-sm"
                                                 priority={false}
                                             />
                                         </div>
-                                        <h3 className="text-lg font-medium text-gray-900">
+                                        <h3 className="text-label-s">
                                             {product.name}
                                         </h3>
 
                                         {/* Prisvisning */}
                                         {hasDiscount ? (
                                             <div className="mt-2">
-                                                <p className="text-gray-500 line-through text-sm">
+                                                <p className="text-label-s line-through">
                                                     {product.price % 100 === 0
                                                         ? `${product.price / 100} SEK`
                                                         : `${(
@@ -119,7 +119,7 @@ const ProductGrid = ({ products, title, emptyMessage }) => {
                                                               100
                                                           ).toFixed(2)} SEK`}
                                                 </p>
-                                                <p className="text-red-600 font-bold">
+                                                <p className="text-label-s text-red-400">
                                                     {displayPrice % 100 === 0
                                                         ? `${displayPrice / 100} SEK`
                                                         : `${(
@@ -128,7 +128,7 @@ const ProductGrid = ({ products, title, emptyMessage }) => {
                                                 </p>
                                             </div>
                                         ) : (
-                                            <p className="text-gray-600">
+                                            <p className="text-label-s">
                                                 {product.price % 100 === 0
                                                     ? `${product.price / 100} SEK`
                                                     : `${(
