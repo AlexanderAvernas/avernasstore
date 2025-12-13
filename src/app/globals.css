@@ -125,3 +125,17 @@ html, body {
   background: #ffffff !important; /* Aktiv punkt i en gul färg */
   opacity: 1;
 }
+
+/* Endast pagination i .product-swiper påverkas */
+.product-swiper .swiper-pagination-bullet {
+  width: 10px;
+  height: 10px;
+  background: white !important;
+  border: 2px solid black !important;
+  opacity: 1 !important;
+}
+
+.product-swiper .swiper-pagination-bullet-active {
+  background: black !important;
+  border-color: black !important;
+}
