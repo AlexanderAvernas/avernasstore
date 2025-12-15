@@ -43,7 +43,7 @@ const ProductGrid = ({ products, title, emptyMessage }) => {
                         <select
                             value={sortOption}
                             onChange={(e) => setSortOption(e.target.value)}
-                            className="text-label-s border-none py-2 appearance"
+                            className="text-label-s bg-transparent border-none outline-none focus:ring-0 focus:outline-none appearance-none cursor-pointer py-2"
                         >
                             <option value="default">Sortera</option>
                             <option value="priceLowHigh">

@@ -521,11 +521,11 @@ const ProductPage = () => {
         </div>
 
         {/* Produktinfo */}
-        <div className="text-center md:text-left">
-          <h1 className="text-heading-xl mb-4">{product.name}</h1>
+        <div className="text-left px-4">
+          <h1 className="text-heading-xl text-center mb-4">{product.name}</h1>
 
           {/* ✅ NYTT: Prisvisning med rabatt */}
-          <div className="mb-6">
+          <div className="mb-6 text-center">
             {hasDiscount ? (
               <div>
                 <p className="text-label-m line-through">
@@ -545,7 +545,7 @@ const ProductPage = () => {
 
           <div className="border-t border-b border-gray-200 divide-y divide-gray-200 mb-6">
             {/* ✅ Description – alltid synlig */}
-            <div className="py-4 text-gray-700">{product.description}</div>
+            <div className="py-4 text-body-s">{product.description}</div>
 
             {/* 🔽 Skötselråd */}
             <div>
@@ -556,18 +556,23 @@ const ProductPage = () => {
                 }
                 className="w-full flex justify-between items-center py-4 text-left text-gray-900"
               >
-                <span>Skötselråd</span>
+                <span className="text-label-s">Skötselråd</span>
                 <span
                   className={`transition-transform ${
                     openSection === "care" ? "rotate-180" : ""
                   }`}
                 >
-                  ▾
+                  <Image
+                    src="/chevron.png"
+                    alt="Expandera"
+                    width={14}
+                    height={14}
+                  />
                 </span>
               </button>
 
               {openSection === "care" && (
-                <div className="pb-4 text-sm text-gray-600">
+                <div className="pb-4 text-body-s">
                   Förvara smycket torrt, undvik kontakt med vatten, parfym och
                   kemikalier. Rengör varsamt med mjuk trasa.
                 </div>
@@ -583,18 +588,18 @@ const ProductPage = () => {
                 }
                 className="w-full flex justify-between items-center py-4 text-left text-gray-900"
               >
-                <span>Material</span>
+                <span className="text-label-s">Material</span>
                 <span
-                  className={`transition-transform ${
+                  className={`transition-transform duration-200 ${
                     openSection === "material" ? "rotate-180" : ""
                   }`}
                 >
-                  ▾
+                  <Image src="/chevron.png" alt="" width={14} height={14} />
                 </span>
               </button>
 
               {openSection === "material" && (
-                <div className="pb-4 text-sm text-gray-600">
+                <div className="pb-4 text-sbody-s">
                   Tillverkad i återvunnet sterlingsilver / guldplätering.
                   Nickel- och blyfri.
                 </div>
@@ -602,7 +607,7 @@ const ProductPage = () => {
             </div>
           </div>
 
-         {/*  {product.collection && (
+          {/*  {product.collection && (
             <div className="mt-6 mb-6 text-center">
               <Link href={`/collection/${product.collection}`}>
                 <span>
@@ -619,12 +624,12 @@ const ProductPage = () => {
           {/* Visa dropdown för bokstavsval (coins eller letter) */}
           {showLetterSelect && (
             <div className="mb-4">
-              <label
+             {/*  <label
                 htmlFor="letter-select"
                 className="block mb-2 text-sm font-medium text-gray-700"
               >
                 Välj bokstav för gravering:
-              </label>
+              </label> */}
               <select
                 id="letter-select"
                 value={selectedLetter}
@@ -639,21 +644,21 @@ const ProductPage = () => {
                   </option>
                 ))}
               </select>
-              <p className="mt-2 text-sm text-gray-500">
+              {/* <p className="mt-2 text-sm text-gray-500">
                 Din valda bokstav kommer att graveras på smycket
-              </p>
+              </p> */}
             </div>
           )}
 
           {/* Visa dropdown för diameter (symbols) */}
           {showDiameterSelect && (
             <div className="mb-4">
-              <label
+            {/*   <label
                 htmlFor="diameter-select"
                 className="block mb-2 text-sm font-medium text-gray-700"
               >
                 Välj diameter:
-              </label>
+              </label> */}
               <select
                 id="diameter-select"
                 value={selectedDiameter}
@@ -674,12 +679,12 @@ const ProductPage = () => {
           {/* Visa dropdown för kedjelängd (letter/coins/Connect + necklaces) */}
           {showChainLengthSelect && (
             <div className="mb-4">
-              <label
+              {/* <label
                 htmlFor="chain-length-select"
                 className="block mb-2 text-sm font-medium text-gray-700"
               >
                 Välj kedjelängd:
-              </label>
+              </label> */}
               <select
                 id="chain-length-select"
                 value={selectedChainLength}
@@ -687,7 +692,7 @@ const ProductPage = () => {
                 className="w-full border border-gray-300 rounded px-3 py-2"
                 required
               >
-                <option value="">Välj längd</option>
+                <option value="">Välj kedjelängd</option>
                 {chainLengths.map((length) => (
                   <option key={length} value={length}>
                     {length} cm
@@ -701,17 +706,17 @@ const ProductPage = () => {
           {product.category === "rings" &&
             product.collection !== "earcuffs" && (
               <div className="mb-4">
-                <label
+               {/*  <label
                   htmlFor="ring-size"
                   className="block mb-2 text-sm font-medium text-gray-700"
                 >
                   Välj storlek:
-                </label>
+                </label> */}
                 <select
                   id="ring-size"
                   value={ringSize || ""}
                   onChange={(e) => setRingSize(Number(e.target.value))}
-                  className="w-full border border-gray-300 rounded px-3 py-2"
+                  className="w-2/3 border border-gray-300 rounded px-3 py-2"
                   required
                 >
                   <option value="">Välj storlek</option>
@@ -726,9 +731,9 @@ const ProductPage = () => {
                 <button
                   type="button"
                   onClick={() => setShowRingSizeInfo(true)}
-                  className="mt-2 text-sm text-blue-600 hover:underline"
+                  className="w-1/3 mt-2 text-s underline"
                 >
-                  Hur du mäter ringstorlek
+                  Storleksguide
                 </button>
               </div>
             )}
@@ -779,15 +784,15 @@ const ProductPage = () => {
 
                 router.push("../../cart");
               }}
-              className="flex-1 bg-white border-black border-2 border-solid text-black px-6 py-3 hover:bg-gray-300 transition"
+              className="flex-1 rounded-sm bg-black text-white text-button-s px-6 py-3 hover:bg-gray-300 transition"
             >
-              LÄGG I KUNDVAGN
+              LÄGG I VARUKORGEN
             </button>
-            <Link href={`/category/${product.category}`}>
+            {/* <Link href={`/category/${product.category}`}>
               <button className="flex-1 bg-gray-500 text-white px-6 py-3 hover:bg-gray-400 transition">
                 TILLBAKA TILL KATEGORI
               </button>
-            </Link>
+            </Link> */}
           </div>
         </div>
       </div>
@@ -801,10 +806,19 @@ const ProductPage = () => {
             >
               <h1>✕</h1>
             </button>
-            <h2 className="text-lg font-bold mb-2">
+            <h2 className="text-lg font-semibold mb-2 border-b border-gray-300">
               Hur du mäter din ringstorlek
             </h2>
-            <p className="text-sm mb-4">
+             <div className="relative w-full h-64">
+              <Image
+                src="/frame 133.png"
+                alt="Illustration på hur man mäter ringstorlek"
+                fill
+                sizes="(max-width: 768px) 100vw, 400px"
+                className="object-contain"
+              />
+            </div>
+            <p className="text-body-m mb-4">
               Välj en ring som storleksmässigt passar det finger du skall ha din
               nya ring på. Tänk på att en bred ring sitter tightare än en smal
               ring.
@@ -817,15 +831,6 @@ const ProductPage = () => {
               Räkna mm, rakt över diametern på ringens insida. Din storlek är de
               antal mm du får fram när du mäter. I detta fall 17,5.
             </p>
-            <div className="relative w-full h-64">
-              <Image
-                src="/matureRing.jpg"
-                alt="Illustration på hur man mäter ringstorlek"
-                fill
-                sizes="(max-width: 768px) 100vw, 400px"
-                className="object-contain"
-              />
-            </div>
           </div>
         </div>
       )}
