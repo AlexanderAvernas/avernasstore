@@ -1,60 +1,92 @@
 "use client";
 
 import Image from "next/image";
-
+import Link from "next/link";
 
 const Footer = () => {
   return (
-    <footer className="bg-white text-black py-6">
-      <div className="container mx-auto px-4 text-center">
-        {/* Footer - Social Links */}
-        <div className="flex justify-center space-x-6 mb-0">
-          <a href="https://www.instagram.com/margareta_avernas/" target="_blank" rel="noopener noreferrer" className="text-black hover:text-gray-400 transition">
+    <footer className="bg-white text-black py-7 border-t">
+      <div className="max-w-7xl mx-auto px-4">
+        {/* Top section */}
+        <div className="flex justify-start">
+          <div className="w-full sm:w-1/3 text-left space-y-8">
+            {/* Logo */}
             <Image
-              src="/instagram_White_icon.png" // Instagram-logga
-              alt="Instagram"
-              width={20}
-              height={20}
+              src="/logoBlack.png"
+              alt="Logo"
+              width={70}
+              height={40}
+              className="object-contain"
             />
-          </a>
-        </div>
 
-        {/* Footer - Logo in Center */}
-        <div className="m-0 flex justify-center">
-          <Image
-            src="/avernas.jpg" // Din logga
-            alt="Avernäs Logo"
-            width={120}
-            height={40}
-            className="object-contain"
-          />
-        </div>
+            {/* Text */}
+            <p className="text-body-s">
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do
+              eiusmod tempor incididunt ut labore et dolore magna aliqua.
+            </p>
 
-        <div className="flex justify-center space-x-6 mb-2">
-          <a href="/terms" className="text-black font-bold hover:text-gray-400 transition text-m">
-          Allmänna köpvillkor
-          </a>
-          {/* <a href="/contact" className="text-black hover:text-gray-400 transition text-m">
-            Contact
-          </a> */}
-        </div>
-           {/* Footer - Copyright and Links */}
-           <div className="text-sm mb-4">
-          <p>&copy; 2025 Margareta Avernäs. Powerd by A.</p>
+            {/* Social icons */}
+            <div className="flex gap-4">
+              <a
+                href="https://www.instagram.com/"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <Image
+                  src="/instagramBlack.png"
+                  alt="Instagram"
+                  width={30}
+                  height={30}
+                  className="hover:opacity-70 transition-opacity"
+                />
+              </a>
 
+              <a
+                href="https://www.facebook.com/"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <Image
+                  src="/facebookBlack.png"
+                  alt="Facebook"
+                  width={17}
+                  height={17}
+                  className="hover:opacity-70 transition-opacity"
+                />
+              </a>
+            </div>
 
-           {/* Footer - Klarna Payment Option */}
-           <div className="flex justify-center items-center mt-4">
-          <div className="flex flex-col items-center">
-            <Image
-              src="/klarna.png" // Klarna-logga
-              alt="Klarna Payment"
-              width={60} // Justera storleken för att passa designen
-              height={20}
-            />
-            {/* <p className="text-sm text-gray-500 mt-2">Betala med Klarna</p> */}
+            {/* Links */}
+            <div className="flex flex-col gap-4 text-body-s underline">
+              <Link href="/about" className="hover:underline">
+                Om mig
+              </Link>
+
+              <Link href="/terms" className="hover:underline">
+                Allmänna köpvillkor
+              </Link>
+
+              <Link href="/about" className="hover:underline">
+                Ta hand om dina smycken
+              </Link>
+            </div>
           </div>
         </div>
+
+        {/* Bottom section */}
+        <div className="mt-12 border-t pt-6 text-center">
+          <p className="text-sm mb-4">
+            &copy; 2025 Margareta Avernäs Smycken
+          </p>
+
+          <div className="flex justify-center">
+            <Image
+              src="/klarna.png"
+              alt="Klarna Payment"
+              width={60}
+              height={20}
+            />
+          </div>
         </div>
       </div>
     </footer>
