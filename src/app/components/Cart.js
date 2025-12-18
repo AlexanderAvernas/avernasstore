@@ -119,186 +119,204 @@
 
 // export default Cart;
 
-'use client'
+"use client";
 
-import Link from 'next/link'
-import Image from 'next/image'
-import { useRouter } from 'next/navigation'
-import { useEffect, useState } from 'react'
-import { useCart } from '../context/CartContext'
+import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { useCart } from "../context/CartContext";
 
 const Cart = () => {
-    const router = useRouter()
-    const { cart, dispatch } = useCart()
-    const [hydratedCart, setHydratedCart] = useState([])
+  const router = useRouter();
+  const { cart, dispatch } = useCart();
+  const [hydratedCart, setHydratedCart] = useState([]);
 
-    useEffect(() => {
-        setHydratedCart(cart)
-    }, [cart])
+  useEffect(() => {
+    setHydratedCart(cart);
+  }, [cart]);
 
-    const calculateTotals = (cartItems) => {
-    const totalAmount = cartItems.reduce(
-        (sum, item) => {
-            const price = item.specialPrice || item.price // ← Använd specialprice om det finns
-            return sum + price * item.quantity
-        },
-        0
-    )
-    const totalTax = cartItems.reduce(
-        (sum, item) => {
-            const price = item.specialPrice || item.price // ← Använd specialprice om det finns
-            return sum + ((price * item.tax_rate) / 10000) * item.quantity
-        },
-        0
-    )
-    return { totalAmount, totalTax }
-}
+  const calculateTotals = (cartItems) => {
+    const totalAmount = cartItems.reduce((sum, item) => {
+      const price = item.specialPrice || item.price;
+      return sum + price * item.quantity;
+    }, 0);
+    const totalTax = cartItems.reduce((sum, item) => {
+      const price = item.specialPrice || item.price;
+      return sum + ((price * item.tax_rate) / 10000) * item.quantity;
+    }, 0);
+    return { totalAmount, totalTax };
+  };
 
-    const { totalAmount, totalTax } = calculateTotals(hydratedCart)
+  const { totalAmount, totalTax } = calculateTotals(hydratedCart);
 
-    return (
-        <div className="bg-white w-full max-w-4xl">
-            {hydratedCart.length === 0 ? (
-                <p className="text-gray-600 text-center text-lg">
-                    Your cart is empty.
-                </p>
-            ) : (
-                <>
-                    <ul className="divide-y divide-gray-300">
-                        {hydratedCart.map((item) => (
-                            <li
-                                key={item.id}
-                                className="flex items-center justify-between py-8"
-                            >
-                                {/* Produktbild */}
-                                <div className="w-20 h-20 relative flex-shrink-0">
-                                    <Image
-                                        src={item.image}
-                                        alt={item.name}
-                                        layout="fill"
-                                        objectFit="cover"
-                                        className="rounded-md"
-                                    />
-                                </div>
+  return (
+    <div className="bg-white w-full h-full flex flex-col">
+      {hydratedCart.length === 0 ? (
+        // ✅ Tom varukorg - centrerad text + knapp längst ner
+        <>
+          <div className="flex-1 flex items-center justify-center">
+            <p className="text-gray-600 text-center text-lg">
+              Din varukorg är tom
+            </p>
+          </div>
 
-                                {/* Produktinfo */}
-                                <div className="flex-1 text-left ml-4">
-                                    <h3 className="text-lg font-medium text-gray-800">
-                                        {item.name}
-                                    </h3>
-                                    {item.specialPrice &&
-                                    item.specialPrice < item.price ? (
-                                        <div>
-                                            <p className="text-gray-500 line-through text-sm">
-                                                {(item.price / 100).toFixed(2)}{' '}
-                                                SEK
-                                            </p>
-                                            <p className="text-red-600 font-bold">
-                                                {(
-                                                    item.specialPrice / 100
-                                                ).toFixed(2)}{' '}
-                                                SEK
-                                            </p>
-                                        </div>
-                                    ) : (
-                                        <p className="text-gray-600">
-                                            {(item.price / 100).toFixed(2)} SEK
-                                        </p>
-                                    )}
-                                    {item.ringSize && (
-                                        <p className="text-sm text-gray-500">
-                                            Storlek: {item.ringSize}
-                                        </p>
-                                    )}
-                                    {item.letter && (
-                                        <p className="text-sm text-gray-500">
-                                            Bokstav: {item.letter}
-                                        </p>
-                                    )}
-                                    {item.diameter && (
-                                        <p className="text-sm text-gray-500">
-                                            Diameter: {item.diameter} cm
-                                        </p>
-                                    )}
-                                    {item.chainLength && (
-                                        <p className="text-sm text-gray-500">
-                                            Kedjelängd: {item.chainLength} cm
-                                        </p>
-                                    )}
-                                </div>
+          {/* Tillbaka-knapp längst ner */}
+          <div className="p-4 border-t">
+            <button
+              onClick={() => dispatch({ type: "CLOSE_CART" })}
+              className="w-full bg-gray-500 text-white py-3 hover:bg-gray-400 transition"
+            >
+              Tillbaka
+            </button>
+          </div>
+        </>
+      ) : (
+        // ✅ Varukorg med produkter
+        <>
+          {/* Scrollbar produktlista */}
+          <div className="flex-1 overflow-y-auto px-0">
+            <ul className="divide-y divide-gray-300">
+              {hydratedCart.map((item) => (
+                <li
+                  key={item.id}
+                  className="flex items-stretch justify-between py-2"
+                >
+                  {/* Produktbild */}
+                  <div className="w-20 h-20 relative flex-shrink-0">
+                    <Image
+                      src={item.image}
+                      alt={item.name}
+                      fill
+                      className="object-cover rounded-sm"
+                    />
+                  </div>
 
-                                {/* Kvantitet & Ta bort-knapp i en vertikal layout */}
-                                <div className="flex flex-col items-center space-y-2">
-                                    <div className="flex items-center space-x-2">
-                                        <button
-                                            onClick={() =>
-                                                dispatch({
-                                                    type: 'DECREASE_QUANTITY',
-                                                    payload: cart.indexOf(item) // ← Använd index istället för item.id
-                                                })
-                                            }
-                                            className="bg-gray-300 text-gray-800 px-2 py-1 hover:bg-gray-400 transition"
-                                        >
-                                            -
-                                        </button>
-                                        <span className="px-3 py-1 bg-white border">
-                                            {item.quantity}
-                                        </span>
-                                        <button
-                                            onClick={() =>
-                                                dispatch({
-                                                    type: 'INCREASE_QUANTITY',
-                                                    payload: cart.indexOf(item) // ← Använd index istället för item.id
-                                                })
-                                            }
-                                            className="bg-gray-300 text-gray-800 px-2 py-1 hover:bg-gray-400 transition"
-                                        >
-                                            +
-                                        </button>
-                                    </div>
+                  {/* Produktinfo */}
+                  <div className="flex-1 text-left ml-2 flex flex-col space-y-0.5">
+                    <h3 className="text-label-xs">{item.name}</h3>
 
-                                    {/* Ta bort-knapp (nu under kvantitet) */}
-                                    <button
-                                        onClick={() =>
-                                            dispatch({
-                                                type: 'REMOVE_FROM_CART',
-                                                payload: cart.indexOf(item) // ← Använd index istället för item.id
-                                            })
-                                        }
-                                        className="bg-white border-2 border-solid border-gray-400 text-black px-3 py-1 hover:bg-gray-500 transition text-sm"
-                                    >
-                                        Ta bort
-                                    </button>
-                                </div>
-                            </li>
-                        ))}
-                    </ul>
+                    {/* Metadata – ALLT PÅ SAMMA RAD */}
 
-                    {/* Totalsumma & Checkout */}
-                    <div className="mt-6 border-t pt-4">
-                        <p className="text-lg font-semibold text-gray-700">
-                            Total: {(totalAmount / 100).toFixed(2)} SEK
-                        </p>
-                        <p className="text-gray-500">
-                            Tax: {(totalTax / 100).toFixed(2)} SEK
-                        </p>
+                    <div className="flex flex-wrap items-center text-label-xs text-gray-700">
+                      {item.ringSize && <span>{item.ringSize}</span>}
 
-                        <Link href="/checkout">
-                            <button className="w-full mt-4 bg-white border-2 border-solid border-black text-black font-semibold py-2 hover:bg-gray-300 transition">
-                                FORTSÄTT TILL KASSA
-                            </button>
-                        </Link>
-                        <button
-                            onClick={() => router.back()}
-                            className="w-full mt-4 bg-gray-500 text-white py-2 hover:bg-gray-400 transition"
-                        >
-                            TILLBAKA
-                        </button>
+                      {item.letter && (
+                        <>
+                          {item.ringSize && (
+                            <span className="mx-1 text-gray-400">|</span>
+                          )}
+                          <span>{item.letter}</span>
+                        </>
+                      )}
+
+                      {item.diameter && (
+                        <>
+                          {(item.ringSize || item.letter) && (
+                            <span className="mx-1 text-gray-400">|</span>
+                          )}
+                          <span>{item.diameter} cm</span>
+                        </>
+                      )}
+
+                      {item.chainLength && (
+                        <>
+                          {(item.ringSize || item.letter || item.diameter) && (
+                            <span className="mx-1 text-gray-400">|</span>
+                          )}
+                          <span>{item.chainLength} cm</span>
+                        </>
+                      )}
                     </div>
-                </>
-            )}
-        </div>
-    )
-}
+                    {item.specialPrice && item.specialPrice < item.price ? (
+                      <div>
+                        {/* <p className="text-label-xs line-through">
+                          {(item.price / 100).toFixed(2)} SEK
+                        </p> */}
+                        <p className="text-red-300 text-label-xs">
+                          {(item.specialPrice / 100).toFixed(2)} SEK
+                        </p>
+                      </div>
+                    ) : (
+                      <p className="text-label-xs">
+                        {(item.price / 100).toFixed(2)} SEK
+                      </p>
+                    )}
 
-export default Cart
+                    {/* Kvantitetsväljare */}
+                    <div className="mt-2 w-fit inline-flex items-center border border-gray-400 rounded-sm">
+                      <button
+                        onClick={() =>
+                          dispatch({
+                            type: "DECREASE_QUANTITY",
+                            payload: cart.indexOf(item),
+                          })
+                        }
+                        className="px-1.5 py-0.5 text-label-xs hover:bg-gray-100"
+                      >
+                        −
+                      </button>
+
+                      <span className="px-2 text-label-xs">
+                        {item.quantity}
+                      </span>
+
+                      <button
+                        onClick={() =>
+                          dispatch({
+                            type: "INCREASE_QUANTITY",
+                            payload: cart.indexOf(item),
+                          })
+                        }
+                        className="px-1.5 py-0.5 text-label-xs hover:bg-gray-100"
+                      >
+                        +
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Ta bort – höger, längst ner */}
+                  <div className="flex flex-col justify-end ml-4">
+                    <button
+                      onClick={() =>
+                        dispatch({
+                          type: "REMOVE_FROM_CART",
+                          payload: cart.indexOf(item),
+                        })
+                      }
+                      className="text-xs underline hover:text-black transition"
+                    >
+                      Ta bort
+                    </button>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div className="p-4 border-t bg-white">
+            <div className="flex items-center justify-between text-lg font-semibold text-gray-700">
+              <span className="text-label-s uppercase">Totalsumma</span>
+              <span className="text-label-s">{(totalAmount / 100).toFixed(2)} SEK</span>
+            </div>
+
+            {/* <p className="text-gray-500 mb-4 text-sm">
+              Inkl. moms: {(totalTax / 100).toFixed(2)} SEK
+            </p>
+ */}
+            <button
+              onClick={() => {
+                dispatch({ type: "CLOSE_CART" });
+                router.push("/checkout");
+              }}
+              className="w-full bg-black text-button-s text-white py-3 hover:bg-gray-800 transition mt-4"
+            >
+              Fortsätt
+            </button>
+          </div>
+        </>
+      )}
+    </div>
+  );
+};
+
+export default Cart;

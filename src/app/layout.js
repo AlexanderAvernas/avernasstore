@@ -7,6 +7,7 @@ import { CartProvider } from './context/CartContext' // Importera CartProvider
 import './globals.css'
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
+import CartDrawer from "./components/CartDrawer";
 import { usePathname } from 'next/navigation'
 
 const ibmPlexSans = IBM_Plex_Sans({
@@ -33,6 +34,7 @@ export default function RootLayout({ children }) {
                 <ProductsProvider>
                     <CartProvider>
                         <Navbar />
+                        <CartDrawer/>
                         {children}
                         <Footer />
                     </CartProvider>

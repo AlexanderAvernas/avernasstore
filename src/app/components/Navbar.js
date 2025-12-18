@@ -316,7 +316,7 @@ export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
-  const { cart } = useCart();
+  const { cart, dispatch } = useCart();
   const pathname = usePathname();
   const [totalItems, setTotalItems] = useState(0);
   const dropdownRef = useRef(null);
@@ -373,10 +373,14 @@ export default function Navbar() {
   // Prevent body scroll when mobile menu is open
   useEffect(() => {
     if (isMenuOpen) {
-      document.body.style.overflow = "hidden";
+      document.body.classList.add("no-scroll"); // ✅ Samma klass!
     } else {
-      document.body.style.overflow = "unset";
+      document.body.classList.remove("no-scroll");
     }
+
+    return () => {
+      document.body.classList.remove("no-scroll");
+    };
   }, [isMenuOpen]);
 
   // Navbar styling based on page and scroll
@@ -544,8 +548,9 @@ export default function Navbar() {
 
             {/* Cart Icon - Right side */}
             <div className="flex items-center">
-              <Link
-                href="/cart"
+              {/* NYA - Ersätt med button */}
+              <button
+                onClick={() => dispatch({ type: "OPEN_CART" })}
                 className={`relative ${textColor} flex items-center hover:opacity-75 transition-opacity`}
               >
                 <Image
@@ -570,7 +575,8 @@ export default function Navbar() {
                     {totalItems}
                   </span>
                 )}
-              </Link>
+              </button>
+              {/* Stäng </Link> blir </button> */}
             </div>
           </div>
         </div>
@@ -578,12 +584,17 @@ export default function Navbar() {
 
       {/* Mobile Side Menu - Slides in from left */}
       <div
-        className={`fixed inset-0 z-40 md:hidden transition-opacity duration-300 ${
+        className={`fixed inset-0 z-50 md:hidden transition-opacity duration-300 ${
           isMenuOpen
             ? "opacity-100 pointer-events-auto"
             : "opacity-0 pointer-events-none"
         }`}
       >
+        {/* Backdrop - ✅ LÄGG TILL DENNA */}
+        <div
+          className="absolute inset-0 bg-black bg-opacity-50"
+          onClick={() => setIsMenuOpen(false)}
+        />
         {/* Backdrop */}
         <div
           className="absolute inset-0 bg-black bg-opacity-50"

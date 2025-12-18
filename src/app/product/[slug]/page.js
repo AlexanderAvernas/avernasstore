@@ -782,7 +782,7 @@ const ProductPage = () => {
                   },
                 });
 
-                router.push("../../cart");
+                dispatch({ type: 'OPEN_CART' });
               }}
               className="flex-1 rounded-sm bg-black text-white text-button-s px-6 py-3 hover:bg-gray-300 transition"
             >
