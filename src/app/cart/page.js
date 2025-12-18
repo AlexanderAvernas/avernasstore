@@ -1,4 +1,4 @@
-/* import Cart from "../components/Cart";
+import Cart from "../components/Cart";
 
 export default function CartPage() {
   return (
@@ -8,4 +8,3 @@ export default function CartPage() {
     </div>
   );
 }
- */
