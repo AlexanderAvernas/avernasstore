@@ -155,7 +155,7 @@ const Cart = () => {
         // ✅ Tom varukorg - centrerad text + knapp längst ner
         <>
           <div className="flex-1 flex items-center justify-center">
-            <p className="text-gray-600 text-center text-lg">
+            <p className="text-body-s text-center uppercase">
               Din varukorg är tom
             </p>
           </div>
@@ -164,7 +164,7 @@ const Cart = () => {
           <div className="p-4 border-t">
             <button
               onClick={() => dispatch({ type: "CLOSE_CART" })}
-              className="w-full bg-gray-500 text-white py-3 hover:bg-gray-400 transition"
+              className="text-button-s rounded-sm w-full bg-white border border-black  py-3 hover:bg-gray-400 transition"
             >
               Tillbaka
             </button>

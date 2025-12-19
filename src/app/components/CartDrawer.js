@@ -1,23 +1,23 @@
-'use client'
+"use client";
 
-import { useCart } from '../context/CartContext'
-import { useEffect } from 'react'
-import Cart from './Cart' // ✅ Importera din riktiga Cart-komponent
+import { useCart } from "../context/CartContext";
+import { useEffect } from "react";
+import Cart from "./Cart"; // ✅ Importera din riktiga Cart-komponent
 
 export default function CartDrawer() {
-  const { isCartOpen, dispatch } = useCart()
+  const { isCartOpen, dispatch } = useCart();
 
-   useEffect(() => {
+  useEffect(() => {
     if (isCartOpen) {
-      document.body.classList.add('no-scroll')
+      document.body.classList.add("no-scroll");
     } else {
-      document.body.classList.remove('no-scroll')
+      document.body.classList.remove("no-scroll");
     }
-    
+
     return () => {
-      document.body.classList.remove('no-scroll')
-    }
-  }, [isCartOpen])
+      document.body.classList.remove("no-scroll");
+    };
+  }, [isCartOpen]);
 
   return (
     <div
@@ -30,7 +30,7 @@ export default function CartDrawer() {
       {/* Backdrop */}
       <div
         className="absolute inset-0 bg-black bg-opacity-50"
-        onClick={() => dispatch({ type: 'CLOSE_CART' })}
+        onClick={() => dispatch({ type: "CLOSE_CART" })}
       />
 
       {/* Drawer - Glider in från höger */}
@@ -40,10 +40,14 @@ export default function CartDrawer() {
         }`}
       >
         {/* Close button */}
-        <div className="flex justify-end py-4 px-4">
-          <button 
-            onClick={() => dispatch({ type: 'CLOSE_CART' })} 
+        {/* Header */}
+        <div className="flex items-center justify-between py-6 px-4">
+          <h2 className="text-label-m uppercase">VARUKORG</h2>
+
+          <button
+            onClick={() => dispatch({ type: "CLOSE_CART" })}
             className="text-black"
+            aria-label="Stäng varukorg"
           >
             <svg
               className="w-6 h-6"
@@ -68,5 +72,5 @@ export default function CartDrawer() {
         </div>
       </div>
     </div>
-  )
+  );
 }

@@ -5,10 +5,9 @@ import { useProducts } from '../context/ProductsContext'
 import Link from 'next/link'
 import Image from 'next/image'
 import { Swiper, SwiperSlide } from 'swiper/react'
-import { Navigation, Pagination, Autoplay } from 'swiper/modules'
+import { Navigation, Autoplay } from 'swiper/modules'
 import 'swiper/css'
 import 'swiper/css/navigation'
-import 'swiper/css/pagination'
 
 const NewsCarousel = () => {
     const { state } = useProducts()
@@ -29,7 +28,7 @@ const NewsCarousel = () => {
             <div className="max-w-7xl mx-auto">
                 <h2 className="text-heading-l text-center mb-8">Nyheter</h2>
                 <Swiper
-                    modules={[Navigation, Pagination, Autoplay]}
+                    modules={[Navigation, Autoplay]}
                     spaceBetween={20}
                     slidesPerView={1.3}
                     centeredSlides={true} // <-- centrerar sliden
@@ -73,7 +72,7 @@ const NewsCarousel = () => {
                         return (
                             <SwiperSlide className="swiper-slide h-auto" key={product.id}>
                                 <Link href={`/product/${product.slug}`}>
-                                    <div className="hover:shadow-xl transition-shadow relative">
+                                    <div className="relative">
                                         {/* Produktbild */}
                                         <div className="relative w-full aspect-square mb-2">
                                             <Image

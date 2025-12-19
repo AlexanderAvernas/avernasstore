@@ -402,7 +402,7 @@ export default function Navbar() {
       <nav
         className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${navbarBg}`}
       >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto py-2 px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-12">
             {/* Mobile: Hamburger left */}
             <div className="flex items-center md:hidden">
@@ -539,8 +539,8 @@ export default function Navbar() {
                       : "/logoBlack.png"
                   }
                   alt="Logo"
-                  width={42} // justera efter behov
-                  height={42}
+                  width={58} // justera efter behov
+                  height={58}
                   priority
                 />
               </Link>
@@ -560,8 +560,8 @@ export default function Navbar() {
                       : "/cartBlack.png"
                   }
                   alt="Cart"
-                  width={24}
-                  height={24}
+                  width={20}
+                  height={20}
                 />
 
                 {totalItems > 0 && (
@@ -603,7 +603,7 @@ export default function Navbar() {
 
         {/* Slide-in Menu */}
         <div
-          className={`absolute top-0 py-9 left-0 h-full w-2/3 bg-white shadow-xl transform transition-transform duration-300 ${
+          className={`absolute top-0 py-6 left-0 h-full w-4/5 bg-white shadow-xl transform transition-transform duration-300 ${
             isMenuOpen ? "translate-x-0" : "-translate-x-full"
           }`}
         >
@@ -668,7 +668,7 @@ export default function Navbar() {
               )}
             </div>
 
-            {/* ✅ LÄGG TILL: Special Offers - Visas bara om det finns rabatter */}
+            {/* ✅ Special Offers - Visas bara om det finns rabatter */}
             {hasSpecialOffers && (
               <div className="border-t pt-4">
                 <button
@@ -764,12 +764,12 @@ export default function Navbar() {
                 className="block hover:text-gray-600"
                 onClick={() => setIsMenuOpen(false)}
               >
-                Om Margareta Avernäs Smycken
+                Om M.Avernäs Smycken
               </Link>
             </div>
           </div>
           {/* Social icons – bottom right */}
-          <div className="absolute bottom-4 right-4 flex gap-4">
+          <div className="absolute bottom-6 right-6 flex gap-4">
             <a
               href="https://www.instagram.com/margareta_avernas/"
               target="_blank"
@@ -778,8 +778,8 @@ export default function Navbar() {
               <Image
                 src="/instagramBlack.png"
                 alt="Instagram"
-                width={24}
-                height={24}
+                width={28}
+                height={28}
                 className="hover:opacity-70 transition-opacity"
               />
             </a>
@@ -792,8 +792,8 @@ export default function Navbar() {
               <Image
                 src="/facebookBlack.png"
                 alt="Facebook"
-                width={14}
-                height={14}
+                width={16}
+                height={16}
                 className="hover:opacity-70 transition-opacity"
               />
             </a>
