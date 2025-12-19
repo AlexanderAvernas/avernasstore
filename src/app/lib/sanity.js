@@ -88,3 +88,50 @@ export const fetchSpecialOffer = async () => {
     buttonText: offer.buttonText || 'Se erbjudanden'
   }
 }
+
+// ✅  Hämta categories från Sanity
+export const fetchCategories = async () => {
+  const query = `*[_type == "category"] | order(displayOrder asc){
+    name,
+    image
+  }`
+
+  const categories = await client.fetch(query)
+
+  return categories.map((cat) => ({
+    name: cat.name,
+    image: cat.image ? urlFor(cat.image).url() : null
+  }))
+}
+
+// ✅ Hämta collections från Sanity
+export const fetchCollections = async () => {
+  const query = `*[_type == "collection"] | order(displayOrder asc){
+    name,
+    image
+  }`
+
+  const collections = await client.fetch(query)
+
+  return collections.map((col) => ({
+    name: col.name,
+    image: col.image ? urlFor(col.image).url() : null
+  }))
+}
+
+// ✅  Hämta About Firstpage
+export const fetchAboutFirstpage = async () => {
+  const query = `*[_type == "aboutFirstpage" && isActive == true][0]{
+    title,
+    image
+  }`
+
+  const about = await client.fetch(query)
+
+  if (!about) return null
+
+  return {
+    title: about.title,
+    image: about.image ? urlFor(about.image).url() : null
+  }
+}
