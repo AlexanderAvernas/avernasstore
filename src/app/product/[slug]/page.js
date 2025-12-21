@@ -384,6 +384,7 @@ import Link from "next/link";
 import Image from "next/image";
 import "swiper/css";
 import "swiper/css/pagination";
+import SimilarProductsCarousel from "../../components/SimilarProductCarousel";
 
 const ProductPage = () => {
   const router = useRouter();
@@ -438,6 +439,7 @@ const ProductPage = () => {
     product.category === "necklaces";
 
   return (
+    <>
     <div className="flex justify-center items-center min-h-screen bg-white-100 sm:p-6">
       <div className="bg-white sm:shadow-lg sm:p-8 max-w-5xl w-full grid grid-cols-1 md:grid-cols-2 gap-8">
         {/* 📱 Mobil: swipebar med thumbnails */}
@@ -829,12 +831,14 @@ const ProductPage = () => {
               <br />
               <br />
               Räkna mm, rakt över diametern på ringens insida. Din storlek är de
-              antal mm du får fram när du mäter. I detta fall 17,5.
+              antal mm du får fram när du mäter. I detta fall 17.
             </p>
           </div>
         </div>
       )}
     </div>
+    <SimilarProductsCarousel currentProduct={product}/>
+    </>
   );
 };
 

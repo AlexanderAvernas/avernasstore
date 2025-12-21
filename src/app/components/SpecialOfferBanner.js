@@ -19,7 +19,7 @@ const SpecialOfferBanner = ({ title, description, imageUrl, buttonText }) => {
         {title && <h2 className="text-heading-l text-white mb-4">{title}</h2>}
 
         <Link href="/special-offers">
-          <span className="text-button-small text-white cursor-pointer">
+          <span className="text-button-s text-white cursor-pointer">
             {buttonText || "TILL REAN"}
           </span>
         </Link>
