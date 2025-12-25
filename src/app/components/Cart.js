@@ -283,7 +283,7 @@ const Cart = () => {
                           payload: cart.indexOf(item),
                         })
                       }
-                      className="text-xs underline hover:text-black transition"
+                      className="text-xs underline hover:text-black transition uppercase"
                     >
                       Ta bort
                     </button>

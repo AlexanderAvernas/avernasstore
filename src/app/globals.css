@@ -11,6 +11,7 @@
 html, body {
   @apply overflow-x-hidden w-full min-h-screen;
   font-family: var(--font-ibm-plex-sans), system-ui, sans-serif;
+  color: #272525;
 }
 
 /* Förhindra scroll när modals är öppna */
@@ -23,6 +24,7 @@ body.no-scroll {
 @layer components {
   /* Body text */
   .text-body-m {
+    color: #272525;
     font-size: 16px;
     font-family: var(--font-ibm-plex-sans);
     font-weight: 300;
@@ -31,6 +33,7 @@ body.no-scroll {
   }
 
   .text-body-s {
+    color: #272525;
     font-size: 14px;
     font-family: var(--font-ibm-plex-sans);
     font-weight: 400;
@@ -39,6 +42,7 @@ body.no-scroll {
   }
 
   .text-body-xs {
+    color: #272525;
     font-size: 12px;
     font-family: var(--font-ibm-plex-sans);
     font-weight: 400;
@@ -47,6 +51,7 @@ body.no-scroll {
 
   /* Headings */
   .text-heading-l {
+    color: #272525;
     font-size: 20px;
     font-family: var(--font-playfair-display);
     font-weight: 400;
@@ -55,6 +60,7 @@ body.no-scroll {
   }
 
   .text-heading-xl {
+    color: #272525;
     font-size: 24px;
     font-family: var(--font-playfair-display);
     font-weight: 200;
@@ -64,6 +70,7 @@ body.no-scroll {
 
   /* Buttons */
   .text-button-s {
+    color: #272525;
     font-size: 14px;
     font-family: var(--font-ibm-plex-sans);
     font-weight: 500;
@@ -73,6 +80,7 @@ body.no-scroll {
 
   /* Labels */
   .text-label-xs {
+    color: #272525;
     font-size: 12px;
     font-family: var(--font-ibm-plex-sans);
     font-weight: 400;
@@ -80,6 +88,7 @@ body.no-scroll {
   }
 
   .text-label-s {
+    color: #272525;
     font-size: 14px;
     font-family: var(--font-ibm-plex-sans);
     font-weight: 400;
@@ -88,6 +97,7 @@ body.no-scroll {
   }
 
   .text-label-m {
+    color: #272525;
     font-size: 16px;
     font-family: var(--font-ibm-plex-sans);
     font-weight: 400;
@@ -95,6 +105,7 @@ body.no-scroll {
   }
 
   .text-label-l {
+    color: #272525;
     font-size: 20px;
     font-family: var(--font-ibm-plex-sans);
     font-weight: 400;
@@ -124,8 +135,9 @@ body.no-scroll {
 
 /* Ändra färg på pagination-dots */
 .swiper-pagination-bullet {
-  background: white !important; /* Standardfärg på prickarna */
-  opacity: 0.6; /* Lite genomskinliga */
+  background: transparent !important; /* Standardfärg på prickarna */
+  border: 1px solid white;
+  opacity: 0.7; /* Lite genomskinliga */
 }
 
 .swiper-pagination-bullet-active {

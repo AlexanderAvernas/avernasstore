@@ -651,13 +651,13 @@ export default function Navbar() {
               </button>
 
               {openMobileSection === "categories" && (
-                <div className="mt-3 space-y-3 pl-4 text-body-s">
+                <div className="mt-3 space-y-3 pl-4 text-body-s uppercase">
                   {["rings", "necklaces", "earrings", "bracelets"].map(
                     (cat) => (
                       <Link
                         key={cat}
                         href={`/category/${cat}`}
-                        className="block text-gray-700"
+                        className="block text-gray-500"
                         onClick={() => setIsMenuOpen(false)}
                       >
                         {cat}
@@ -694,14 +694,14 @@ export default function Navbar() {
                   <div className="mt-3 space-y-3 pl-4 text-body-s">
                     <Link
                       href="/special-offers"
-                      className="block"
+                      className="block uppercase text-gray-500"
                       onClick={() => setIsMenuOpen(false)}
                     >
                       Specialerbjudanden
                     </Link>
                     <Link
                       href="/news"
-                      className="block"
+                      className="block uppercase text-gray-500"
                       onClick={() => setIsMenuOpen(false)}
                     >
                       Nyheter
@@ -747,7 +747,7 @@ export default function Navbar() {
                     <Link
                       key={col}
                       href={`/collection/${col}`}
-                      className="block text-gray-700 capitalize"
+                      className="block text-gray-500 text-body-s uppercase"
                       onClick={() => setIsMenuOpen(false)}
                     >
                       {col.replace("-", " ")}
@@ -758,7 +758,7 @@ export default function Navbar() {
             </div>
 
             {/* About  */}
-            <div className="border-t border-b pt-6 text-label-s">
+            <div className="border-t border-b py-4 text-label-s">
               <Link
                 href="/about"
                 className="block hover:text-gray-600"
