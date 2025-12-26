@@ -101,8 +101,7 @@ const ConfirmationPage = () => {
   }, []);
 
   return (
-    <div>
-      <h1>Order Confirmation</h1>
+    <div className="pt-6">
       {error ? (
         <p>Error: {error}</p>
       ) : (

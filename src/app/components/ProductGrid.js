@@ -111,19 +111,19 @@ const ProductGrid = ({ products, title, emptyMessage }) => {
                                         {/* Prisvisning */}
                                         {hasDiscount ? (
                                             <div className="mt-2">
+                                                <p className="text-label-s text-red-400">
+                                                    {displayPrice % 100 === 0
+                                                        ? `${displayPrice / 100} SEK`
+                                                        : `${(
+                                                              displayPrice / 100
+                                                          ).toFixed(2)} SEK`}
+                                                </p>
                                                 <p className="text-label-s line-through">
                                                     {product.price % 100 === 0
                                                         ? `${product.price / 100} SEK`
                                                         : `${(
                                                               product.price /
                                                               100
-                                                          ).toFixed(2)} SEK`}
-                                                </p>
-                                                <p className="text-label-s text-red-400">
-                                                    {displayPrice % 100 === 0
-                                                        ? `${displayPrice / 100} SEK`
-                                                        : `${(
-                                                              displayPrice / 100
                                                           ).toFixed(2)} SEK`}
                                                 </p>
                                             </div>
