@@ -569,8 +569,13 @@ const ProductPage = () => {
 
                 {isCareOpen && (
                   <div className="pb-4 text-body-s">
-                    Förvara smycket torrt, undvik kontakt med vatten, parfym och
-                    kemikalier. Rengör varsamt med mjuk trasa.
+                    Genom att ta hand om ditt nya smycke kan du minimera
+                    slitage. Silver oxiderar, det är helt naturligt. För att
+                    fördröja processen bör du undvika att förvara dina smycken i
+                    en fuktig miljö, såsom badrummet. Torka av smycket med
+                    putsduk efter användning så det blir rent från fett, smuts
+                    och smink. Då behåller det sin lyster mycket längre. Förvara
+                    gärna dina smycken i medföljande ask.
                   </div>
                 )}
               </div>
@@ -592,8 +597,7 @@ const ProductPage = () => {
 
                 {isMaterialOpen && (
                   <div className="pb-4 text-body-s">
-                    Tillverkad i återvunnet sterlingsilver / guldplätering.
-                    Nickel- och blyfri.
+                    Alla våra smycken är gjorda i återvunnet 925 sterlingsilver.
                   </div>
                 )}
               </div>

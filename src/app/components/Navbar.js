@@ -538,7 +538,7 @@ export default function Navbar() {
                       ? "/logoWhite.png"
                       : "/logoBlack.png"
                   }
-                  alt="Logo"
+                  alt="Margareta Avernäs"
                   width={58} // justera efter behov
                   height={58}
                   priority
@@ -559,7 +559,7 @@ export default function Navbar() {
                       ? "/cart white.png"
                       : "/cartBlack.png"
                   }
-                  alt="Cart"
+                  alt="Margareta Avernäs Smycken"
                   width={20}
                   height={20}
                 />
