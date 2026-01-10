@@ -25,7 +25,7 @@ export default async function Home() {
   return (
     <div className="w-full">
       {/* Flytande informationsruta */}
-      <div className="fixed bottom-4 right-4 bg-yellow-200 shadow-lg rounded-lg p-4 max-w-xs z-50">
+      <div className="fixed bottom-10 right-5 bg-yellow-200 shadow-lg rounded-lg p-4 max-w-xs z-50">
         <p className="text-sm font-medium">
           Denna sida är under förbättring. Besök vår fungerande shop här:&nbsp;
           <a
