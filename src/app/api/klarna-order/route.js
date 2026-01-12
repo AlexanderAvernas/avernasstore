@@ -32,6 +32,7 @@ export async function POST(req) {
             const letter = cartItem.letter || null
             const diameter = cartItem.diameter || null
             const chainLength = cartItem.chainLength || null
+            const color = cartItem.color || null
 
             const product = productMap.get(id)
             if (!product) throw new Error(`Invalid product ID: ${id}`)
@@ -56,6 +57,9 @@ export async function POST(req) {
             }
             if (chainLength) {
                 productName += ` (Kedjelängd: ${chainLength} cm)`
+            }
+            if (color) {
+                productName += ` (Färg: ${color.replace('-', ' ')})`
             }
 
             return {
