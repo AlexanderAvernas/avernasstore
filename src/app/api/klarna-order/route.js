@@ -6,6 +6,12 @@ import { createKustomOrder } from '../../utils/kustomApi'
 const SHIPPING_FEE = 3900 // 39 kr i öre
 const SHIPPING_TAX_RATE = 2500 // 25% moms
 
+// PRISER FÖR EXTRA BOKSTÄVER
+const EXTRA_LETTER_PRICES = {
+  coins: 40000, // 400 kr
+  letter: 40000, // 400 kr
+}
+
 export async function POST(req) {
     try {
         const { cartItems } = await req.json()
@@ -25,55 +31,77 @@ export async function POST(req) {
         const allProducts = await fetchProducts()
         const productMap = new Map(allProducts.map((p) => [p.id, p]))
 
-        // 🔹 Step 3: Validate each item in the cart and use real price data
-        const orderLines = cartItems.map((cartItem) => {
-            const { id, quantity } = cartItem
-            const ringSize = cartItem.ringSize || null
-            const letter = cartItem.letter || null
-            const diameter = cartItem.diameter || null
-            const chainLength = cartItem.chainLength || null
-            const color = cartItem.color || null
+        const orderLines = []
 
-            const product = productMap.get(id)
-            if (!product) throw new Error(`Invalid product ID: ${id}`)
+       // 🆕 UPPDATERAD: Hantera varje cart item
+       cartItems.forEach((cartItem) => {
+           const { id, quantity, ringSize, letters, diameter, chainLength, color } = cartItem
 
-            const price = product.specialPrice || product.price
+           const product = productMap.get(id)
+           if (!product) throw new Error(`Invalid product ID: ${id}`)
 
-            const totalAmount = price * quantity
-            const totalTaxAmount =
-                totalAmount -
-                Math.round(totalAmount / (1 + product.tax_rate / 10000))
+           const basePrice = product.specialPrice || product.price
 
-            // Bygg produktnamnet med extra info
-            let productName = product.name
-            if (ringSize) {
-                productName += ` (Storlek: ${ringSize})`
-            }
-            if (letter) {
-                productName += ` (Bokstav: ${letter})`
-            }
-            if (diameter) {
-                productName += ` (Diameter: ${diameter} cm)`
-            }
-            if (chainLength) {
-                productName += ` (Kedjelängd: ${chainLength} cm)`
-            }
-            if (color) {
-                productName += ` (Färg: ${color.replace('-', ' ')})`
-            }
+           // 🆕 BERÄKNA BASPRIS (endast första bokstaven ingår)
+           const baseTotalAmount = basePrice * quantity
+           const baseTotalTaxAmount =
+               baseTotalAmount -
+               Math.round(baseTotalAmount / (1 + product.tax_rate / 10000))
 
-            return {
-                type: 'physical',
-                reference: product.id,
-                name: productName,
-                quantity,
-                quantity_unit: 'pcs',
-                unit_price: price,
-                tax_rate: product.tax_rate,
-                total_amount: totalAmount,
-                total_tax_amount: totalTaxAmount
-            }
-        })
+           // Bygg produktnamnet med info
+           let productName = product.name
+           if (ringSize) productName += ` (Storlek: ${ringSize})`
+           
+           // 🆕 VISA FÖRSTA BOKSTAVEN I PRODUKTNAMNET
+           if (letters && letters.length > 0) {
+               productName += ` (Bokstav: ${letters[0]})`
+           }
+           
+           if (diameter) productName += ` (Diameter: ${diameter} cm)`
+           if (chainLength) productName += ` (Kedjelängd: ${chainLength} cm)`
+           if (color) productName += ` (Färg: ${color.replace('-', ' ')})`
+
+           // 🆕 LÄGG TILL HUVUDPRODUKTEN (med första bokstaven)
+           orderLines.push({
+               type: 'physical',
+               reference: product.id,
+               name: productName,
+               quantity,
+               quantity_unit: 'pcs',
+               unit_price: basePrice,
+               tax_rate: product.tax_rate,
+               total_amount: baseTotalAmount,
+               total_tax_amount: baseTotalTaxAmount
+           })
+
+           // 🆕 LÄGG TILL EXTRA BOKSTÄVER SOM SEPARATA ORDERRADER
+           if (letters && letters.length > 1) {
+               const extraLetters = letters.slice(1) // Alla utom första bokstaven
+               const pricePerLetter = EXTRA_LETTER_PRICES[product.collection]
+
+               if (pricePerLetter) {
+                   extraLetters.forEach((letter) => {
+                       const letterTotalAmount = pricePerLetter * quantity
+                       const letterTotalTaxAmount =
+                           letterTotalAmount -
+                           Math.round(letterTotalAmount / (1 + product.tax_rate / 10000))
+
+                       orderLines.push({
+                           type: 'physical',
+                           reference: `${product.id}-extra-letter`,
+                           name: `Extra bokstav: ${letter}`,
+                           quantity,
+                           quantity_unit: 'pcs',
+                           unit_price: pricePerLetter,
+                           tax_rate: product.tax_rate,
+                           total_amount: letterTotalAmount,
+                           total_tax_amount: letterTotalTaxAmount
+                       })
+                   })
+               }
+           }
+       })
+
 
         // 🔹  Lägg till frakt som en egen order_line
         const shippingTaxAmount =

@@ -14,15 +14,39 @@ const Cart = () => {
     setHydratedCart(cart);
   }, [cart]);
 
+  // PRISER FÖR EXTRA BOKSTÄVER
+  const EXTRA_LETTER_PRICES = {
+    coins: 40000,
+    letter: 40000,
+  };
+
   const calculateTotals = (cartItems) => {
     const totalAmount = cartItems.reduce((sum, item) => {
-      const price = item.specialPrice || item.price;
-      return sum + price * item.quantity;
+      // Börja med baspriset (specialPrice eller ordinarie pris)
+      let itemPrice = item.specialPrice || item.price;
+      
+      // 🆕 LÄGG TILL KOSTNADEN FÖR EXTRA BOKSTÄVER
+      if (item.letters && item.letters.length > 1) {
+        const extraLettersCount = item.letters.length - 1;
+        const pricePerExtra = EXTRA_LETTER_PRICES[item.collection] || 0;
+        itemPrice += extraLettersCount * pricePerExtra;
+      }
+      
+      return sum + itemPrice * item.quantity;
     }, 0);
+    
     const totalTax = cartItems.reduce((sum, item) => {
-      const price = item.specialPrice || item.price;
-      return sum + ((price * item.tax_rate) / 10000) * item.quantity;
+      let itemPrice = item.specialPrice || item.price;
+      
+      if (item.letters && item.letters.length > 1) {
+        const extraLettersCount = item.letters.length - 1;
+        const pricePerExtra = EXTRA_LETTER_PRICES[item.collection] || 0;
+        itemPrice += extraLettersCount * pricePerExtra;
+      }
+      
+      return sum + ((itemPrice * item.tax_rate) / 10000) * item.quantity;
     }, 0);
+    
     return { totalAmount, totalTax };
   };
 
@@ -75,22 +99,22 @@ const Cart = () => {
                     <h3 className="text-label-xs">{item.name}</h3>
 
                     {/* Metadata – ALLT PÅ SAMMA RAD */}
-
                     <div className="flex flex-wrap items-center text-label-xs text-gray-700">
                       {item.ringSize && <span>{item.ringSize}</span>}
 
-                      {item.letter && (
+                      {/* 🆕 VISA ALLA BOKSTÄVER */}
+                      {item.letters && item.letters.length > 0 && (
                         <>
                           {item.ringSize && (
                             <span className="mx-1 text-gray-400">|</span>
                           )}
-                          <span>{item.letter}</span>
+                          <span>{item.letters.join(", ")}</span>
                         </>
                       )}
 
                       {item.diameter && (
                         <>
-                          {(item.ringSize || item.letter) && (
+                          {(item.ringSize || item.letters) && (
                             <span className="mx-1 text-gray-400">|</span>
                           )}
                           <span>{item.diameter} cm</span>
@@ -99,7 +123,7 @@ const Cart = () => {
 
                       {item.chainLength && (
                         <>
-                          {(item.ringSize || item.letter || item.diameter) && (
+                          {(item.ringSize || item.letters || item.diameter) && (
                             <span className="mx-1 text-gray-400">|</span>
                           )}
                           <span>{item.chainLength} cm</span>
@@ -107,28 +131,37 @@ const Cart = () => {
                       )}
 
                       {item.color && (
-                       <>
-                         {(item.ringSize || item.letter || item.diameter || item.chainLength) && (
-                           <span className="mx-1 text-gray-400">|</span>
-                         )}
-                         <span className="capitalize">{item.color.replace('-', ' ')}</span>
-                       </>
-                     )}
+                        <>
+                          {(item.ringSize ||
+                            item.letters ||
+                            item.diameter ||
+                            item.chainLength) && (
+                            <span className="mx-1 text-gray-400">|</span>
+                          )}
+                          <span className="capitalize">
+                            {item.color.replace("-", " ")}
+                          </span>
+                        </>
+                      )}
                     </div>
-                    {item.specialPrice && item.specialPrice < item.price ? (
-                      <div>
-                        {/* <p className="text-label-xs line-through">
-                          {(item.price / 100).toFixed(2)} SEK
-                        </p> */}
-                        <p className="text-red-300 text-label-xs">
-                          {(item.specialPrice / 100).toFixed(2)} SEK
+
+                    {/* PRISVISNING MED EXTRA BOKSTÄVER */}
+                    {(() => {
+                      let displayPrice = item.specialPrice || item.price;
+                      
+                      // Lägg till kostnaden för extra bokstäver
+                      if (item.letters && item.letters.length > 1) {
+                        const extraLettersCount = item.letters.length - 1;
+                        const pricePerExtra = EXTRA_LETTER_PRICES[item.collection] || 0;
+                        displayPrice += extraLettersCount * pricePerExtra;
+                      }
+                      
+                      return (
+                        <p className={`text-label-xs ${item.specialPrice && item.specialPrice < item.price ? 'text-red-300' : ''}`}>
+                          {(displayPrice / 100).toFixed(2)} SEK
                         </p>
-                      </div>
-                    ) : (
-                      <p className="text-label-xs">
-                        {(item.price / 100).toFixed(2)} SEK
-                      </p>
-                    )}
+                      );
+                    })()}
 
                     {/* Kvantitetsväljare */}
                     <div className="mt-2 w-fit inline-flex items-center border border-gray-400 rounded-sm">
@@ -184,7 +217,9 @@ const Cart = () => {
           <div className="p-4 border-t bg-white">
             <div className="flex items-center justify-between text-lg font-semibold text-gray-700">
               <span className="text-label-s uppercase">Totalsumma</span>
-              <span className="text-label-s">{(totalAmount / 100).toFixed(2)} SEK</span>
+              <span className="text-label-s">
+                {(totalAmount / 100).toFixed(2)} SEK
+              </span>
             </div>
 
             {/* <p className="text-gray-500 mb-4 text-sm">

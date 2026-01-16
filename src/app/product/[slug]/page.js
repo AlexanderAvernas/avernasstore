@@ -13,6 +13,12 @@ import "swiper/css";
 import "swiper/css/pagination";
 import SimilarProductsCarousel from "../../components/SimilarProductCarousel";
 
+ //PRISER FÖR EXTRA BOKSTÄVER
+const EXTRA_LETTER_PRICES = {
+  coins: 40000, // 400 kr i öre
+  letter: 40000, // 400 kr i öre
+};
+
 const ProductPage = () => {
   const router = useRouter();
   const { slug } = useParams();
@@ -24,11 +30,12 @@ const ProductPage = () => {
   const [ringSize, setRingSize] = useState(null);
   const [showRingSizeInfo, setShowRingSizeInfo] = useState(false);
   const [selectedColor, setSelectedColor] = useState("");
-  const [selectedLetter, setSelectedLetter] = useState("");
   const [selectedDiameter, setSelectedDiameter] = useState("");
   const [selectedChainLength, setSelectedChainLength] = useState("");
   const [isCareOpen, setIsCareOpen] = useState(false);
   const [isMaterialOpen, setIsMaterialOpen] = useState(false);
+  //selectedLetter blir en array av bokstäver
+  const [selectedLetters, setSelectedLetters] = useState([""]);
 
   // Arrays för olika val
   const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZÅÄÖ".split("");
@@ -85,6 +92,39 @@ const ProductPage = () => {
   const colorOptions = 
     product.name === "JOELLE ring" ? joelleColors : 
     product.name === "VIENNA ring" ? viennaColors : [];
+
+    // FUNKTION: Lägg till ny bokstav
+  const handleAddLetter = () => {
+    setSelectedLetters([...selectedLetters, ""]);
+  };
+
+  // FUNKTION: Ta bort bokstav
+  const handleRemoveLetter = (index) => {
+    if (selectedLetters.length > 1) {
+      const newLetters = selectedLetters.filter((_, i) => i !== index);
+      setSelectedLetters(newLetters);
+    }
+  };
+
+  // FUNKTION: Uppdatera specifik bokstav
+  const handleLetterChange = (index, value) => {
+    const newLetters = [...selectedLetters];
+    newLetters[index] = value;
+    setSelectedLetters(newLetters);
+  };
+
+  // 🆕 BERÄKNA TOTALPRIS inkl extra bokstäver
+  const calculateTotalPrice = () => {
+    let total = displayPrice;
+    
+    if (showLetterSelect && selectedLetters.length > 1) {
+      const extraLettersCount = selectedLetters.length - 1;
+      const pricePerExtra = EXTRA_LETTER_PRICES[product.collection] || 0;
+      total += extraLettersCount * pricePerExtra;
+    }
+    
+    return total;
+  };
 
   return (
     <>
@@ -265,31 +305,52 @@ const ProductPage = () => {
           )} */}
 
             {/* Visa dropdown för bokstavsval (coins eller letter) */}
+            {/* BOKSTAVSVÄLJARE MED MÖJLIGHET ATT LÄGGA TILL FLERA */}
             {showLetterSelect && (
               <div className="mb-4">
-                {/*  <label
-                htmlFor="letter-select"
-                className="block mb-2 text-sm font-medium text-gray-700"
-              >
-                Välj bokstav för gravering:
-              </label> */}
-                <select
-                  id="letter-select"
-                  value={selectedLetter}
-                  onChange={(e) => setSelectedLetter(e.target.value)}
-                  className="w-full border border-gray-300 rounded px-3 py-2"
-                  required
-                >
-                  <option value="">Välj bokstav</option>
-                  {letters.map((letter) => (
-                    <option key={letter} value={letter}>
-                      {letter}
-                    </option>
+                <div className="space-y-3">
+                  {selectedLetters.map((letter, index) => (
+                    <div key={index} className="flex items-center gap-2">
+                      <select
+                        value={letter}
+                        onChange={(e) => handleLetterChange(index, e.target.value)}
+                        className="flex-1 border border-gray-300 rounded px-3 py-2"
+                        required
+                      >
+                        <option value="">Välj bokstav</option>
+                        {letters.map((l) => (
+                          <option key={l} value={l}>
+                            {l}
+                          </option>
+                        ))}
+                      </select>
+                      
+                      {index > 0 && (
+                        <button
+                          type="button"
+                          onClick={() => handleRemoveLetter(index)}
+                          className="text-red-600 hover:text-red-800 px-2"
+                        >
+                          ✕
+                        </button>
+                      )}
+                      {index > 0 && (
+                        <span className="text-xs text-gray-600 w-20">
+                          +{EXTRA_LETTER_PRICES[product.collection] / 100} SEK
+                        </span>
+                      )}
+                    </div>
                   ))}
-                </select>
-                {/* <p className="mt-2 text-sm text-gray-500">
-                Din valda bokstav kommer att graveras på smycket
-              </p> */}
+                </div>
+
+                <button
+                  type="button"
+                  onClick={handleAddLetter}
+                  className="mt-3 flex items-center gap-2 text-sm text-blue-600 hover:text-blue-800"
+                >
+                  <span className="text-xl">+</span>
+                  Lägg till bokstav (+{EXTRA_LETTER_PRICES[product.collection] / 100} SEK)
+                </button>
               </div>
             )}
 
@@ -415,9 +476,12 @@ const ProductPage = () => {
                   }
 
                   // Validering för bokstav (coins eller letter)
-                  if (showLetterSelect && !selectedLetter) {
-                    alert("Vänligen välj en bokstav för gravering.");
-                    return;
+                   if (showLetterSelect) {
+                    const hasEmptyLetter = selectedLetters.some(l => !l);
+                    if (hasEmptyLetter) {
+                      alert("Vänligen välj alla bokstäver.");
+                      return;
+                    }
                   }
 
                   // Validering för diameter (symbols)
@@ -442,8 +506,9 @@ const ProductPage = () => {
                     type: "ADD_TO_CART",
                     payload: {
                       ...product,
+                      price: calculateTotalPrice(), // 🆕 Uppdaterat pris
                       ringSize: product.category === "rings" ? ringSize : null,
-                      letter: showLetterSelect ? selectedLetter : null,
+                      letters: showLetterSelect ? selectedLetters : null, // 🆕 ARRAY istället för letter
                       diameter: showDiameterSelect ? selectedDiameter : null,
                       chainLength: showChainLengthSelect
                         ? selectedChainLength
