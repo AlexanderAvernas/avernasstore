@@ -76,12 +76,17 @@ const Cart = () => {
       ) : (
         // ✅ Varukorg med produkter
         <>
-          {/* Scrollbar produktlista */}
+         {/*  Scrollbar produktlista */}
           <div className="flex-1 overflow-y-auto px-0">
             <ul className="divide-y divide-gray-300">
-              {hydratedCart.map((item) => (
+              {hydratedCart.map((item, index) => {
+                // 🆕 Skapa unik key baserad på alla produktvariationer + index
+                const lettersKey = item.letters ? item.letters.sort().join('-') : 'noletters';
+                const uniqueKey = `${item.id}-${item.ringSize || 'nosize'}-${lettersKey}-${item.diameter || 'nodiameter'}-${item.chainLength || 'nochain'}-${item.color || 'nocolor'}-${index}`;
+                
+                return (
                 <li
-                  key={item.id}
+                  key={uniqueKey}
                   className="flex items-stretch justify-between py-2"
                 >
                   {/* Produktbild */}
@@ -169,7 +174,7 @@ const Cart = () => {
                         onClick={() =>
                           dispatch({
                             type: "DECREASE_QUANTITY",
-                            payload: cart.indexOf(item),
+                            payload: index,
                           })
                         }
                         className="px-1.5 py-0.5 text-label-xs hover:bg-gray-100"
@@ -185,7 +190,7 @@ const Cart = () => {
                         onClick={() =>
                           dispatch({
                             type: "INCREASE_QUANTITY",
-                            payload: cart.indexOf(item),
+                            payload: index,
                           })
                         }
                         className="px-1.5 py-0.5 text-label-xs hover:bg-gray-100"
@@ -201,7 +206,7 @@ const Cart = () => {
                       onClick={() =>
                         dispatch({
                           type: "REMOVE_FROM_CART",
-                          payload: cart.indexOf(item),
+                          payload: index,
                         })
                       }
                       className="text-xs underline hover:text-black transition uppercase"
@@ -210,7 +215,8 @@ const Cart = () => {
                     </button>
                   </div>
                 </li>
-              ))}
+              );
+              })}
             </ul>
           </div>
 
