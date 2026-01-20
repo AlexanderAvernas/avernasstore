@@ -150,6 +150,14 @@ import { useProducts } from '../../context/ProductsContext'
 import { useParams } from 'next/navigation'
 import ProductGrid from '../../components/ProductGrid'
 
+// Översättning från engelska till svenska namn
+const categoryTranslations = {
+    rings: "Ringar",
+    necklaces: "Halsband",
+    earrings: "Örhängen",
+    bracelets: "Armband"
+}
+
 const CategoryPage = () => {
     const { slug } = useParams()
     const { state } = useProducts()
@@ -158,10 +166,13 @@ const CategoryPage = () => {
         (product) => product.category === slug
     )
 
+    // Hämta svenskt namn, fallback till slug om översättning saknas
+    const displayTitle = categoryTranslations[slug] || slug
+
     return (
         <ProductGrid
             products={filteredProducts}
-            title={slug}
+            title={displayTitle}
             emptyMessage="Inga produkter hittades i denna kategori."
         />
     )

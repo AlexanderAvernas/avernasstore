@@ -167,8 +167,8 @@ const NewsPage = () => {
     return (
         <ProductGrid
             products={newsProducts}
-            title="Nyheter"
-            emptyMessage="Inga nyheter just nu."
+            title="UTVALT"
+            emptyMessage="Inget utvalt just nu."
         />
     )
 }

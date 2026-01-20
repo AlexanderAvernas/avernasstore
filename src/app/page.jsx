@@ -53,16 +53,16 @@ export default async function Home() {
         <p className="text-sm text-center">HANDGJORDA SMYCKEN I ÅTERVUNNET SILVER</p>
       </div>
 
-      <div className="mb-10">
         {specialOffer && (
+          <div className="mb-10">
           <SpecialOfferBanner
             title={specialOffer.title}
             description={specialOffer.description}
             imageUrl={specialOffer.image}
             buttonText={specialOffer.buttonText}
           />
+          </div>
         )}
-      </div>
 
       {/* Skicka categories-data från Sanity */}
       <CategoryList categories={categories} />

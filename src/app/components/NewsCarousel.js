@@ -26,7 +26,7 @@ const NewsCarousel = () => {
     return (
         <div className="py-12 px-0 md:px-6">
             <div className="max-w-7xl mx-auto">
-                <h2 className="text-heading-l text-center mb-8">Nyheter</h2>
+                <h2 className="text-heading-l text-center mb-8">UTVALT</h2>
                 <Swiper
                     modules={[Navigation, Autoplay]}
                     spaceBetween={20}
@@ -115,7 +115,7 @@ const NewsCarousel = () => {
                 <div className="flex justify-center mt-8">
                     <Link href="/news">
                         <button className="bg-black text-button-s text-white px-8 py-3 hover:bg-gray-800 transition">
-                            VISA ALLA NYHETER
+                            VISA ALLT FRÅN UTVALT
                         </button>
                     </Link>
                 </div>

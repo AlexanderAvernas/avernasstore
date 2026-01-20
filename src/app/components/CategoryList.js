@@ -16,10 +16,19 @@ const defaultImages = {
   bracelets: "/bracelets.jpg"
 };
 
+// 🆕 Översättning från engelska till svenska namn
+const categoryTranslations = {
+  rings: "Ringar",
+  necklaces: "Halsband",
+  earrings: "Örhängen",
+  bracelets: "Armband"
+};
+
 const CategoryList = ({ categories = [] }) => {
   // Kombinera Sanity-data med backup-bilder
   const categoriesWithImages = categories.map(cat => ({
     name: cat.name,
+    displayName: categoryTranslations[cat.name] || cat.name, //  översatt namn
     image: cat.image || defaultImages[cat.name] || "/placeholder.jpg"
   }));
 
@@ -28,6 +37,7 @@ const CategoryList = ({ categories = [] }) => {
     ? categoriesWithImages 
     : Object.keys(defaultImages).map(name => ({
         name,
+        displayName: categoryTranslations[name] || name, // 🆕 Lägg till översatt namn
         image: defaultImages[name]
       }));
 
@@ -51,7 +61,7 @@ const CategoryList = ({ categories = [] }) => {
                 <div className="relative w-screen min-h-[50svh] md:min-h-[70vh] flex justify-center items-center overflow-hidden m-0">
                   <Image
                     src={category.image}
-                    alt={category.name}
+                    alt={category.displayName}
                     fill
                     sizes="(max-width: 639px) 100vw, 0vw"
                     className="object-cover"
@@ -59,7 +69,7 @@ const CategoryList = ({ categories = [] }) => {
                   />
                   <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50">
                     <span className="text-white text-heading-l">
-                      {category.name}
+                      {category.displayName}
                     </span>
                   </div>
                 </div>
@@ -72,12 +82,12 @@ const CategoryList = ({ categories = [] }) => {
       {/* Desktop: Grid */}
       <div className="p-6 hidden sm:grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4">
         {displayCategories.map((category) => (
-          <Link key={category.name} href={`/category/${category.name}`}>
+          <Link key={category.displayName} href={`/category/${category.name}`}>
             <div className="relative cursor-pointer border rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition">
               <div className="relative w-full h-80">
                 <Image
                   src={category.image}
-                  alt={category.name}
+                  alt={category.displayName}
                   fill
                   sizes="(max-width: 639px) 100vw, (max-width: 1023px) 50vw, 33vw"
                   className="object-cover"
@@ -85,7 +95,7 @@ const CategoryList = ({ categories = [] }) => {
               </div>
               <div className="absolute inset-0 flex items-center justify-center">
                 <span className="text-white text-heading-l">
-                  {category.name}
+                  {category.displayName}
                 </span>
               </div>
             </div>
