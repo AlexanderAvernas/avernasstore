@@ -170,11 +170,11 @@ const ProductPage = () => {
           {/* 🖥️ Desktop: stor bild + thumbnails */}
           <div className="hidden sm:block">
             {/* ✅ NYTT: Rabatt-badge på desktop */}
-            {hasDiscount && (
+            {/* {hasDiscount && (
               <div className="bg-red-300 text-white px-3 py-1 rounded-md font-bold text-lg inline-block mb-4">
                 -{discountPercent}% REA
               </div>
-            )}
+            )} */}
 
             <div className="relative w-full h-80 mb-4">
               {mainImage ? (

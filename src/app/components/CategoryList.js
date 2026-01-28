@@ -83,7 +83,7 @@ const CategoryList = ({ categories = [] }) => {
       <div className="p-6 hidden sm:grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4">
         {displayCategories.map((category) => (
           <Link key={category.displayName} href={`/category/${category.name}`}>
-            <div className="relative cursor-pointer border rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition">
+            <div className="relative cursor-pointer border rounded overflow-hidden shadow-lg hover:shadow-xl transition">
               <div className="relative w-full h-80">
                 <Image
                   src={category.image}

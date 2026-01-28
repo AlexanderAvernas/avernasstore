@@ -34,7 +34,7 @@ const CollectionList = ({ collections = [] }) => {
     <div className="p-6 grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-4">
       {displayCollections.map((collection) => (
         <Link key={collection.name} href={`/collection/${collection.name}`}>
-          <div className="relative cursor-pointer border rounded-s overflow-hidden transition">
+          <div className="relative cursor-pointer border rounded overflow-hidden transition">
             <div className="relative w-full h-40 sm:h-80">
               <Image
                 src={collection.image}
