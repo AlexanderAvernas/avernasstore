@@ -3,7 +3,7 @@ import { fetchProducts } from '../../lib/sanity'
 import { createKustomOrder } from '../../utils/kustomApi'
 
 // 🔸 Lägg till frakt som konstanter
-const SHIPPING_FEE = 3900 // 39 kr i öre
+const SHIPPING_FEE = 4900 // 49 kr i öre
 const SHIPPING_TAX_RATE = 2500 // 25% moms
 
 // PRISER FÖR EXTRA BOKSTÄVER

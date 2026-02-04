@@ -20,10 +20,10 @@ const Footer = () => {
             />
 
             {/* Text */}
-            <p className="text-body-s">
+           {/*  <p className="text-body-s">
               Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do
               eiusmod tempor incididunt ut labore et dolore magna aliqua.
-            </p>
+            </p> */}
 
             {/* Social icons */}
             <div className="flex gap-4">

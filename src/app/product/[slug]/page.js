@@ -42,6 +42,14 @@ const ProductPage = () => {
   const diameters = ["1", "2", "3"];
   const chainLengths = ["42", "45", "50"];
 
+  // 🆕 UPPDATERAT: Olika ringstorlekar beroende på produkt
+ const getRingSizes = () => {
+   if (product?.name === "JOELLE ring") {
+     return [16, 16.5, 17, 17.5, 18, 18.5, 19];
+   }
+   return [15, 15.5, 16, 16.5, 17, 17.5, 18, 18.5, 19, 19.5, 20];
+ };
+
   // Färgval för specifika produkter
  const joelleColors = [
    { value: "Svart", label: "Svart (Onyx)" },
@@ -426,41 +434,33 @@ const ProductPage = () => {
               </div>
             )}
 
-            {/* Visa dropdown om produkten är en ring */}
-            {product.category === "rings" &&
-              product.collection !== "earcuffs" && (
-                <div className="mb-4">
-                  {/*  <label
-                  htmlFor="ring-size"
-                  className="block mb-2 text-sm font-medium text-gray-700"
-                >
-                  Välj storlek:
-                </label> */}
-                  <select
-                    id="ring-size"
-                    value={ringSize || ""}
-                    onChange={(e) => setRingSize(Number(e.target.value))}
-                    className="w-2/3 border border-gray-300 rounded px-3 py-2"
-                    required
-                  >
-                    <option value="">Välj storlek</option>
-                    {[15, 15.5, 16, 16.5, 17, 17.5, 18, 18.5, 19, 19.5, 20].map(
-                      (size) => (
-                        <option key={size} value={size}>
-                          {size}
-                        </option>
-                      )
-                    )}
-                  </select>
-                  <button
-                    type="button"
-                    onClick={() => setShowRingSizeInfo(true)}
-                    className="w-1/3 mt-2 text-s underline"
-                  >
-                    Storleksguide
-                  </button>
-                </div>
-              )}
+            {/* 🆕 UPPDATERAT: Visa dropdown om produkten är en ring - olika storlekar för JOELLE */}
+           {product.category === "rings" &&
+             product.collection !== "earcuffs" && (
+               <div className="mb-4">
+                 <select
+                   id="ring-size"
+                   value={ringSize || ""}
+                   onChange={(e) => setRingSize(Number(e.target.value))}
+                   className="w-2/3 border border-gray-300 rounded px-3 py-2"
+                   required
+                 >
+                   <option value="">Välj storlek</option>
+                   {getRingSizes().map((size) => (
+                     <option key={size} value={size}>
+                       {size}
+                     </option>
+                   ))}
+                 </select>
+                 <button
+                   type="button"
+                   onClick={() => setShowRingSizeInfo(true)}
+                   className="w-1/3 mt-2 text-s underline"
+                 >
+                   Storleksguide
+                 </button>
+               </div>
+             )}
 
             <div className="flex flex-col sm:flex-row gap-4">
               <button

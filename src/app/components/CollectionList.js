@@ -5,14 +5,14 @@ import Image from "next/image";
 
 // Backup-bilder om ingen bild finns i Sanity
 const defaultImages = {
-  womanpower: "/womanpower.jpg",
-  coins: "/CollectionCoins.jpg",
   happyplanets: "/CollectionHappy.jpg",
   letter: "/CollectionLetter.jpg",
-  symbols: "/CollectionSymbols.jpg",
   rod: "/CollectionRod.jpg",
   Connect: "/CollectionConnect.jpg",
   earcuffs: "/CollectionEarcuffs.jpg",
+  symbols: "/CollectionSymbols.jpg",
+  womanpower: "/womanpower.jpg",
+  coins: "/CollectionCoins.jpg",
 };
 
 const CollectionList = ({ collections = [] }) => {

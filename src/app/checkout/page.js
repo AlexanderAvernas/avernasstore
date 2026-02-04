@@ -4,7 +4,7 @@ import { useCart } from "../context/CartContext";
 import KlarnaWidget from "../components/KlarnaWidget";
 import { useState, useEffect } from "react";
 
-const SHIPPING_FEE = 3900;
+const SHIPPING_FEE = 4900;
 
 //PRISER FÖR EXTRA BOKSTÄVER
 const EXTRA_LETTER_PRICES = {
