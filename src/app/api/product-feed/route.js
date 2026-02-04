@@ -38,7 +38,7 @@ export async function GET() {
 
   return new Response(xml, {
     headers: {
-      'Content-Type': 'application/xml',
+       'Content-Type': 'application/rss+xml; charset=utf-8',
       'Cache-Control': 'public, max-age=3600', // Cache i 1 timme
     },
   })
