@@ -10,7 +10,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "generate-feed": "node scripts/generate-feed.js",
+    "prebuild": "npm run generate-feed"
   },
   "dependencies": {
     "@netlify/plugin-nextjs": "^5.15.1",
