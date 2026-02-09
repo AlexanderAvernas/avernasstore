@@ -25,10 +25,10 @@ export default function AboutPage() {
       <div className="flex flex-col md:flex-row gap-4 items-center max-w-3xl mx-auto">
         {/* Images */}
         <div className="md:w-1/2 w-full">
-          <Image src="/about.jpg" alt="Handmade Jewelry 1" width={300} height={200} className="w-full h-auto object-cover" />
+          <Image src="/AboutNew2.JPEG" alt="Handmade Jewelry 1" width={300} height={200} className="w-full h-auto object-cover" />
         </div>
         <div className="md:w-1/2 w-full">
-          <Image src="/about2.jpg" alt="Handmade Jewelry 2" width={300} height={200} className="w-full h-auto object-cover" />
+          <Image src="/AboutNew.JPEG" alt="Handmade Jewelry 2" width={300} height={200} className="w-full h-auto object-cover" />
         </div>
       </div>
     </div>

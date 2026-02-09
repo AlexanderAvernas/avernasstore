@@ -5,7 +5,7 @@ import Image from "next/image";
 
 // Backup-bilder om ingen bild finns i Sanity
 const defaultImages = {
-  happyplanets: "/CollectionHappy.jpg",
+  happyplanets: "/CollectionListHappyPlanetsNew.jpg",
   letter: "/CollectionLetter.jpg",
   rod: "/CollectionRod.jpg",
   Connect: "/CollectionConnect.jpg",
