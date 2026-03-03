@@ -13,7 +13,7 @@ import "swiper/css";
 import "swiper/css/pagination";
 import SimilarProductsCarousel from "../../components/SimilarProductCarousel";
 
- //PRISER FÖR EXTRA BOKSTÄVER
+//PRISER FÖR EXTRA BOKSTÄVER
 const EXTRA_LETTER_PRICES = {
   coins: 40000, // 400 kr i öre
   letter: 40000, // 400 kr i öre
@@ -36,33 +36,39 @@ const ProductPage = () => {
   const [isMaterialOpen, setIsMaterialOpen] = useState(false);
   //selectedLetter blir en array av bokstäver
   const [selectedLetters, setSelectedLetters] = useState([""]);
+  const [braceletSize, setBraceletSize] = useState(null);
 
   // Arrays för olika val
   const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZÅÄÖ".split("");
   const diameters = ["1", "2", "3"];
   const chainLengths = ["42", "45", "50"];
+  const braceletSizes = [
+    { value: "Small", label: "Small – Handledsstorlek 14–16 cm" },
+    { value: "Medium", label: "Medium – Handledsstorlek 16,5–18 cm" },
+    { value: "Large", label: "Large – Handledsstorlek 18,5–20 cm" },
+  ];
 
   // 🆕 UPPDATERAT: Olika ringstorlekar beroende på produkt
- const getRingSizes = () => {
-   if (product?.name === "JOELLE ring") {
-     return [16, 16.5, 17, 17.5, 18, 18.5, 19];
-   }
-   return [15, 15.5, 16, 16.5, 17, 17.5, 18, 18.5, 19, 19.5, 20];
- };
+  const getRingSizes = () => {
+    if (product?.name === "JOELLE ring") {
+      return [16, 16.5, 17, 17.5, 18, 18.5, 19];
+    }
+    return [15, 15.5, 16, 16.5, 17, 17.5, 18, 18.5, 19, 19.5, 20];
+  };
 
   // Färgval för specifika produkter
- const joelleColors = [
-   { value: "Svart", label: "Svart (Onyx)" },
-   { value: "Vit", label: "Vit (Månsten)" },
-   { value: "Grön", label: "Grön (Kalcedon)" },
-   { value: "Blå", label: "Blå (Kyanit)" },
-   { value: "Rosa", label: "Rosa (Rosenkvarts)" }
- ];
+  const joelleColors = [
+    { value: "Svart", label: "Svart (Onyx)" },
+    { value: "Vit", label: "Vit (Månsten)" },
+    { value: "Grön", label: "Grön (Kalcedon)" },
+    { value: "Blå", label: "Blå (Kyanit)" },
+    { value: "Rosa", label: "Rosa (Rosenkvarts)" },
+  ];
 
- const viennaColors = [
-   { value: "Vit", label: "Vit (Månsten)" },
-   { value: "Lila", label: "Lila (Ametist)" }
- ];
+  const viennaColors = [
+    { value: "Vit", label: "Vit (Månsten)" },
+    { value: "Lila", label: "Lila (Ametist)" },
+  ];
 
   useEffect(() => {
     if (product?.image) {
@@ -90,18 +96,22 @@ const ProductPage = () => {
   const showLetterSelect =
     product.collection === "coins" || product.collection === "letter";
   const showDiameterSelect = product.collection === "symbols";
+  const showBraceletSizeSelect = product.category === "bracelets";
   const showChainLengthSelect =
     (product.collection === "letter" ||
       product.collection === "coins" ||
       product.collection === "Connect") &&
     product.category === "necklaces";
-    const showColorSelect = 
+  const showColorSelect =
     product.name === "JOELLE ring" || product.name === "VIENNA ring";
-  const colorOptions = 
-    product.name === "JOELLE ring" ? joelleColors : 
-    product.name === "VIENNA ring" ? viennaColors : [];
+  const colorOptions =
+    product.name === "JOELLE ring"
+      ? joelleColors
+      : product.name === "VIENNA ring"
+        ? viennaColors
+        : [];
 
-    // FUNKTION: Lägg till ny bokstav
+  // FUNKTION: Lägg till ny bokstav
   const handleAddLetter = () => {
     setSelectedLetters([...selectedLetters, ""]);
   };
@@ -124,13 +134,13 @@ const ProductPage = () => {
   // 🆕 BERÄKNA TOTALPRIS inkl extra bokstäver
   const calculateTotalPrice = () => {
     let total = displayPrice;
-    
+
     if (showLetterSelect && selectedLetters.length > 1) {
       const extraLettersCount = selectedLetters.length - 1;
       const pricePerExtra = EXTRA_LETTER_PRICES[product.collection] || 0;
       total += extraLettersCount * pricePerExtra;
     }
-    
+
     return total;
   };
 
@@ -321,7 +331,9 @@ const ProductPage = () => {
                     <div key={index} className="flex items-center gap-2">
                       <select
                         value={letter}
-                        onChange={(e) => handleLetterChange(index, e.target.value)}
+                        onChange={(e) =>
+                          handleLetterChange(index, e.target.value)
+                        }
                         className="flex-1 border border-gray-300 rounded px-3 py-2"
                         required
                       >
@@ -332,7 +344,7 @@ const ProductPage = () => {
                           </option>
                         ))}
                       </select>
-                      
+
                       {index > 0 && (
                         <button
                           type="button"
@@ -357,7 +369,8 @@ const ProductPage = () => {
                   className="mt-3 flex items-center gap-2 text-sm text-blue-600 hover:text-blue-800"
                 >
                   <span className="text-xl">+</span>
-                  Lägg till bokstav (+{EXTRA_LETTER_PRICES[product.collection] / 100} SEK)
+                  Lägg till bokstav (+
+                  {EXTRA_LETTER_PRICES[product.collection] / 100} SEK)
                 </button>
               </div>
             )}
@@ -413,6 +426,25 @@ const ProductPage = () => {
                 </select>
               </div>
             )}
+            {/* Visa storlek armband om det är bracelets */}
+            {showBraceletSizeSelect && (
+              <div className="mb-4">
+                <select
+                  id="bracelet-size"
+                  value={braceletSize || ""}
+                  onChange={(e) => setBraceletSize(e.target.value)}
+                  className="w-2/3 border border-gray-300 rounded px-3 py-2"
+                  required
+                >
+                  <option value="">Välj storlek</option>
+                  {braceletSizes.map((size) => (
+                    <option key={size.value} value={size.value}>
+                      {size.label}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            )}
 
             {/* Visa färgval för JOELLE ring och VIENNA ring */}
             {showColorSelect && (
@@ -435,32 +467,32 @@ const ProductPage = () => {
             )}
 
             {/* 🆕 UPPDATERAT: Visa dropdown om produkten är en ring - olika storlekar för JOELLE */}
-           {product.category === "rings" &&
-             product.collection !== "earcuffs" && (
-               <div className="mb-4">
-                 <select
-                   id="ring-size"
-                   value={ringSize || ""}
-                   onChange={(e) => setRingSize(Number(e.target.value))}
-                   className="w-2/3 border border-gray-300 rounded px-3 py-2"
-                   required
-                 >
-                   <option value="">Välj storlek</option>
-                   {getRingSizes().map((size) => (
-                     <option key={size} value={size}>
-                       {size}
-                     </option>
-                   ))}
-                 </select>
-                 <button
-                   type="button"
-                   onClick={() => setShowRingSizeInfo(true)}
-                   className="w-1/3 mt-2 text-s underline"
-                 >
-                   Storleksguide
-                 </button>
-               </div>
-             )}
+            {product.category === "rings" &&
+              product.collection !== "earcuffs" && (
+                <div className="mb-4">
+                  <select
+                    id="ring-size"
+                    value={ringSize || ""}
+                    onChange={(e) => setRingSize(Number(e.target.value))}
+                    className="w-2/3 border border-gray-300 rounded px-3 py-2"
+                    required
+                  >
+                    <option value="">Välj storlek</option>
+                    {getRingSizes().map((size) => (
+                      <option key={size} value={size}>
+                        {size}
+                      </option>
+                    ))}
+                  </select>
+                  <button
+                    type="button"
+                    onClick={() => setShowRingSizeInfo(true)}
+                    className="w-1/3 mt-2 text-s underline"
+                  >
+                    Storleksguide
+                  </button>
+                </div>
+              )}
 
             <div className="flex flex-col sm:flex-row gap-4">
               <button
@@ -476,8 +508,8 @@ const ProductPage = () => {
                   }
 
                   // Validering för bokstav (coins eller letter)
-                   if (showLetterSelect) {
-                    const hasEmptyLetter = selectedLetters.some(l => !l);
+                  if (showLetterSelect) {
+                    const hasEmptyLetter = selectedLetters.some((l) => !l);
                     if (hasEmptyLetter) {
                       alert("Vänligen välj alla bokstäver.");
                       return;
@@ -501,6 +533,11 @@ const ProductPage = () => {
                     alert("Vänligen välj en färg.");
                     return;
                   }
+                  // Validering bracelet
+                  if (showBraceletSizeSelect && !braceletSize) {
+                    alert("Vänligen välj en storlek.");
+                    return;
+                  }
 
                   dispatch({
                     type: "ADD_TO_CART",
@@ -513,7 +550,10 @@ const ProductPage = () => {
                       chainLength: showChainLengthSelect
                         ? selectedChainLength
                         : null,
-                        color: showColorSelect ? selectedColor : null,
+                      color: showColorSelect ? selectedColor : null,
+                      braceletSize: showBraceletSizeSelect
+                        ? braceletSize
+                        : null,
                     },
                   });
 

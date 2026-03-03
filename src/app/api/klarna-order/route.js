@@ -35,7 +35,7 @@ export async function POST(req) {
 
        // 🆕 UPPDATERAD: Hantera varje cart item
        cartItems.forEach((cartItem) => {
-           const { id, quantity, ringSize, letters, diameter, chainLength, color } = cartItem
+           const { id, quantity, ringSize, letters, diameter, chainLength, color, braceletSize} = cartItem
 
            const product = productMap.get(id)
            if (!product) throw new Error(`Invalid product ID: ${id}`)
@@ -59,6 +59,7 @@ export async function POST(req) {
            
            if (diameter) productName += ` (Diameter: ${diameter} cm)`
            if (chainLength) productName += ` (Kedjelängd: ${chainLength} cm)`
+           if (braceletSize) productName += ` (Storlek: ${braceletSize})`
            if (color) productName += ` (Färg: ${color.replace('-', ' ')})`
 
            // 🆕 LÄGG TILL HUVUDPRODUKTEN (med första bokstaven)

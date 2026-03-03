@@ -16,15 +16,15 @@ const cartReducer = (state, action) => {
     switch (action.type) {
 
         case 'ADD_TO_CART': {
-            const { id, ringSize, letters, diameter, chainLength, color } = action.payload;
+            const { id, ringSize, letters, diameter, chainLength, color, braceletSize } = action.payload;
 
-            // 🆕 UPPDATERAD: Skapa unik nyckel som inkluderar alla bokstäver
+            // Skapa unik nyckel som inkluderar alla produktvariationer inkl braceletSize
            const lettersKey = letters ? letters.sort().join('-') : 'noletters';
-           const uniqueKey = `${id}-${ringSize || 'nosize'}-${lettersKey}-${diameter || 'nodiameter'}-${chainLength || 'nochain'}-${color || 'nocolor'}`;
+           const uniqueKey = `${id}-${ringSize || 'nosize'}-${lettersKey}-${diameter || 'nodiameter'}-${chainLength || 'nochain'}-${color || 'nocolor'}-${braceletSize || 'nobracelet'}`;
 
            const existingItem = state.cart.find(item => {
                const itemLettersKey = item.letters ? item.letters.sort().join('-') : 'noletters';
-               const itemKey = `${item.id}-${item.ringSize || 'nosize'}-${itemLettersKey}-${item.diameter || 'nodiameter'}-${item.chainLength || 'nochain'}-${item.color || 'nocolor'}`;
+               const itemKey = `${item.id}-${item.ringSize || 'nosize'}-${itemLettersKey}-${item.diameter || 'nodiameter'}-${item.chainLength || 'nochain'}-${item.color || 'nocolor'}-${item.braceletSize || 'nobracelet'}`;
                return itemKey === uniqueKey;
            });
 
@@ -33,7 +33,7 @@ const cartReducer = (state, action) => {
                    ...state,
                    cart: state.cart.map(item => {
                        const itemLettersKey = item.letters ? item.letters.sort().join('-') : 'noletters';
-                       const itemKey = `${item.id}-${item.ringSize || 'nosize'}-${itemLettersKey}-${item.diameter || 'nodiameter'}-${item.chainLength || 'nochain'}-${item.color || 'nocolor'}`;
+                       const itemKey = `${item.id}-${item.ringSize || 'nosize'}-${itemLettersKey}-${item.diameter || 'nodiameter'}-${item.chainLength || 'nochain'}-${item.color || 'nocolor'}-${item.braceletSize || 'nobracelet'}`;
                        return itemKey === uniqueKey
                            ? { ...item, quantity: item.quantity + 1 }
                            : item;
@@ -48,16 +48,14 @@ const cartReducer = (state, action) => {
        }
 
         case 'REMOVE_FROM_CART':
-            // 🔹 Removes an item completely from the cart
             return {
-                ...state, // 🆕 NYTT
+                ...state,
                 cart: state.cart.filter((item, index) => index !== action.payload),
             };
 
         case 'INCREASE_QUANTITY': {
-            // 🔹 Increases quantity of an item by index
             return {
-                ...state, // 🆕 NYTT
+                ...state,
                 cart: state.cart.map((item, index) =>
                     index === action.payload
                         ? { ...item, quantity: item.quantity + 1 }
@@ -67,9 +65,8 @@ const cartReducer = (state, action) => {
         }
 
         case 'DECREASE_QUANTITY': {
-            // 🔹 Decreases quantity but prevents it from going below 1
             return {
-                ...state, // 🆕 NYTT
+                ...state,
                 cart: state.cart.map((item, index) =>
                     index === action.payload
                         ? { ...item, quantity: item.quantity > 1 ? item.quantity - 1 : 1 }
@@ -79,15 +76,11 @@ const cartReducer = (state, action) => {
         }
 
         case 'CLEAR_CART':
-            // 🔹 Clears the entire cart
             return {
-                ...state, // 🆕 NYTT
+                ...state,
                 cart: [],
             };
 
-        /* ======================================================
-           🆕 NYTT: Öppna / stäng cart (drawer / overlay)
-        ====================================================== */
         case 'OPEN_CART':
             return { ...state, isCartOpen: true };
 
@@ -104,25 +97,16 @@ const CartContext = createContext();
 
 export const CartProvider = ({ children }) => {
 
-    /* 🔧 ÄNDRAT:
-       useReducer använder nu initialState (objekt)
-    */
     const [state, dispatch] = useReducer(cartReducer, initialState, () => {
-        // 🔹 Load cart from localStorage on initialization
         if (typeof window !== 'undefined') {
             const storedCart = localStorage.getItem('cart');
-
             return storedCart
-                ? { ...initialState, cart: JSON.parse(storedCart) } // 🆕 NYTT
+                ? { ...initialState, cart: JSON.parse(storedCart) }
                 : initialState;
         }
         return initialState;
     });
 
-    /* 🔧 ÄNDRAT:
-       Vi sparar ENDAST cart-arrayen i localStorage
-       (inte UI-state som isCartOpen)
-    */
     useEffect(() => {
         if (typeof window !== 'undefined') {
             localStorage.setItem('cart', JSON.stringify(state.cart));
@@ -132,8 +116,8 @@ export const CartProvider = ({ children }) => {
     return (
         <CartContext.Provider
             value={{
-                cart: state.cart,        // 🆕 NYTT
-                isCartOpen: state.isCartOpen, // 🆕 NYTT
+                cart: state.cart,
+                isCartOpen: state.isCartOpen,
                 dispatch,
             }}
         >

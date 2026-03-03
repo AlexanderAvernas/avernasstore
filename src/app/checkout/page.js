@@ -39,7 +39,7 @@ const CheckoutPage = () => {
     return { totalAmount, totalTax, grandTotal: totalAmount + SHIPPING_FEE };
   };
 
-  const { totalAmount, totalTax, grandTotal } = calculateTotals()
+  const { totalAmount, totalTax, grandTotal } = calculateTotals();
 
   // Skapa Klarna-order automatiskt när sidan laddas
   useEffect(() => {
@@ -54,6 +54,7 @@ const CheckoutPage = () => {
         diameter: item.diameter,
         chainLength: item.chainLength,
         color: item.color,
+        braceletSize: item.braceletSize,
       }));
 
       try {
@@ -133,6 +134,11 @@ const CheckoutPage = () => {
                       {item.chainLength && (
                         <p className="text-sm text-gray-600">
                           Kedjelängd: {item.chainLength} cm
+                        </p>
+                      )}
+                      {item.braceletSize && (
+                        <p className="text-sm text-gray-600">
+                          Storlek: {item.braceletSize}
                         </p>
                       )}
                       {item.color && (
