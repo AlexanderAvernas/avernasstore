@@ -105,5 +105,12 @@ export default {
       description: 'Markera som nyhet för att visa i karusellen på startsidan',
       initialValue: false,
     },
+    {
+      name: 'isVisible',
+      title: 'Visa produkt på sidan',
+      type: 'boolean',
+      description: 'Avmarkera för att dölja produkten utan att ta bort den',
+      initialValue: true,
+    },
   ],
 }

@@ -15,7 +15,7 @@ export function urlFor(source) {
 }
 
 export const fetchProducts = async () => {
-  const query = `*[_type == "product"]{
+  const query = `*[_type == "product" && isVisible != false]{
     _id,
     name,
     slug,
