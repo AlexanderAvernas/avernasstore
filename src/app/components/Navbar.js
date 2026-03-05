@@ -462,28 +462,28 @@ export default function Navbar() {
                         className="block py-2 hover:text-gray-600"
                         onClick={() => setIsDropdownOpen(false)}
                       >
-                        Rings
+                        Ringar
                       </Link>
                       <Link
                         href="/category/necklaces"
                         className="block py-2 hover:text-gray-600"
                         onClick={() => setIsDropdownOpen(false)}
                       >
-                        Necklaces
+                        Halsband
                       </Link>
                       <Link
                         href="/category/earrings"
                         className="block py-2 hover:text-gray-600"
                         onClick={() => setIsDropdownOpen(false)}
                       >
-                        Earrings
+                        Örhängen
                       </Link>
                       <Link
                         href="/category/bracelets"
                         className="block py-2 hover:text-gray-600"
                         onClick={() => setIsDropdownOpen(false)}
                       >
-                        Bracelets
+                        Armband
                       </Link>
                     </div>
 
