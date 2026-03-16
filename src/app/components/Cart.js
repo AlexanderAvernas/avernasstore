@@ -248,10 +248,10 @@ const Cart = () => {
               </span>
             </div>
 
-            {/* <p className="text-gray-500 mb-4 text-sm">
-              Inkl. moms: {(totalTax / 100).toFixed(2)} SEK
+            <p className="text-gray-500 mb-4 text-sm">
+              Moms ingår och frakt beräknas vid kassan
             </p>
- */}
+
             <button
               onClick={() => {
                 dispatch({ type: "CLOSE_CART" });

@@ -198,9 +198,9 @@ const CheckoutPage = () => {
                 <p className="text-lg font-semibold">
                   Total: {(grandTotal / 100).toFixed(2)} SEK
                 </p>
-                <p className="text-gray-600">
+                {/* <p className="text-gray-600">
                   Skatt: {(totalTax / 100).toFixed(2)} SEK
-                </p>
+                </p> */}
               </div>
             </>
           )}
