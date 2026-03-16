@@ -369,7 +369,7 @@ const ProductPage = () => {
                   className="mt-3 flex items-center gap-2 text-sm text-blue-600 hover:text-blue-800"
                 >
                   <span className="text-xl">+</span>
-                  Lägg till bokstav (+
+                  Lägg till extra bokstav (+
                   {EXTRA_LETTER_PRICES[product.collection] / 100} SEK)
                 </button>
               </div>
