@@ -543,7 +543,7 @@ const ProductPage = () => {
                     type: "ADD_TO_CART",
                     payload: {
                       ...product,
-                      price: calculateTotalPrice(), // 🆕 Uppdaterat pris
+                      price: product.price, // 🆕 Uppdaterat pris
                       ringSize: product.category === "rings" ? ringSize : null,
                       letters: showLetterSelect ? selectedLetters : null, // 🆕 ARRAY istället för letter
                       diameter: showDiameterSelect ? selectedDiameter : null,
