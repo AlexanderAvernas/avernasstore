@@ -99,9 +99,9 @@ const CheckoutPage = () => {
             <p className="text-gray-600">Din varukorg är tom.</p>
           ) : (
             <>
-              {cart.map((item) => (
+              {cart.map((item, index) => (
                 <div
-                  key={item.id}
+                  key={`${item.id}-${index}`}
                   className="flex items-center justify-between py-2 border-b last:border-b-0"
                 >
                   <div className="flex items-center space-x-4">
