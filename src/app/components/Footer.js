@@ -63,7 +63,7 @@ const Footer = () => {
             {/* Links */}
             <div className="flex flex-col gap-4 text-body-s underline">
               <Link href="/about" className="hover:underline">
-                Om mig
+                Om oss
               </Link>
 
               <Link href="/terms" className="hover:underline">
