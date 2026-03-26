@@ -437,9 +437,8 @@ export default function Navbar() {
                     "womanpower",
                     "coins",
                     "earcuffs",
-                    "stones",
                     "letter",
-                    "connect",
+                    "Connect",
                     "happyplanets",
                   ].map((col) => (
                     <Link
