@@ -37,7 +37,7 @@ const Footer = () => {
                 rel="noopener noreferrer"
               >
                 <Image
-                  src="/instagramBlack.png"
+                  src="/instanew.png"
                   alt="Instagram"
                   width={30}
                   height={30}
@@ -51,10 +51,10 @@ const Footer = () => {
                 rel="noopener noreferrer"
               >
                 <Image
-                  src="/facebookBlack.png"
+                  src="/facebooknew.png"
                   alt="Facebook"
-                  width={17}
-                  height={17}
+                  width={30}
+                  height={30}
                   className="hover:opacity-70 transition-opacity"
                 />
               </a>

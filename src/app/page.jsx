@@ -1,12 +1,12 @@
 import ProductList from "./components/ProductList";
 import SpecialOfferBanner from "./components/SpecialOfferBanner";
 import Hero from "./components/Hero";
-import { 
-  fetchHero, 
-  fetchSpecialOffer, 
+import {
+  fetchHero,
+  fetchSpecialOffer,
   fetchAboutFirstpage,
   fetchCategories,
-  fetchCollections 
+  fetchCollections,
 } from "./lib/sanity";
 import CategoryList from "./components/CategoryList";
 import CollectionImages from "./components/CollectionImages";
@@ -49,25 +49,27 @@ export default async function Home() {
         <p>Ingen hero-data hittades.</p>
       )}
 
-      <div className="h-40 bg-white flex items-center justify-center">
+      {/* <div className="h-40 bg-white flex items-center justify-center">
         <p className="text-sm text-center">HANDGJORDA SMYCKEN I ÅTERVUNNET SILVER</p>
-      </div>
+      </div> */}
 
-        {specialOffer && (
-          <div className="mb-10">
+      {specialOffer && (
+        <div className="mt-10">
           <SpecialOfferBanner
             title={specialOffer.title}
             description={specialOffer.description}
             imageUrl={specialOffer.image}
             buttonText={specialOffer.buttonText}
           />
-          </div>
-        )}
+        </div>
+      )}
 
       {/* Skicka categories-data från Sanity */}
+      <div className="mt-10">
       <CategoryList categories={categories} />
+      </div>
 
-      <NewsCarousel />
+       <NewsCarousel />
 
       <div className="text-heading-l mb-4 flex items-center justify-center">
         <h2 className="text-heading-l">Kollektioner</h2>
@@ -104,8 +106,11 @@ export default async function Home() {
 
   return (
     <div className="w-full"> */
-      {/* Flytande informationsruta */}
-      {/* <div className="fixed bottom-4 right-4 bg-yellow-200 shadow-lg rounded-lg p-4 max-w-xs z-50">
+{
+  /* Flytande informationsruta */
+}
+{
+  /* <div className="fixed bottom-4 right-4 bg-yellow-200 shadow-lg rounded-lg p-4 max-w-xs z-50">
         <p className="text-sm font-medium">
           Denna sida är under förbättring. Besök vår fungerande shop här:&nbsp;
           <a
@@ -151,4 +156,5 @@ export default async function Home() {
     </div>
   );
 }
- */}
+ */
+}

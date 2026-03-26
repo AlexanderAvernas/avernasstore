@@ -462,7 +462,7 @@ export default function Navbar() {
                 className="block hover:text-gray-600"
                 onClick={() => setIsMenuOpen(false)}
               >
-                Om M.Avernäs Smycken
+                Om oss
               </Link>
             </div>
           </div>
