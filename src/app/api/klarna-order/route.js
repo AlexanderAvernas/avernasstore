@@ -198,7 +198,7 @@ export async function POST(req) {
     const orderLines = []
 
     cartItems.forEach((cartItem) => {
-      const { id, quantity, ringSize, letters, diameter, chainLength, color } = cartItem
+      const { id, quantity, ringSize, letters, diameter, chainLength, color, braceletSize } = cartItem
 
       const product = productMap.get(id)
       if (!product) throw new Error(`Invalid product ID: ${id}`)
@@ -214,6 +214,7 @@ export async function POST(req) {
 
       let productName = product.name
       if (ringSize) productName += ` (Storlek: ${ringSize})`
+      if (braceletSize) productName += ` (Storlek: ${braceletSize})`
 
       if (letters && letters.length > 0) {
         productName += ` (Bokstav: ${letters[0]})`
