@@ -1,4 +1,4 @@
-// import { fetchProducts } from '../../lib/contentful'
+/* // import { fetchProducts } from '../../lib/contentful'
 import { fetchProducts } from '../../lib/sanity'
 import { createKustomOrder } from '../../utils/kustomApi'
 
@@ -163,4 +163,161 @@ export async function POST(req) {
             { status: 400 }
         )
     }
+}
+ */
+
+import { fetchProducts } from '../../lib/sanity'
+import { createKustomOrder } from '../../utils/kustomApi'
+
+const SHIPPING_FEE = 3900
+const SHIPPING_TAX_RATE = 2500
+
+const EXTRA_LETTER_PRICES = {
+  coins: 40000,
+  letter: 40000,
+}
+
+const DISCOUNT_FACTOR = 0.8 // ← TILLFÄLLIG 20% RABATT – ta bort sen
+
+export async function POST(req) {
+  try {
+    const { cartItems } = await req.json()
+
+    if (!Array.isArray(cartItems) || cartItems.length === 0) {
+      return new Response(
+        JSON.stringify({
+          message: 'Invalid request: cartItems must be a non-empty array'
+        }),
+        { status: 400 }
+      )
+    }
+
+    const allProducts = await fetchProducts()
+    const productMap = new Map(allProducts.map((p) => [p.id, p]))
+
+    const orderLines = []
+
+    cartItems.forEach((cartItem) => {
+      const { id, quantity, ringSize, letters, diameter, chainLength, color } = cartItem
+
+      const product = productMap.get(id)
+      if (!product) throw new Error(`Invalid product ID: ${id}`)
+
+      const basePrice = Math.round(
+        (product.specialPrice || product.price) * DISCOUNT_FACTOR
+      )
+
+      const baseTotalAmount = basePrice * quantity
+      const baseTotalTaxAmount =
+        baseTotalAmount -
+        Math.round(baseTotalAmount / (1 + product.tax_rate / 10000))
+
+      let productName = product.name
+      if (ringSize) productName += ` (Storlek: ${ringSize})`
+
+      if (letters && letters.length > 0) {
+        productName += ` (Bokstav: ${letters[0]})`
+      }
+
+      if (diameter) productName += ` (Diameter: ${diameter} cm)`
+      if (chainLength) productName += ` (Kedjelängd: ${chainLength} cm)`
+      if (color) productName += ` (Färg: ${color.replace('-', ' ')})`
+
+      orderLines.push({
+        type: 'physical',
+        reference: product.id,
+        name: productName,
+        quantity,
+        quantity_unit: 'pcs',
+        unit_price: basePrice,
+        tax_rate: product.tax_rate,
+        total_amount: baseTotalAmount,
+        total_tax_amount: baseTotalTaxAmount
+      })
+
+      if (letters && letters.length > 1) {
+        const extraLetters = letters.slice(1)
+        const pricePerLetter = Math.round(
+          EXTRA_LETTER_PRICES[product.collection] * DISCOUNT_FACTOR
+        )
+
+        if (pricePerLetter) {
+          extraLetters.forEach((letter) => {
+            const letterTotalAmount = pricePerLetter * quantity
+            const letterTotalTaxAmount =
+              letterTotalAmount -
+              Math.round(letterTotalAmount / (1 + product.tax_rate / 10000))
+
+            orderLines.push({
+              type: 'physical',
+              reference: `${product.id}-extra-letter`,
+              name: `Extra bokstav: ${letter}`,
+              quantity,
+              quantity_unit: 'pcs',
+              unit_price: pricePerLetter,
+              tax_rate: product.tax_rate,
+              total_amount: letterTotalAmount,
+              total_tax_amount: letterTotalTaxAmount
+            })
+          })
+        }
+      }
+    })
+
+    const shippingTaxAmount =
+      SHIPPING_FEE -
+      Math.round(SHIPPING_FEE / (1 + SHIPPING_TAX_RATE / 10000))
+
+    orderLines.push({
+      type: 'shipping_fee',
+      reference: 'shipping',
+      name: 'Frakt',
+      quantity: 1,
+      unit_price: SHIPPING_FEE,
+      tax_rate: SHIPPING_TAX_RATE,
+      total_amount: SHIPPING_FEE,
+      total_tax_amount: shippingTaxAmount
+    })
+
+    const totalAmount = orderLines.reduce(
+      (sum, item) => sum + item.total_amount,
+      0
+    )
+    const totalTax = orderLines.reduce(
+      (sum, item) => sum + item.total_tax_amount,
+      0
+    )
+
+    if (totalAmount <= 0) {
+      throw new Error('Total amount must be greater than 0')
+    }
+
+    const klarnaOrder = await createKustomOrder({
+      purchase_country: 'SE',
+      purchase_currency: 'SEK',
+      locale: 'sv-SE',
+      order_amount: totalAmount,
+      order_tax_amount: totalTax,
+      order_lines: orderLines,
+      merchant_urls: {
+        terms: 'https://margaretaavernas.se/terms',
+        checkout: 'https://margaretaavernas.se/checkout',
+        confirmation:
+          'https://margaretaavernas.se/confirmation?order_id={checkout.order.id}',
+        push: 'https://margaretaavernas.se/api/push?order_id={checkout.order.id}'
+      }
+    })
+
+    console.log('Klarna Order Created:', klarnaOrder)
+    return new Response(JSON.stringify(klarnaOrder), { status: 200 })
+  } catch (error) {
+    console.error('Error creating Klarna order:', error)
+    return new Response(
+      JSON.stringify({
+        message: 'Failed to create Klarna order',
+        details: error.message
+      }),
+      { status: 400 }
+    )
+  }
 }

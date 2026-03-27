@@ -6,29 +6,30 @@ import { useState, useEffect } from "react";
 
 const SHIPPING_FEE = 4900;
 
-//PRISER FÖR EXTRA BOKSTÄVER
 const EXTRA_LETTER_PRICES = {
   coins: 40000,
   letter: 40000,
 };
+
+const DISCOUNT_FACTOR = 0.8; // ← TILLFÄLLIG 20% RABATT – ta bort sen
 
 const CheckoutPage = () => {
   const { cart } = useCart();
   const [htmlSnippet, setHtmlSnippet] = useState("");
   const [isSummaryOpen, setIsSummaryOpen] = useState(false);
 
-  // Funktion för att beräkna totalpris och skatt
   const calculateTotals = () => {
     let totalAmount = 0;
     let totalTax = 0;
 
     cart.forEach((item) => {
-      let price = item.specialPrice || item.price;
+      let price = Math.round((item.specialPrice || item.price) * DISCOUNT_FACTOR);
 
-      // 🆕 LÄGG TILL KOSTNADEN FÖR EXTRA BOKSTÄVER
       if (item.letters && item.letters.length > 1) {
         const extraLettersCount = item.letters.length - 1;
-        const pricePerExtra = EXTRA_LETTER_PRICES[item.collection] || 0;
+        const pricePerExtra = Math.round(
+          (EXTRA_LETTER_PRICES[item.collection] || 0) * DISCOUNT_FACTOR
+        );
         price += extraLettersCount * pricePerExtra;
       }
 
@@ -41,7 +42,24 @@ const CheckoutPage = () => {
 
   const { totalAmount, totalTax, grandTotal } = calculateTotals();
 
-  // Skapa Klarna-order automatiskt när sidan laddas
+  // Beräkna totalen UTAN rabatt för att visa besparing
+  const calculateOriginalTotal = () => {
+    let total = 0;
+    cart.forEach((item) => {
+      let price = item.specialPrice || item.price;
+      if (item.letters && item.letters.length > 1) {
+        const extraLettersCount = item.letters.length - 1;
+        const pricePerExtra = EXTRA_LETTER_PRICES[item.collection] || 0;
+        price += extraLettersCount * pricePerExtra;
+      }
+      total += price * item.quantity;
+    });
+    return total + SHIPPING_FEE;
+  };
+
+  const originalGrandTotal = calculateOriginalTotal();
+  const savings = originalGrandTotal - grandTotal;
+
   useEffect(() => {
     const createOrder = async () => {
       if (cart.length === 0) return;
@@ -76,13 +94,25 @@ const CheckoutPage = () => {
     };
 
     createOrder();
-  }, [cart]); // Körs när `cart` uppdateras
+  }, [cart]);
 
   return (
     <div className="max-w-4xl mx-auto p-6">
       <h1 className="text-2xl font-semibold mb-4">Checkout</h1>
 
-      {/* Ordersammanfattning knapp */}
+      {/* Rabattbanner */}
+      <div className="bg-green-50 border border-green-200 rounded-lg px-4 py-3 mb-4 flex items-center justify-between">
+        <div>
+          <p className="text-green-800 font-semibold text-sm">🎉 20% rabatt är tillämpad!</p>
+          <p className="text-green-600 text-xs mt-0.5">
+            Du sparar {(savings / 100).toFixed(2)} SEK på din order
+          </p>
+        </div>
+        <span className="bg-green-600 text-white text-xs font-bold px-2 py-1 rounded">
+          -20%
+        </span>
+      </div>
+
       <button
         onClick={() => setIsSummaryOpen(!isSummaryOpen)}
         className="w-full bg-gray-200 text-gray-800 py-2 rounded-lg font-medium hover:bg-gray-300 transition"
@@ -92,7 +122,6 @@ const CheckoutPage = () => {
           : "Visa ordersammanfattning ▼"}
       </button>
 
-      {/* Dropdown med orderdetaljer */}
       {isSummaryOpen && (
         <div className="bg-white border mt-2 p-4 rounded-lg shadow-md">
           {cart.length === 0 ? (
@@ -120,7 +149,6 @@ const CheckoutPage = () => {
                           Ringstorlek: {item.ringSize}
                         </p>
                       )}
-                      {/* 🆕 VISA ALLA BOKSTÄVER */}
                       {item.letters && item.letters.length > 0 && (
                         <p className="text-sm text-gray-600">
                           Bokstäver: {item.letters.join(", ")}
@@ -151,42 +179,34 @@ const CheckoutPage = () => {
                       )}
                     </div>
                   </div>
-                  {/* Visa pris med rabatt */}
-                  {/* UPPDATERAD MED EXTRA BOKSTÄVER */}
-                  {(() => {
-                    let displayPrice = item.specialPrice || item.price;
 
-                    // Lägg till kostnaden för extra bokstäver
+                  {(() => {
+                    const originalPrice = item.specialPrice || item.price;
+                    let originalDisplayPrice = originalPrice;
+                    let discountedDisplayPrice = Math.round(originalPrice * DISCOUNT_FACTOR);
+
                     if (item.letters && item.letters.length > 1) {
                       const extraLettersCount = item.letters.length - 1;
-                      const pricePerExtra =
-                        EXTRA_LETTER_PRICES[item.collection] || 0;
-                      displayPrice += extraLettersCount * pricePerExtra;
+                      const originalExtra = EXTRA_LETTER_PRICES[item.collection] || 0;
+                      const discountedExtra = Math.round(originalExtra * DISCOUNT_FACTOR);
+                      originalDisplayPrice += extraLettersCount * originalExtra;
+                      discountedDisplayPrice += extraLettersCount * discountedExtra;
                     }
 
-                    const originalPrice = item.price;
-                    const hasDiscount =
-                      item.specialPrice && item.specialPrice < originalPrice;
-
-                    return hasDiscount ? (
+                    return (
                       <div className="text-right">
-                        <p className="text-gray-500 line-through text-xs">
-                          {(originalPrice / 100).toFixed(2)} SEK
+                        <p className="text-gray-400 line-through text-xs">
+                          {(originalDisplayPrice / 100).toFixed(2)} SEK
                         </p>
-                        <p className="text-red-600 font-bold">
-                          {(displayPrice / 100).toFixed(2)} SEK
+                        <p className="text-green-700 font-semibold text-sm">
+                          {(discountedDisplayPrice / 100).toFixed(2)} SEK
                         </p>
                       </div>
-                    ) : (
-                      <p className="font-medium">
-                        {(displayPrice / 100).toFixed(2)} SEK
-                      </p>
                     );
                   })()}
                 </div>
               ))}
 
-              {/* 🔹 Frakt */}
               <div className="flex justify-between py-2 border-b">
                 <p className="font-medium">Frakt</p>
                 <p className="font-medium">
@@ -194,20 +214,27 @@ const CheckoutPage = () => {
                 </p>
               </div>
 
-              <div className="mt-4 border-t pt-2">
-                <p className="text-lg font-semibold">
-                  Total: {(grandTotal / 100).toFixed(2)} SEK
-                </p>
-                {/* <p className="text-gray-600">
-                  Skatt: {(totalTax / 100).toFixed(2)} SEK
-                </p> */}
+              <div className="mt-4 border-t pt-2 space-y-1">
+                <div className="flex justify-between text-gray-400 text-sm">
+                  <span>Ordinarie pris</span>
+                  <span className="line-through">
+                    {(originalGrandTotal / 100).toFixed(2)} SEK
+                  </span>
+                </div>
+                <div className="flex justify-between text-green-700 text-sm">
+                  <span>Rabatt (20%)</span>
+                  <span>-{(savings / 100).toFixed(2)} SEK</span>
+                </div>
+                <div className="flex justify-between text-lg font-semibold pt-1 border-t">
+                  <span>Total</span>
+                  <span>{(grandTotal / 100).toFixed(2)} SEK</span>
+                </div>
               </div>
             </>
           )}
         </div>
       )}
 
-      {/* Klarna Widget (visas automatiskt) */}
       {htmlSnippet && <KlarnaWidget htmlSnippet={htmlSnippet} />}
     </div>
   );
