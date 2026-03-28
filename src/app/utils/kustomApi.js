@@ -2,7 +2,7 @@ import axios from 'axios';
 
 // 🔹 Configure Kustom API instance med Basic Auth enligt dokumentationen
 const kustomApi = axios.create({
-  baseURL: 'https://api.playground.kustom.co',  // eller rätt base-URL för Playground enligt dokumentationen
+  baseURL: 'https://api.kustom.co',  // eller rätt base-URL för Playground enligt dokumentationen
   headers: {
     'Content-Type': 'application/json',
     // 🔹 Enligt dokumentationen: Authorization: Basic <API key>
