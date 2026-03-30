@@ -131,8 +131,8 @@ export async function POST(req) {
                     //from: 'Margareta Avernas <info@margaretaavernas.se>',
                     from: 'onboarding@resend.dev',
                     //to: customer.email,
-                    to: 'info@margaretaavernas.se', // ← temporärt för test
-                    bcc: 'info@margaretaavernas.se', // ✅ Kopia till dig själv
+                    to: 'alexander.avernas@hotmail.se', // ← temporärt för test
+                    bcc: 'alexander.avernas@hotmail.se', // ✅ Kopia till dig själv
                     subject: `Orderbekräftelse – ${orderId}`,
                     html: `
                         <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto;">
