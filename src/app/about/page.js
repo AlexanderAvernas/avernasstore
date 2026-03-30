@@ -9,8 +9,8 @@ export default function AboutPage() {
       </div>
       <div className="max-w-4xl mx-auto text-center mt-4 mb-4">
         <p className="text-lg leading-relaxed">
-          Jag heter Margareta och det är jag som är formgivaren och kreatören
-          bakom alla smycken du hittar här.
+          Jag heter Margareta och är utbildad smyckessmed. Det är jag som
+          formger och tillverkar alla smycken du hittar här.
         </p>
 
         <p className="text-lg leading-relaxed">
