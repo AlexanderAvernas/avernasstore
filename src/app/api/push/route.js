@@ -179,6 +179,7 @@ export async function POST(req) {
           subject: `Orderbekräftelse – ${orderId}`,
           html: `
             <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto;">
+            <img src="https://margaretaavernas.se/logoBlack.png" style="width: 150px; margin-bottom: 20px;" />
               <h2>Tack för din beställning, ${customer.given_name}!</h2>
               <p>Vi har mottagit din order och börjar behandla den så snart som möjligt.</p>
 
