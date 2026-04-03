@@ -76,124 +76,159 @@ export async function POST(req) {
 }
  */
 
-import { getKustomOrder } from '../../utils/kustomApi';
-import { Resend } from 'resend';
+import { getKustomOrder } from "../../utils/kustomApi";
+import { Resend } from "resend";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 export async function POST(req) {
-    try {
-        const { searchParams } = new URL(req.url);
-        const orderId = searchParams.get('order_id');
+  try {
+    const { searchParams } = new URL(req.url);
+    const orderId = searchParams.get("order_id");
 
-        if (!orderId) {
-            return new Response(
-                JSON.stringify({ message: 'Missing order_id in query parameters' }),
-                { status: 400, headers: { 'Content-Type': 'application/json' } }
-            );
+    if (!orderId) {
+      return new Response(
+        JSON.stringify({ message: "Missing order_id in query parameters" }),
+        { status: 400, headers: { "Content-Type": "application/json" } },
+      );
+    }
+
+    // 🔁 Retry-logik för att hämta order
+    let orderDetails;
+    let attempts = 0;
+
+    while (attempts < 3) {
+      try {
+        orderDetails = await getKustomOrder(orderId);
+        break; // Lyckades – avbryt loopen
+      } catch (error) {
+        attempts++;
+        console.log(`Retry ${attempts} för order ${orderId}`);
+
+        if (attempts === 3) {
+          // ✅ Bugg 1 fixad: returnera ett giltigt Response-objekt direkt
+          console.error("Order hittades inte efter 3 försök:", orderId);
+          return new Response(
+            JSON.stringify({
+              message: "Push received but order not found after retries",
+              order_id: orderId,
+            }),
+            { status: 200, headers: { "Content-Type": "application/json" } },
+          );
         }
 
-        const orderDetails = await getKustomOrder(orderId);
-
-        // Svara Kustom/Klarna omedelbart
-        const response = new Response(
-            JSON.stringify({ message: 'Push notification received successfully', order_id: orderId }),
-            { status: 200, headers: { 'Content-Type': 'application/json' } }
-        );
-
-        // Skicka bekräftelsemejl asynkront
-        (async () => {
-            try {
-                const customer = orderDetails.billing_address;
-
-                // ✅ Null-check – avbryt om kundmail saknas
-                if (!customer?.email) {
-                    console.error('Ingen kundmail hittades för order:', orderId);
-                    return;
-                }
-
-                const orderLines = orderDetails.order_lines?.filter(
-                    (line) => line.type !== 'shipping_fee'
-                );
-                const shippingFee = orderDetails.order_lines?.find(
-                    (line) => line.type === 'shipping_fee'
-                );
-
-                const itemRows = orderLines?.map((line) => `
-                    <tr>
-                        <td style="padding: 8px; border-bottom: 1px solid #eee;">${line.name}</td>
-                        <td style="padding: 8px; border-bottom: 1px solid #eee; text-align: center;">${line.quantity}</td>
-                        <td style="padding: 8px; border-bottom: 1px solid #eee; text-align: right;">${(line.unit_price / 100).toFixed(2)} SEK</td>
-                    </tr>
-                `).join('');
-
-                await resend.emails.send({
-                    from: 'Margareta Avernas <info@margaretaavernas.se>',
-                    //from: 'onboarding@resend.dev',
-                    to: customer.email,
-                    //to: 'alexander.avernas@hotmail.se', // ← temporärt för test
-                    bcc: 'info@margaretaavernas.se', // ✅ Kopia till dig själv
-                    subject: `Orderbekräftelse – ${orderId}`,
-                    html: `
-                        <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto;">
-                            <h2>Tack för din beställning, ${customer.given_name}!</h2>
-                            <p>Vi har mottagit din order och börjar behandla den så snart som möjligt.</p>
-
-                            <h3>Ordersammanfattning</h3>
-                            <table style="width: 100%; border-collapse: collapse;">
-                                <thead>
-                                    <tr style="background: #f5f5f5;">
-                                        <th style="padding: 8px; text-align: left;">Produkt</th>
-                                        <th style="padding: 8px; text-align: center;">Antal</th>
-                                        <th style="padding: 8px; text-align: right;">Pris</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    ${itemRows}
-                                    <tr>
-                                        <td style="padding: 8px;" colspan="2">Frakt</td>
-                                        <td style="padding: 8px; text-align: right;">${((shippingFee?.total_amount || 0) / 100).toFixed(2)} SEK</td>
-                                    </tr>
-                                </tbody>
-                                <tfoot>
-                                    <tr style="font-weight: bold;">
-                                        <td style="padding: 8px;" colspan="2">Totalt</td>
-                                        <td style="padding: 8px; text-align: right;">${(orderDetails.order_amount / 100).toFixed(2)} SEK</td>
-                                    </tr>
-                                </tfoot>
-                            </table>
-
-                            <h3>Leveransadress</h3>
-                            <p>
-                                ${customer.given_name} ${customer.family_name}<br/>
-                                ${customer.street_address}<br/>
-                                ${customer.postal_code} ${customer.city}
-                            </p>
-
-                            <p style="color: #888; font-size: 12px;">Order-ID: ${orderId}</p>
-                        </div>
-                    `,
-                });
-
-                console.log('Bekräftelsemejl skickat till:', customer.email);
-
-            } catch (error) {
-                // ✅ Förbättrad felloggning med order-ID
-                console.error('Fel vid mejlutskick för order:', orderId, error);
-            }
-        })();
-
-        return response;
-
-    } catch (error) {
-        console.error('Fel vid hantering av push notification:', error);
-
-        return new Response(
-            JSON.stringify({
-                message: 'Failed to handle push notification',
-                details: error.message,
-            }),
-            { status: 500, headers: { 'Content-Type': 'application/json' } }
-        );
+        // Vänta innan nästa försök (bara om det finns fler försök kvar)
+        await new Promise((res) => setTimeout(res, 2000));
+      }
     }
+
+    // Svara webhook omedelbart
+    const response = new Response(
+      JSON.stringify({
+        message: "Push notification received successfully",
+        order_id: orderId,
+      }),
+      { status: 200, headers: { "Content-Type": "application/json" } },
+    );
+
+    // 📧 Skicka bekräftelsemejl asynkront
+    (async () => {
+      try {
+        // Extra säkerhet – orderDetails bör aldrig vara undefined här
+        if (!orderDetails) {
+          console.error("orderDetails saknas för order:", orderId);
+          return;
+        }
+
+        const customer = orderDetails.billing_address;
+
+        if (!customer?.email) {
+          console.error("Ingen kundmail hittades för order:", orderId);
+          return;
+        }
+
+        const orderLines = orderDetails.order_lines?.filter(
+          (line) => line.type !== "shipping_fee",
+        );
+        const shippingFee = orderDetails.order_lines?.find(
+          (line) => line.type === "shipping_fee",
+        );
+
+        const itemRows = orderLines
+          ?.map(
+            (line) => `
+              <tr>
+                <td style="padding: 8px; border-bottom: 1px solid #eee;">${line.name}</td>
+                <td style="padding: 8px; border-bottom: 1px solid #eee; text-align: center;">${line.quantity}</td>
+                <td style="padding: 8px; border-bottom: 1px solid #eee; text-align: right;">${(line.unit_price / 100).toFixed(2)} SEK</td>
+              </tr>
+            `,
+          )
+          .join("");
+
+        await resend.emails.send({
+          // ✅ Bugg 2 fixad: from-adress använder verifierad subdomän
+          from: "Margareta Avernas <info@send.margaretaavernas.se>",
+          to: customer.email,
+          bcc: "info@send.margaretaavernas.se",
+          subject: `Orderbekräftelse – ${orderId}`,
+          html: `
+            <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto;">
+              <h2>Tack för din beställning, ${customer.given_name}!</h2>
+              <p>Vi har mottagit din order och börjar behandla den så snart som möjligt.</p>
+
+              <h3>Ordersammanfattning</h3>
+              <table style="width: 100%; border-collapse: collapse;">
+                <thead>
+                  <tr style="background: #f5f5f5;">
+                    <th style="padding: 8px; text-align: left;">Produkt</th>
+                    <th style="padding: 8px; text-align: center;">Antal</th>
+                    <th style="padding: 8px; text-align: right;">Pris</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  ${itemRows}
+                  <tr>
+                    <td style="padding: 8px;" colspan="2">Frakt</td>
+                    <td style="padding: 8px; text-align: right;">${((shippingFee?.total_amount || 0) / 100).toFixed(2)} SEK</td>
+                  </tr>
+                </tbody>
+                <tfoot>
+                  <tr style="font-weight: bold;">
+                    <td style="padding: 8px;" colspan="2">Totalt</td>
+                    <td style="padding: 8px; text-align: right;">${(orderDetails.order_amount / 100).toFixed(2)} SEK</td>
+                  </tr>
+                </tfoot>
+              </table>
+
+              <h3>Leveransadress</h3>
+              <p>
+                ${customer.given_name} ${customer.family_name}<br/>
+                ${customer.street_address}<br/>
+                ${customer.postal_code} ${customer.city}
+              </p>
+
+              <p style="color: #888; font-size: 12px;">Order-ID: ${orderId}</p>
+            </div>
+          `,
+        });
+
+        console.log("Bekräftelsemejl skickat till:", customer.email);
+      } catch (error) {
+        console.error("Fel vid mejlutskick för order:", orderId, error);
+      }
+    })();
+
+    return response;
+  } catch (error) {
+    console.error("Fel vid hantering av push notification:", error);
+
+    return new Response(
+      JSON.stringify({
+        message: "Failed to handle push notification",
+        details: error.message,
+      }),
+      { status: 500, headers: { "Content-Type": "application/json" } },
+    );
+  }
 }
