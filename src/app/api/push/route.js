@@ -97,7 +97,7 @@ export async function POST(req) {
     let orderDetails;
     let attempts = 0;
 
-    while (attempts < 3) {
+    while (attempts < 5) {
       try {
         orderDetails = await getKustomOrder(orderId);
         break; // Lyckades – avbryt loopen
