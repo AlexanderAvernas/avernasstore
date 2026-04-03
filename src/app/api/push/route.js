@@ -173,7 +173,7 @@ export async function POST(req) {
 
         await resend.emails.send({
           // ✅ Bugg 2 fixad: from-adress använder verifierad subdomän
-          from: "Margareta Avernas <info@send.margaretaavernas.se>",
+          from: "Margareta Avernas <onboarding@resend.dev>",
           to: customer.email,
           bcc: "info@send.margaretaavernas.se",
           subject: `Orderbekräftelse – ${orderId}`,
