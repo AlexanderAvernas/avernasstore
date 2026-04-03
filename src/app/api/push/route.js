@@ -103,7 +103,12 @@ export async function POST(req) {
         break; // Lyckades – avbryt loopen
       } catch (error) {
         attempts++;
-        console.log(`Retry ${attempts} för order ${orderId}`);
+        console.log(
+          `Retry ${attempts} för order ${orderId} – Fel:`,
+          error.message,
+          error?.status,
+          error?.response?.data,
+        );
 
         if (attempts === 3) {
           // ✅ Bugg 1 fixad: returnera ett giltigt Response-objekt direkt
