@@ -1,10 +1,12 @@
 import CollectionList from "../components/CollectionList"
+import { fetchCollections } from "../lib/sanity"
 
-const page = () => {
+const page = async () => {
+  const collections = await fetchCollections()
+  
   return (
-    <div>
-        <h1>Collections</h1>
-        <CollectionList/>
+    <div className="mt-6">
+        <CollectionList collections={collections}/>
     </div>
   )
 }
