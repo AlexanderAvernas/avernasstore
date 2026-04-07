@@ -32,7 +32,7 @@ const Footer = () => {
             {/* Social icons */}
             <div className="flex gap-4">
               <a
-                href="https://www.instagram.com/"
+                href="https://www.instagram.com/margareta_avernas/"
                 target="_blank"
                 rel="noopener noreferrer"
               >
@@ -46,7 +46,7 @@ const Footer = () => {
               </a>
 
               <a
-                href="https://www.facebook.com/"
+                href="https://www.facebook.com/margaretaavernas.se/?locale=sv_SE"
                 target="_blank"
                 rel="noopener noreferrer"
               >
