@@ -5,7 +5,7 @@ export default function AboutPage() {
     <div className="bg-white py-6 px-6 md:px-12">
       <div className="max-w-4xl mx-auto text-center mb-4">
         <h1 className="text-3xl md:text-4xl font-bold mb-4">Om</h1>
-        <p className="text-lg leading-relaxed">Välkommen hit!</p>
+        {/* <p className="text-lg leading-relaxed">Välkommen hit!</p> */}
       </div>
       <div className="max-w-4xl mx-auto text-center mt-4 mb-4">
         <p className="text-lg leading-relaxed">
@@ -15,7 +15,7 @@ export default function AboutPage() {
 
         <p className="text-lg leading-relaxed">
           Mitt intresse för smycken i alla former och material har alltid
-          funnits men det är i silvret jag hittat min passion. När jag skapar
+          funnits, men det är i silvret jag hittat min passion. När jag skapar
           mina smycken drivs jag av glädjen i att se en bit silver börja leva
           och formas av en gaslåga och mina egna händer. Min inspiration hittar
           jag i min omgivning, i naturen och i människor jag möter.
