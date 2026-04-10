@@ -169,7 +169,7 @@ export async function POST(req) {
 import { fetchProducts } from '../../lib/sanity'
 import { createKustomOrder } from '../../utils/kustomApi'
 
-const SHIPPING_FEE = 100
+const SHIPPING_FEE = 4900
 const SHIPPING_TAX_RATE = 2500
 
 const EXTRA_LETTER_PRICES = {
