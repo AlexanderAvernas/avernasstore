@@ -248,10 +248,6 @@ const Cart = () => {
               </span>
             </div>
 
-            <p className="text-red-300 text-sm font-medium mb-2">
-              20% rabatt dras automatiskt i kassan
-            </p>
-
             <p className="text-gray-500 mb-4 text-sm">
               Moms ingår och frakt beräknas vid kassan
             </p>

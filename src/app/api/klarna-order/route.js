@@ -177,8 +177,6 @@ const EXTRA_LETTER_PRICES = {
   letter: 40000,
 }
 
-const DISCOUNT_FACTOR = 0.8 // ← TILLFÄLLIG 20% RABATT – ta bort sen
-
 export async function POST(req) {
   try {
     const { cartItems } = await req.json()
@@ -203,9 +201,7 @@ export async function POST(req) {
       const product = productMap.get(id)
       if (!product) throw new Error(`Invalid product ID: ${id}`)
 
-      const basePrice = Math.round(
-        (product.specialPrice || product.price) * DISCOUNT_FACTOR
-      )
+      const basePrice = product.specialPrice || product.price
 
       const baseTotalAmount = basePrice * quantity
       const baseTotalTaxAmount =
@@ -238,9 +234,7 @@ export async function POST(req) {
 
       if (letters && letters.length > 1) {
         const extraLetters = letters.slice(1)
-        const pricePerLetter = Math.round(
-          EXTRA_LETTER_PRICES[product.collection] * DISCOUNT_FACTOR
-        )
+       const pricePerLetter = EXTRA_LETTER_PRICES[product.collection]
 
         if (pricePerLetter) {
           extraLetters.forEach((letter) => {

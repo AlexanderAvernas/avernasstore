@@ -11,8 +11,6 @@ const EXTRA_LETTER_PRICES = {
   letter: 40000,
 };
 
-const DISCOUNT_FACTOR = 0.8; // ← TILLFÄLLIG 20% RABATT – ta bort sen
-
 const CheckoutPage = () => {
   const { cart } = useCart();
   const [htmlSnippet, setHtmlSnippet] = useState("");
@@ -23,13 +21,11 @@ const CheckoutPage = () => {
     let totalTax = 0;
 
     cart.forEach((item) => {
-      let price = Math.round((item.specialPrice || item.price) * DISCOUNT_FACTOR);
+      let price = item.specialPrice || item.price;
 
       if (item.letters && item.letters.length > 1) {
         const extraLettersCount = item.letters.length - 1;
-        const pricePerExtra = Math.round(
-          (EXTRA_LETTER_PRICES[item.collection] || 0) * DISCOUNT_FACTOR
-        );
+        const pricePerExtra = EXTRA_LETTER_PRICES[item.collection] || 0;
         price += extraLettersCount * pricePerExtra;
       }
 
@@ -41,24 +37,6 @@ const CheckoutPage = () => {
   };
 
   const { totalAmount, totalTax, grandTotal } = calculateTotals();
-
-  // Beräkna totalen UTAN rabatt för att visa besparing
-  const calculateOriginalTotal = () => {
-    let total = 0;
-    cart.forEach((item) => {
-      let price = item.specialPrice || item.price;
-      if (item.letters && item.letters.length > 1) {
-        const extraLettersCount = item.letters.length - 1;
-        const pricePerExtra = EXTRA_LETTER_PRICES[item.collection] || 0;
-        price += extraLettersCount * pricePerExtra;
-      }
-      total += price * item.quantity;
-    });
-    return total + SHIPPING_FEE;
-  };
-
-  const originalGrandTotal = calculateOriginalTotal();
-  const savings = originalGrandTotal - grandTotal;
 
   useEffect(() => {
     const createOrder = async () => {
@@ -99,19 +77,6 @@ const CheckoutPage = () => {
   return (
     <div className="max-w-4xl mx-auto p-6">
       <h1 className="text-2xl font-semibold mb-4">Checkout</h1>
-
-      {/* Rabattbanner */}
-      <div className="bg-green-50 border border-green-200 rounded-lg px-4 py-3 mb-4 flex items-center justify-between">
-        <div>
-          <p className="text-green-800 font-semibold text-sm">🎉 20% rabatt är tillämpad!</p>
-          <p className="text-green-600 text-xs mt-0.5">
-            Du sparar {(savings / 100).toFixed(2)} SEK på din order
-          </p>
-        </div>
-        <span className="bg-green-600 text-white text-xs font-bold px-2 py-1 rounded">
-          -20%
-        </span>
-      </div>
 
       <button
         onClick={() => setIsSummaryOpen(!isSummaryOpen)}
@@ -181,27 +146,30 @@ const CheckoutPage = () => {
                   </div>
 
                   {(() => {
-                    const originalPrice = item.specialPrice || item.price;
-                    let originalDisplayPrice = originalPrice;
-                    let discountedDisplayPrice = Math.round(originalPrice * DISCOUNT_FACTOR);
+                    let displayPrice = item.specialPrice || item.price;
 
                     if (item.letters && item.letters.length > 1) {
                       const extraLettersCount = item.letters.length - 1;
-                      const originalExtra = EXTRA_LETTER_PRICES[item.collection] || 0;
-                      const discountedExtra = Math.round(originalExtra * DISCOUNT_FACTOR);
-                      originalDisplayPrice += extraLettersCount * originalExtra;
-                      discountedDisplayPrice += extraLettersCount * discountedExtra;
+                      const pricePerExtra = EXTRA_LETTER_PRICES[item.collection] || 0;
+                      displayPrice += extraLettersCount * pricePerExtra;
                     }
 
-                    return (
+                    const hasDiscount =
+                      item.specialPrice && item.specialPrice < item.price;
+
+                    return hasDiscount ? (
                       <div className="text-right">
-                        <p className="text-gray-400 line-through text-xs">
-                          {(originalDisplayPrice / 100).toFixed(2)} SEK
+                        <p className="text-gray-500 line-through text-xs">
+                          {(item.price / 100).toFixed(2)} SEK
                         </p>
-                        <p className="text-green-700 font-semibold text-sm">
-                          {(discountedDisplayPrice / 100).toFixed(2)} SEK
+                        <p className="text-red-600 font-bold">
+                          {(displayPrice / 100).toFixed(2)} SEK
                         </p>
                       </div>
+                    ) : (
+                      <p className="font-medium">
+                        {(displayPrice / 100).toFixed(2)} SEK
+                      </p>
                     );
                   })()}
                 </div>
@@ -214,21 +182,10 @@ const CheckoutPage = () => {
                 </p>
               </div>
 
-              <div className="mt-4 border-t pt-2 space-y-1">
-                <div className="flex justify-between text-gray-400 text-sm">
-                  <span>Ordinarie pris</span>
-                  <span className="line-through">
-                    {(originalGrandTotal / 100).toFixed(2)} SEK
-                  </span>
-                </div>
-                <div className="flex justify-between text-green-700 text-sm">
-                  <span>Rabatt (20%)</span>
-                  <span>-{(savings / 100).toFixed(2)} SEK</span>
-                </div>
-                <div className="flex justify-between text-lg font-semibold pt-1 border-t">
-                  <span>Total</span>
-                  <span>{(grandTotal / 100).toFixed(2)} SEK</span>
-                </div>
+              <div className="mt-4 border-t pt-2">
+                <p className="text-lg font-semibold">
+                  Total: {(grandTotal / 100).toFixed(2)} SEK
+                </p>
               </div>
             </>
           )}
