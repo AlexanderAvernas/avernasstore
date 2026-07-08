@@ -7,6 +7,7 @@ import { useState } from "react";
 const Footer = () => {
   const [showRingSizeInfo, setShowRingSizeInfo] = useState(false);
   const [showCareInfo, setShowCareInfo] = useState(false);
+  const [showContactInfo, setShowContactInfo] = useState(false);
 
   return (
     <footer className="bg-white text-black py-7 border-t">
@@ -70,6 +71,43 @@ const Footer = () => {
                 Allmänna köpvillkor
               </Link>
 
+              <button
+                onClick={() => setShowContactInfo(true)}
+                className="text-left underline hover:opacity-70 transition-opacity"
+              >
+                Kontakt
+              </button>
+
+              {/* Modal: Kontakt */}
+              {showContactInfo && (
+                <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+                  <div className="relative bg-white p-6 rounded-lg shadow-lg w-[90%] max-w-md">
+                    <button
+                      onClick={() => setShowContactInfo(false)}
+                      className="absolute top-4 right-4 text-gray-900 font-bold hover:text-black"
+                    >
+                      <h1>✕</h1>
+                    </button>
+
+                    <h2 className="text-lg font-semibold mb-4 border-b border-gray-300">
+                      Kontakt
+                    </h2>
+
+                    <p className="text-body-m">
+                      Har du några frågor? Skicka ett mejl till
+                      mig{" "}
+                      <a
+                        href="mailto:info@margaretaavernas.se"
+                        className="underline hover:opacity-70"
+                      >
+                        info@margaretaavernas.se
+                      </a>
+                      .
+                    </p>
+                  </div>
+                </div>
+              )}
+
               {/* Ta hand om dina smycken – öppnar modal */}
               <button
                 onClick={() => setShowCareInfo(true)}
@@ -91,9 +129,7 @@ const Footer = () => {
 
         {/* Bottom section */}
         <div className="mt-12 border-t pt-6 text-center">
-          <p className="text-sm mb-4">
-            &copy; 2025 Margareta Avernäs Smycken
-          </p>
+          <p className="text-sm mb-4">&copy; 2025 Margareta Avernäs Smycken</p>
 
           <div className="flex justify-center">
             <Image
@@ -129,17 +165,17 @@ const Footer = () => {
               />
             </div>
             <p className="text-body-m mb-4">
-              Välj en ring som storleksmässigt passar det finger du skall ha
-              din nya ring på. Tänk på att en bred ring sitter tightare än en
-              smal ring.
+              Välj en ring som storleksmässigt passar det finger du skall ha din
+              nya ring på. Tänk på att en bred ring sitter tightare än en smal
+              ring.
               <br />
               <br />
               Ta ett måttband eller en linjal och lägg ringen ovanpå
               måttbandet/linjalen.
               <br />
               <br />
-              Räkna mm, rakt över diametern på ringens insida. Din storlek är
-              de antal mm du får fram när du mäter. I detta fall 17.
+              Räkna mm, rakt över diametern på ringens insida. Din storlek är de
+              antal mm du får fram när du mäter. I detta fall 17.
             </p>
           </div>
         </div>
