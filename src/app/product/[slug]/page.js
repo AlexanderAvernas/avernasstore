@@ -56,6 +56,19 @@ const ProductPage = () => {
     return [15, 15.5, 16, 16.5, 17, 17.5, 18, 18.5, 19, 19.5, 20];
   };
 
+  // 🆕 Olika armbandsstorlekar beroende på produkt
+  // Swirl Bangle ska bara visa omkrets i cm, utan "hur man mäter"-text
+  const getBraceletSizes = () => {
+    if (product?.name === "Swirl Bangle") {
+      return [
+        { value: "5.5", label: "5,5 cm i omkrets" },
+        { value: "6.5", label: "6,5 cm i omkrets" },
+        { value: "7.5", label: "7,5 cm i omkrets" },
+      ];
+    }
+    return braceletSizes;
+  };
+
   // Färgval för specifika produkter
   const joelleColors = [
     { value: "Svart", label: "Svart (Onyx)" },
@@ -101,7 +114,8 @@ const ProductPage = () => {
     (product.collection === "letter" ||
       product.collection === "coins" ||
       product.collection === "Connect") &&
-    product.category === "necklaces";
+    product.category === "necklaces" &&
+    product.name !== "Connecy chunky";
   const showColorSelect =
     product.name === "JOELLE ring" || product.name === "VIENNA ring";
   const colorOptions =
@@ -437,7 +451,7 @@ const ProductPage = () => {
                   required
                 >
                   <option value="">Välj storlek</option>
-                  {braceletSizes.map((size) => (
+                  {getBraceletSizes().map((size) => (
                     <option key={size.value} value={size.value}>
                       {size.label}
                     </option>
