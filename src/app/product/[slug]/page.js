@@ -115,7 +115,7 @@ const ProductPage = () => {
       product.collection === "coins" ||
       product.collection === "Connect") &&
     product.category === "necklaces" &&
-    product.name !== "Connect chunky";
+    product.name !== "CONNECT CHUNKY";
   const showColorSelect =
     product.name === "JOELLE ring" || product.name === "VIENNA ring";
   const colorOptions =
