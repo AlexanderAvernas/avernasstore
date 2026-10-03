@@ -59,7 +59,7 @@ const ProductPage = () => {
   // 🆕 Olika armbandsstorlekar beroende på produkt
   // Swirl Bangle ska bara visa omkrets i cm, utan "hur man mäter"-text
   const getBraceletSizes = () => {
-    if (product?.name === "Swirl Bangle") {
+    if (product?.name === "SWIRL BANGLE") {
       return [
         { value: "5.5", label: "5,5 cm i omkrets" },
         { value: "6.5", label: "6,5 cm i omkrets" },
@@ -115,7 +115,7 @@ const ProductPage = () => {
       product.collection === "coins" ||
       product.collection === "Connect") &&
     product.category === "necklaces" &&
-    product.name !== "Connecy chunky";
+    product.name !== "Connect chunky";
   const showColorSelect =
     product.name === "JOELLE ring" || product.name === "VIENNA ring";
   const colorOptions =
